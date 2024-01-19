@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StuRegFormStyles from "./StudentRegistrationForm.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { Form, Input, DatePicker, Select, Tag, Button, message } from "antd";
 
 const onChange = (e) => {
-  console.log(e);
+  console.log(e.target.value);
 };
 const levels = [
   "Level 1",
@@ -93,6 +93,15 @@ const handleFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
   form.validateFields();
 };
+
+
+const handleRegisterStudentData = async(values)=>{
+    console.log(currentBritishLevel);
+}
+
+useEffect(()=>{
+  handleRegisterStudentData();
+},[])
 
 
   return (
