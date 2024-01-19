@@ -5,7 +5,7 @@ import './App.css'
 import StudentRegistration from "./components/System/StudentRegistration/StudentRegistrationForm";
 import StudentRecords from "./components/System/StudentRecords/StudentRecords";
 import PaymentRecords from './components/System/PaymentRecords/PaymentRecords';
-
+import Record from './components/System/StudentRecords/Record';
 function App() {
 
 
@@ -20,6 +20,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/payments" element={<PaymentRecords />} />
+        </Routes>
+        <Routes>
+          <Route path="/record" element={<Record />} />
         </Routes>
       </BrowserRouter>
     </>

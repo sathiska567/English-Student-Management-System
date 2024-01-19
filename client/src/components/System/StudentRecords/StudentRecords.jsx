@@ -5,6 +5,7 @@ import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table } from "antd";
 import Highlighter from "react-highlight-words";
+import { Link } from "react-router-dom";
 
 const data = [
   {
@@ -196,9 +197,10 @@ const StudentRecords = () => {
               borderColor: "#73d13d",
               color: "#73d13d",
             }}
+            href="/record"
             type="ghost"
             onClick={() => {
-              /* View action */
+              
             }}
           >
             View Record
