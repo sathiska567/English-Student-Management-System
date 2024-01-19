@@ -340,12 +340,6 @@ useEffect(()=>{
                 <Form.Item
                   style={{ flex: "2" }}
                   name="currentBritishLevel"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select a Current British English Level!",
-                    },
-                  ]}
                 >
                   <Select
                     placeholder="Select Only One Current British English Level"
@@ -372,13 +366,6 @@ useEffect(()=>{
                 <Form.Item
                   style={{ flex: "2" }}
                   name="completedBritishLevels"
-                  rules={[
-                    {
-                      required: true,
-                      message:
-                        "Please select at least one Completed British English Level!",
-                    },
-                  ]}
                 >
                   <Select
                     placeholder="Select Completed British English Levels"
@@ -407,12 +394,6 @@ useEffect(()=>{
                 <Form.Item
                   style={{ flex: "2" }}
                   name="currentGeneralLevel"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please select a Current General English Level!",
-                    },
-                  ]}
                 >
                   <Select
                     placeholder="Select Only One Current General English Level"
@@ -439,13 +420,6 @@ useEffect(()=>{
                 <Form.Item
                   style={{ flex: "2" }}
                   name="completedGeneralLevels"
-                  rules={[
-                    {
-                      required: true,
-                      message:
-                        "Please select at least one Completed General English Level!",
-                    },
-                  ]}
                 >
                   <Select
                     placeholder="Select Completed General English Levels"
