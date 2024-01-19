@@ -311,11 +311,11 @@ const handleFinishFailed = (errorInfo) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your School!",
+                      message: "Enter Student's School!",
                     },
                   ]}
                 >
-                  <Input placeholder="Please enter your School" allowClear />
+                  <Input placeholder="Enter  School" allowClear />
                 </Form.Item>
               </div>
               <div
