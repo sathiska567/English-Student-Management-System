@@ -54,18 +54,18 @@ const SystemSideBar = ({children}) => {
           }}
         >
           <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
             style={{
               fontSize: "16px",
               width: 64,
               height: 64,
             }}
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
           />
           <span
             style={{
-              fontSize: "22px",
+              fontSize: "18px",
               fontWeight: "bold",
               color: "#001529",
               marginLeft: "16px",

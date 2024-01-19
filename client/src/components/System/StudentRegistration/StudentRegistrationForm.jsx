@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import StuRegFormStyles from "./StudentRegistrationForm.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
-import { Form, Input, DatePicker, Select, Tag } from "antd";
+import { Form, Input, DatePicker, Select, Tag, Button, message } from "antd";
 
 const onChange = (e) => {
   console.log(e);
@@ -49,9 +49,9 @@ const tagRender = (props, options) => {
   );
 };
 const StudentRegistrationForm = () => {
+  const [form] = Form.useForm();
   const { TextArea } = Input;
   const [mobileNumber, setMobileNumber] = useState("");
-  const [indexNumber, setIndexNumber] = useState("");
   const [currentBritishLevel, setCurrentBritishLevel] = useState(null);
   const [completedBritishLevels, setCompletedBritishLevels] = useState([]);
   const [currentGeneralLevel, setCurrentGeneralLevel] = useState(null);
@@ -85,12 +85,24 @@ const StudentRegistrationForm = () => {
   const completedGeneralOptions = generalOptions.filter(
     (option) => option.value !== currentGeneralLevel
   );
+const handleFinish = (values) => {
+  console.log("Success:", values);
+};
+
+const handleFinishFailed = (errorInfo) => {
+  console.log("Failed:", errorInfo);
+  form.validateFields();
+};
+
 
   return (
     <div>
       <SystemSideBar>
         <div className={StuRegFormStyles.formContainer}>
           <Form
+            form={form}
+            onFinish={handleFinish}
+            onFinishFailed={handleFinishFailed}
             layout="verticle"
             className="m-3"
             style={{
@@ -111,20 +123,11 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Index Number:
                 </label>
-            
-                <Input
+
+                <Form.Item
+                  name="indexNumber"
                   style={{
                     flex: "2",
-                  }}
-                  placeholder="Enter Index Number"
-                  allowClear
-                  value={indexNumber}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "");
-                    setIndexNumber(value);
-                    if (onChange) {
-                      onChange(value);
-                    }
                   }}
                   rules={[
                     {
@@ -132,7 +135,9 @@ const StudentRegistrationForm = () => {
                       message: "Please input your Index Number!",
                     },
                   ]}
-                />
+                >
+                  <Input placeholder="Enter Index Number" allowClear />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -144,14 +149,21 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Full Name of Student:
                 </label>
-                <Input
+                <Form.Item
+                  name="fullName"
                   style={{
                     flex: "2",
                   }}
-                  placeholder="Enter Full Name"
-                  allowClear
-                  onChange={onChange}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Full Name!",
+                    },
+                  ]}
+                  validateTrigger="onBlur"
+                >
+                  <Input placeholder="Enter Full Name" allowClear />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -163,14 +175,24 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Name with Initials:
                 </label>
-                <Input
+                <Form.Item
+                  name="nameWithInitials"
                   style={{
                     flex: "2",
                   }}
-                  placeholder="Enter Name with Initials"
-                  allowClear
-                  onChange={onChange}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Name with Initials!",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Enter Name with Initials"
+                    allowClear
+                    onChange={onChange}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -182,15 +204,25 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Address:
                 </label>
-                <TextArea
+                <Form.Item
+                  name="address"
                   style={{
-                    flex: "2.09",
+                    flex: "2",
                   }}
-                  placeholder="Enter Address"
-                  allowClear
-                  onChange={onChange}
-                  autoSize={{ minRows: 3, maxRows: 6 }}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Address!",
+                    },
+                  ]}
+                >
+                  <TextArea
+                    placeholder="Enter Address"
+                    allowClear
+                    onChange={onChange}
+                    autoSize={{ minRows: 3, maxRows: 6 }}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -202,27 +234,40 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Mobile Number:
                 </label>
-                <Input
+                <Form.Item
+                  name="mobileNumber"
                   style={{
                     flex: "2",
                   }}
-                  placeholder="Enter Mobile Number"
-                  allowClear
-                  value={mobileNumber}
-                  onChange={(e) => {
-                    let value = e.target.value.replace(/\D/g, "");
-                    if (value.length > 10) {
-                      value = value.slice(0, 10);
-                    }
-                    if (value && value[0] !== "0") {
-                      value = "0" + value;
-                    }
-                    setMobileNumber(value);
-                    if (onChange) {
-                      onChange(value);
-                    }
-                  }}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your Mobile Number!",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Enter Mobile Number"
+                    allowClear
+                    value={mobileNumber}
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      if (value.length > 10) {
+                        value = value.slice(0, 10);
+                      }
+                      if (value.length === 1 && value[0] !== "0") {
+                        value = "0" + value;
+                      }
+                      setMobileNumber(value);
+                    }}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    maxLength={10}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -234,13 +279,20 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Birthday:
                 </label>
-                <DatePicker
+                <Form.Item
+                  name="birthday"
                   style={{
                     flex: "2",
                   }}
-                  placeholder="Select birthday"
-                  onChange={onChange}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select your Birthday!",
+                    },
+                  ]}
+                >
+                  <DatePicker placeholder="Select birthday" />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -250,14 +302,20 @@ const StudentRegistrationForm = () => {
                 }}
               >
                 <label className={StuRegFormStyles.RegFormLabel}>School:</label>
-                <Input
+                <Form.Item
+                  name="school"
                   style={{
                     flex: "2",
                   }}
-                  placeholder="Select Current British English Level"
-                  allowClear
-                  onChange={onChange}
-                />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your School!",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Please enter your School" allowClear />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -269,15 +327,27 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Current British English Level:
                 </label>
-                <Select
-                  placeholder="Select Only One Current British English Level"
-                  style={{ flex: "2.09" }}
-                  mode="multiple"
-                  tagRender={(props) => tagRender(props, britishOptions)}
-                  options={currentBritishOptions}
-                  value={currentBritishLevel ? [currentBritishLevel] : []}
-                  onChange={handleCurrentBritishLevelChange}
-                />
+                <Form.Item
+                  style={{ flex: "2" }}
+                  name="currentBritishLevel"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select a Current British English Level!",
+                    },
+                  ]}
+                >
+                  <Select
+                    placeholder="Select Only One Current British English Level"
+                    mode="multiple"
+                    tagRender={(props) => tagRender(props, britishOptions)}
+                    options={currentBritishOptions}
+                    value={currentBritishLevel ? [currentBritishLevel] : []}
+                    onChange={(value) => {
+                      handleCurrentBritishLevelChange(value);
+                    }}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -289,15 +359,30 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Completed British English Level:
                 </label>
-                <Select
-                  placeholder="Select Completed British English Levels"
-                  style={{ flex: "2.09" }}
-                  mode="multiple"
-                  tagRender={(props) => tagRender(props, britishOptions)}
-                  options={completedBritishOptions}
-                  value={completedBritishLevels}
-                  onChange={handleCompletedBritishLevelsChange}
-                />
+                <Form.Item
+                  style={{ flex: "2" }}
+                  name="completedBritishLevels"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        "Please select at least one Completed British English Level!",
+                    },
+                  ]}
+                >
+                  <Select
+                    placeholder="Select Completed British English Levels"
+                    mode="multiple"
+                    tagRender={(props) => tagRender(props, britishOptions)}
+                    options={completedBritishOptions.filter(
+                      (option) => option !== currentBritishLevel
+                    )}
+                    value={completedBritishLevels}
+                    onChange={(value) => {
+                      handleCompletedBritishLevelsChange(value);
+                    }}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -309,15 +394,27 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Current General English Level:
                 </label>
-                <Select
-                  placeholder="Select Only One Current General English Level"
-                  style={{ flex: "2.09" }}
-                  mode="multiple"
-                  tagRender={(props) => tagRender(props, generalOptions)}
-                  options={currentGeneralOptions}
-                  value={currentGeneralLevel ? [currentGeneralLevel] : []}
-                  onChange={handleCurrentGeneralLevelChange}
-                />
+                <Form.Item
+                  style={{ flex: "2" }}
+                  name="currentGeneralLevel"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select a Current General English Level!",
+                    },
+                  ]}
+                >
+                  <Select
+                    placeholder="Select Only One Current General English Level"
+                    mode="multiple"
+                    tagRender={(props) => tagRender(props, generalOptions)}
+                    options={currentGeneralOptions}
+                    value={currentGeneralLevel ? [currentGeneralLevel] : []}
+                    onChange={(value) => {
+                      handleCurrentGeneralLevelChange(value);
+                    }}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -329,15 +426,45 @@ const StudentRegistrationForm = () => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Completed General English Level:
                 </label>
-                <Select
-                  placeholder="Select Completed General English Levels"
-                  style={{ flex: "2.09" }}
-                  mode="multiple"
-                  tagRender={(props) => tagRender(props, generalOptions)}
-                  options={completedGeneralOptions}
-                  value={completedGeneralLevels}
-                  onChange={handleCompletedGeneralLevelsChange}
-                />
+                <Form.Item
+                  style={{ flex: "2" }}
+                  name="completedGeneralLevels"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        "Please select at least one Completed General English Level!",
+                    },
+                  ]}
+                >
+                  <Select
+                    placeholder="Select Completed General English Levels"
+                    mode="multiple"
+                    tagRender={(props) => tagRender(props, generalOptions)}
+                    options={completedGeneralOptions.filter(
+                      (option) => option !== currentGeneralLevel
+                    )}
+                    value={completedGeneralLevels}
+                    onChange={(value) => {
+                      handleCompletedGeneralLevelsChange(value);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className={StuRegFormStyles.buttonGroup}>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    form.validateFields();
+                  }}
+                  style={{
+                    color: "#73d13d",
+                    border: "1px solid #73d13d",
+                    width: "100px",
+                  }}
+                >
+                  Save
+                </Button>
               </div>
             </div>
           </Form>
