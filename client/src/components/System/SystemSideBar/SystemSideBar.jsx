@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import SideBarStyles from "./SystemSideBar.module.css";
+import { useLocation } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -19,30 +20,35 @@ const SystemSideBar = ({children}) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
+const location = useLocation();
   return (
     <Layout className={SideBarStyles.layout}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className={SideBarStyles.welcome} style={{ color: "white" }}>
           Hi{!collapsed && <span>, Admin</span>}
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            Student Registration
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          selectedKeys={[location.pathname]}
+        >
+          <Menu.Item key="/register" icon={<UserOutlined />}>
+            <Link to="/register">Student Registration</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<DatabaseOutlined />}>
-            Student Records
+          <Menu.Item key="/records" icon={<DatabaseOutlined />}>
+            <Link to="/records">Student Records</Link>
           </Menu.Item>
-          <Menu.Item key="3" icon={<DollarOutlined />}>
-            Payment Records
+          <Menu.Item key="/payments" icon={<DollarOutlined />}>
+            <Link to="/payments">Payment Records</Link>
           </Menu.Item>
           <Menu.Item
             className="logout-button"
             style={{ position: "absolute", bottom: 0 }}
-            key="4"
+            key="/"
             icon={<LogoutOutlined />}
           >
-            Log out
+            <Link to="/">Log out</Link>
           </Menu.Item>
         </Menu>
       </Sider>

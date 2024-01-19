@@ -461,10 +461,10 @@ const handleFinishFailed = (errorInfo) => {
                   style={{
                     color: "#73d13d",
                     border: "1px solid #73d13d",
-                    width: "100px",
+                    width: "200px",
                   }}
                 >
-                  Save
+                  Create Student Record
                 </Button>
               </div>
             </div>

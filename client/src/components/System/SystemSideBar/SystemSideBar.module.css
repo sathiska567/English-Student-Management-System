@@ -27,7 +27,7 @@ body {
 :global(.ant-menu-item.logout-button):active,
 :global(.ant-menu-item.logout-button):focus,
 :global(.ant-menu-dark .ant-menu-item-selected.logout-button) {
-  background-color: red !important;
+  background-color: #ff4d4f !important;
 }
 
 .menu-icon {
