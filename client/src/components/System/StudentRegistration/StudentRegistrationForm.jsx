@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import StuRegFormStyles from "./StudentRegistrationForm.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { Form, Input, DatePicker, Select, Tag, Button, message } from "antd";
+import axios from 'axios';
 
 const onChange = (e) => {
   console.log(e.target.value);
@@ -87,8 +88,17 @@ const StudentRegistrationForm = () => {
     (option) => option.value !== currentGeneralLevel
   );
 
-const handleFinish = (values) => {
+const handleFinish = async(values) => {
   console.log("Success:", values);
+   
+  try {
+    const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
+    
+  } catch (error) {
+    
+  }
+
+
 };
 
 const handleFinishFailed = (errorInfo) => {
@@ -98,10 +108,7 @@ const handleFinishFailed = (errorInfo) => {
 
 
 const handleRegisterStudentData = async(values)=>{
-    console.log("currentBritishLevel"  + currentBritishLevel);
-    console.log("completedBritishLevels" + completedBritishLevels);
-    console.log("currentGeneralLevel" + currentGeneralLevel);
-    console.log("completedGeneralLevels" + completedGeneralLevels);
+    console.log(values);
 }
 
 // useEffect(()=>{
@@ -466,7 +473,7 @@ const handleRegisterStudentData = async(values)=>{
                   cursor:"pointer",
                 }}
 
-                onClick={handleRegisterStudentData}>
+                >
                    Create Student Record                  
                 </button>
 

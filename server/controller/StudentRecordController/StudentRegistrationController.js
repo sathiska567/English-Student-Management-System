@@ -3,20 +3,25 @@ const StudentRegistrationModel = require('../../models/StudentRegistrationModel/
 const studentRegistrationRecordController = async(req,res)=>{
 
         try {
-          const {
-            indexNumber,
-            fullName,
-            nameWithinitial,
-            address,
-            mobileNumber,
-            Birthday,
-            School,
-            currentBritishLevel,
-            completedBritishLevel,
-            currentGeneralLevel,
-            completedGeneralLevel} = req.body
+           console.log(req.body.currentBritishLevel);
 
-            console.log(req.body);
+          //  const studentDataRegister = new StudentRegistrationModel({
+          //   indexNumber:req.body.indexNumber,
+          //   fullName:req.body.fullName,
+          //   nameWithInitials:req.body.nameWithInitials,
+          //   address:req.body.address,
+          //   mobileNumber:req.body.mobileNumber,
+          //   Birthday:req.body.birthday,
+          //   School:req.body.school,
+          //   currentBritishLevel:req.body.currentBritishLevel,
+          //   completedBritishLevel:req.body.completedBritishLevels,
+          //   currentGeneralLevel:req.body.currentGeneralLevel,
+          //   completedGeneralLevel:req.body.completedGeneralLevels,
+          //  })
+
+          //  await studentDataRegister.save();
+
+          //  console.log(studentDataRegister);
                 
         } catch (error) {
                 
