@@ -88,16 +88,19 @@ const StudentRegistrationForm = () => {
     (option) => option.value !== currentGeneralLevel
   );
 
+// Handle backend response and get all input values
 const handleFinish = async(values) => {
   console.log("Success:", values);
+
+  const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
    
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
-    
-  } catch (error) {
-    
-  }
+    message.success(response.data.message)
+    window.location.reload();
 
+  } catch (error) {
+      message.error(response.data.message)
+  }
 
 };
 
@@ -105,15 +108,6 @@ const handleFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
   form.validateFields();
 };
-
-
-const handleRegisterStudentData = async(values)=>{
-    console.log(values);
-}
-
-// useEffect(()=>{
-//   handleRegisterStudentData();
-// },[])
 
 
   return (

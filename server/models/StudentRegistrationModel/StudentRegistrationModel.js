@@ -41,7 +41,7 @@ const studentRegistrationDataModel = new mongoose.Schema({
         required: ["Current British English Level is required", true]
     },
 
-    completedBritishLevel: {
+    completedBritishLevels: {
         type: [String],
         required: ["Completed British English Level is required", true]
     },
@@ -51,7 +51,7 @@ const studentRegistrationDataModel = new mongoose.Schema({
         required: ["Current General English Level is required", true]
     },
 
-    completedGeneralLevel: {
+    completedGeneralLevels: {
         type: [String],
         required: ["Completed General English Level is required", true]
     },

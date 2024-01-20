@@ -1,33 +1,56 @@
 const StudentRegistrationModel = require('../../models/StudentRegistrationModel/StudentRegistrationModel')
 
+// student registration controller
 const studentRegistrationRecordController = async(req,res)=>{
 
         try {
-           console.log(req.body.currentBritishLevel);
+           console.log(req.body);
 
-          //  const studentDataRegister = new StudentRegistrationModel({
-          //   indexNumber:req.body.indexNumber,
-          //   fullName:req.body.fullName,
-          //   nameWithInitials:req.body.nameWithInitials,
-          //   address:req.body.address,
-          //   mobileNumber:req.body.mobileNumber,
-          //   Birthday:req.body.birthday,
-          //   School:req.body.school,
-          //   currentBritishLevel:req.body.currentBritishLevel,
-          //   completedBritishLevel:req.body.completedBritishLevels,
-          //   currentGeneralLevel:req.body.currentGeneralLevel,
-          //   completedGeneralLevel:req.body.completedGeneralLevels,
-          //  })
+           const studentDataRegister = new StudentRegistrationModel(req.body)
 
-          //  await studentDataRegister.save();
+           await studentDataRegister.save();
 
-          //  console.log(studentDataRegister);
+           console.log(studentDataRegister);
+
+           res.status(200).send({
+                success:true,
+                message:"Student Registration Record Added Successfully",
+                data:studentDataRegister
+           })
                 
         } catch (error) {
-                
+
+            res.status(400).send({
+                success:false,
+                message:"Student Registration Record Added Unsuccessfully",
+                error
+             
+            })    
         }
 
 }
 
 
-module.exports = {studentRegistrationRecordController}
+// registered student detials get controller
+const getStudnetRegistrationDetails = async(req,res)=>{
+
+        try {
+          const AllRegistereddetails = await StudentRegistrationModel.find({})
+          
+          res.status(200).send({
+                success:true,
+                message:"Student Registration Record Fetched Successfully",
+                AllRegistereddetails
+          })
+                
+        } catch (error) {
+          res.status(400).send({
+                success:false,
+                message:"Student Registration Record Fetched Unsuccessfully",
+                error
+            })   
+        }
+}
+
+
+module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails}
