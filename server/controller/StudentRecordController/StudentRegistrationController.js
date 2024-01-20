@@ -3,7 +3,20 @@ const StudentRegistrationModel = require('../../models/StudentRegistrationModel/
 const studentRegistrationRecordController = async(req,res)=>{
 
         try {
-          const {indexNumber,fullName,nameWithinitial,address,mobileNumber,Birthday,School,currentBritishLevel,completedBritishLevel,currentGeneralLevel,completedGeneralLevel} = req.body
+          const {
+            indexNumber,
+            fullName,
+            nameWithinitial,
+            address,
+            mobileNumber,
+            Birthday,
+            School,
+            currentBritishLevel,
+            completedBritishLevel,
+            currentGeneralLevel,
+            completedGeneralLevel} = req.body
+
+            console.log(req.body);
                 
         } catch (error) {
                 

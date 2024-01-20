@@ -462,7 +462,8 @@ const handleRegisterStudentData = async(values)=>{
                   color: "#73d13d",
                   border: "1px solid #73d13d",
                   width: "200px",
-                  padding:"10px"
+                  padding:"10px",
+                  cursor:"pointer",
                 }}
 
                 onClick={handleRegisterStudentData}>
