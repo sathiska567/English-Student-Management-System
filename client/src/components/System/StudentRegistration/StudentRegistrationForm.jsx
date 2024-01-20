@@ -71,6 +71,7 @@ const StudentRegistrationForm = () => {
 
   const handleCompletedGeneralLevelsChange = (value) => {
     setCompletedGeneralLevels(value);
+    
   };
 
   const currentBritishOptions = britishOptions.filter(
@@ -85,6 +86,7 @@ const StudentRegistrationForm = () => {
   const completedGeneralOptions = generalOptions.filter(
     (option) => option.value !== currentGeneralLevel
   );
+
 const handleFinish = (values) => {
   console.log("Success:", values);
 };
@@ -96,12 +98,15 @@ const handleFinishFailed = (errorInfo) => {
 
 
 const handleRegisterStudentData = async(values)=>{
-    console.log(currentBritishLevel);
+    console.log("currentBritishLevel"  + currentBritishLevel);
+    console.log("completedBritishLevels" + completedBritishLevels);
+    console.log("currentGeneralLevel" + currentGeneralLevel);
+    console.log("completedGeneralLevels" + completedGeneralLevels);
 }
 
-useEffect(()=>{
-  handleRegisterStudentData();
-},[])
+// useEffect(()=>{
+//   handleRegisterStudentData();
+// },[])
 
 
   return (
@@ -436,7 +441,7 @@ useEffect(()=>{
                 </Form.Item>
               </div>
               <div className={StuRegFormStyles.buttonGroup}>
-                <Button
+                {/* <Button
                   type="submit"
                   onClick={() => {
                     form.validateFields();
@@ -448,7 +453,22 @@ useEffect(()=>{
                   }}
                 >
                   Create Student Record
-                </Button>
+                </Button> */}
+
+                <button 
+
+                type = "submit"
+                style={{
+                  color: "#73d13d",
+                  border: "1px solid #73d13d",
+                  width: "200px",
+                  padding:"10px"
+                }}
+
+                onClick={handleRegisterStudentData}>
+                   Create Student Record                  
+                </button>
+
               </div>
             </div>
           </Form>
