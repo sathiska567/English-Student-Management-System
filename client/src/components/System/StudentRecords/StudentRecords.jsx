@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StuRecStyles from "./StudentRecords.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const data = [
   {
@@ -41,11 +42,15 @@ const StudentRecords = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const [registeredStudentDtails,setRegisteredStudentDetails] = useState([])
+
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   const handleReset = (clearFilters, confirm) => {
     clearFilters();
     setSearchText("");
@@ -158,6 +163,24 @@ const StudentRecords = () => {
         text
       ),
   });
+
+
+  const getAllRegisteredStudentData = async()=>{
+        try {
+          const response = await axios.get('http://localhost:8080/api/v1/registration/get-student-details') 
+           console.log(response);
+           setRegisteredStudentDetails(response.data.AllRegistereddetails)
+           message.success(response.data.message)
+        } catch (error) {
+           message.error("Data fetched Unsuccessfull")
+        }
+  }
+
+  useEffect(()=>{
+    getAllRegisteredStudentData()
+  },[])
+
+
   const columns = [
     {
       title: "Student ID",
@@ -165,6 +188,9 @@ const StudentRecords = () => {
       key: "studentId",
       width: "10%",
       ...getColumnSearchProps("studentId"),
+      render:((text,record)=>(
+        <span>{record.indexNumber}</span>
+      ))
     },
     {
       title: "Student Name",
@@ -172,6 +198,9 @@ const StudentRecords = () => {
       key: "name",
       width: "20%",
       ...getColumnSearchProps("name"),
+      render:((text,record)=>(
+        <span>{record.fullName}</span>
+      )),
     },
     {
       title: "Course Title",
@@ -223,7 +252,7 @@ const StudentRecords = () => {
       <SystemSideBar>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={registeredStudentDtails}
           pagination={{ pageSize: 8 }}
         />
       </SystemSideBar>

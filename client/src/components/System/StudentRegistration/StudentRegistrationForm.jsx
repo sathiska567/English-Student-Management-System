@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import StuRegFormStyles from "./StudentRegistrationForm.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { Form, Input, DatePicker, Select, Tag, Button, message } from "antd";
+import axios from 'axios';
 
 const onChange = (e) => {
   console.log(e.target.value);
@@ -87,26 +88,26 @@ const StudentRegistrationForm = () => {
     (option) => option.value !== currentGeneralLevel
   );
 
-const handleFinish = (values) => {
+// Handle backend response and get all input values
+const handleFinish = async(values) => {
   console.log("Success:", values);
+
+  const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
+   
+  try {
+    message.success(response.data.message)
+    window.location.reload();
+
+  } catch (error) {
+      message.error(response.data.message)
+  }
+
 };
 
 const handleFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
   form.validateFields();
 };
-
-
-const handleRegisterStudentData = async(values)=>{
-    console.log("currentBritishLevel"  + currentBritishLevel);
-    console.log("completedBritishLevels" + completedBritishLevels);
-    console.log("currentGeneralLevel" + currentGeneralLevel);
-    console.log("completedGeneralLevels" + completedGeneralLevels);
-}
-
-// useEffect(()=>{
-//   handleRegisterStudentData();
-// },[])
 
 
   return (
@@ -462,10 +463,11 @@ const handleRegisterStudentData = async(values)=>{
                   color: "#73d13d",
                   border: "1px solid #73d13d",
                   width: "200px",
-                  padding:"10px"
+                  padding:"10px",
+                  cursor:"pointer",
                 }}
 
-                onClick={handleRegisterStudentData}>
+                >
                    Create Student Record                  
                 </button>
 
