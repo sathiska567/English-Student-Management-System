@@ -1,54 +1,42 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
+import Highlighter from "react-highlight-words";
 import StuRecStyles from "./StudentRecords.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, message } from "antd";
-import Highlighter from "react-highlight-words";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const data = [
-  {
-    key: "1",
-    studentId: "S001",
-    name: "John Brown",
-    courseTitle: "British English",
-    courseLevels: "Level 1",
-  },
-  {
-    key: "2",
-    studentId: "S002",
-    name: "Joe Black",
-    courseTitle: "British English",
-    courseLevels: "Level 2",
-  },
-  {
-    key: "3",
-    studentId: "S003",
-    name: "Jim Green",
-    courseTitle: "General English",
-    courseLevels: "Level 1",
-  },
-  {
-    key: "4",
-    studentId: "S004",
-    name: "Jim Red",
-    courseTitle: "General English",
-    courseLevels: "Level 3",
-  },
-];
 const StudentRecords = () => {
+  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const [registeredStudentDtails,setRegisteredStudentDetails] = useState([])
-
+  const [registeredStudentDtails, setRegisteredStudentDetails] = useState([]);
+  const getAllRegisteredStudentData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/v1/registration/get-student-details"
+      );
+      console.log(response);
+      setRegisteredStudentDetails(response.data.AllRegistereddetails);
+      message.success(response.data.message);
+    } catch (error) {
+      message.error("Data fetched Unsuccessfull");
+    }
+  };
+  useEffect(() => {
+    getAllRegisteredStudentData().then(() => setLoading(false));
+  }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
+    if (!loading) {
+      confirm();
+      setSearchText(selectedKeys[0]);
+      setSearchedColumn(dataIndex);
+    }
   };
 
   const handleReset = (clearFilters, confirm) => {
@@ -64,7 +52,6 @@ const StudentRecords = () => {
       selectedKeys,
       confirm,
       clearFilters,
-      close,
     }) => (
       <div
         style={{
@@ -141,84 +128,92 @@ const StudentRecords = () => {
         }}
       />
     ),
+
     onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownOpenChange: (visible) => {
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : "",
+    onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
+        setTimeout(() => searchInput.current.select());
       }
     },
-    render: (text) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: "#d3adf7",
-            padding: 0,
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
+    render: (text, record) => (
+      <Highlighter
+        highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+        searchWords={[searchText]}
+        autoEscape
+        textToHighlight={record[dataIndex] ? record[dataIndex].toString() : ""}
+      />
+    ),
   });
-
-
-  const getAllRegisteredStudentData = async()=>{
-        try {
-          const response = await axios.get('http://localhost:8080/api/v1/registration/get-student-details') 
-           console.log(response);
-           setRegisteredStudentDetails(response.data.AllRegistereddetails)
-           message.success(response.data.message)
-        } catch (error) {
-           message.error("Data fetched Unsuccessfull")
-        }
-  }
-
-  useEffect(()=>{
-    getAllRegisteredStudentData()
-  },[])
-
 
   const columns = [
     {
       title: "Student ID",
-      dataIndex: "studentId",
-      key: "studentId",
+      dataIndex: "indexNumber",
+      key: "indexNumber",
       width: "10%",
-      ...getColumnSearchProps("studentId"),
-      render:((text,record)=>(
-        <span>{record.indexNumber}</span>
-      ))
+      ...getColumnSearchProps("indexNumber"),
+      render: (text, record) => {
+        const renderFunction = getColumnSearchProps("indexNumber").render;
+        return (
+          <span>
+            {renderFunction ? renderFunction(text, record) : record.indexNumber}
+          </span>
+        );
+      },
     },
     {
       title: "Student Name",
-      dataIndex: "name",
-      key: "name",
-      width: "20%",
-      ...getColumnSearchProps("name"),
-      render:((text,record)=>(
-        <span>{record.fullName}</span>
-      )),
+      dataIndex: "fullName",
+      key: "fullName",
+      width: "14%",
+      ...getColumnSearchProps("fullName"),
+      render: (text, record) => {
+        const renderFunction = getColumnSearchProps("fullName").render;
+        return (
+          <span>
+            {renderFunction ? renderFunction(text, record) : record.fullName}
+          </span>
+        );
+      },
     },
     {
-      title: "Course Title",
-      dataIndex: "courseTitle",
-      key: "courseTitle",
-      width: "20%",
+      title: "Current Course",
+      dataIndex: "currentCourseTitle",
+      key: "currentCourseTitle",
+      width: "14%",
       ...getColumnSearchProps("courseTitle"),
     },
     {
-      title: "Course Levels",
-      dataIndex: "courseLevels",
-      key: "courseLevels",
-      width: "20%",
-      ...getColumnSearchProps("courseLevels"),
+      title: "Current Level",
+      dataIndex: "currentCourseLevel",
+      key: "currentCourseLevel",
+      width: "14%",
+      ...getColumnSearchProps("currentCourseLevel"),
+    },
+    {
+      title: "Completed Course",
+      dataIndex: "completedCourseTitle",
+      key: "completedCourseTitle",
+      width: "14%",
+      ...getColumnSearchProps("completedCourseTitle"),
+    },
+    {
+      title: "Completed Levels",
+      dataIndex: "completedCourseLevels",
+      key: "completedCourseLevels",
+      width: "14%",
+      ...getColumnSearchProps("completedCourseLevels"),
     },
     {
       title: "Actions",
       key: "actions",
+      width: "10%",
       render: (text, record) => (
         <Space size="middle">
           <Button
@@ -228,11 +223,9 @@ const StudentRecords = () => {
             }}
             href="/record"
             type="ghost"
-            onClick={() => {
-              
-            }}
+            onClick={() => {}}
           >
-            View Record
+            View
           </Button>
           <Button
             danger
@@ -240,7 +233,7 @@ const StudentRecords = () => {
               /* Delete action */
             }}
           >
-            Delete Record
+            Delete
           </Button>
         </Space>
       ),
