@@ -53,4 +53,37 @@ const getStudnetRegistrationDetails = async(req,res)=>{
 }
 
 
-module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails}
+// get only one user registration details
+const getOneUserRegistrationDetails = async(req,res)=>{
+  try {
+    const {id} = req.body
+
+    const details = await StudentRegistrationModel.findOne({_id:id})
+
+     if(!details){
+       return res.status(404).send({
+         success:false,
+         message:"Student Registration Record Not Found",
+       })
+     }
+
+     res.status(200).send({
+       success:true,
+       message:"Student Registration Record Fetched Successfully",
+       details
+     })
+    
+    
+  } catch (error) {
+     res.status(400).send({
+       success:false,
+       message:"Student Registration Record Fetched Unsuccessfully",
+       error
+     })
+    
+  }
+  
+}
+
+
+module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails,getOneUserRegistrationDetails}

@@ -1,12 +1,48 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RecordStyles from "./Record.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
-import { Form, Input, Button, DatePicker } from "antd";
+import { Form, Input, Button, DatePicker, message } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 const { TextArea } = Input;
 
 const Record = () => {
+  const location = useLocation();
+  const [fullNameValue, setFullNameValue] = useState("");
+  const [indexNumberValue, setIndexNumberValue] = useState("");
+  const [nameWithInitial,setNameWithInitial] = useState("")
+  const [address,setAddress] = useState("")
+  const [mobileNumber,setMobileNumber] = useState("")
+  const [school,setSchool] = useState("")
+
+
+
+const getOneUserRecords = async()=>{
+    try {
+       const id = location.state.id;
+       const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details",{id:id})
+       console.log(response.data.details);
+
+      setFullNameValue(response.data.details.fullName)
+      setIndexNumberValue(response.data.details.indexNumber)
+      setNameWithInitial(response.data.details.nameWithInitials)
+      setMobileNumber(response.data.details.mobileNumber)
+      setSchool(response.data.details.school)
+      setAddress(response.data.details.address)
+
+       console.log(fullNameValue);
+
+    } catch (error) {
+       message.error("Student Data fetched unsuccessfull.please Try again later.")
+    }
+  }
+
+ useEffect(()=>{   
+  getOneUserRecords()
+ },[])
+
   return (
     <div>
       <SystemSideBar>
@@ -58,7 +94,7 @@ const Record = () => {
                     flex: "2",
                   }}
                 >
-                  <Input readOnly />
+                  <Input placeholder={indexNumberValue} />
                 </Form.Item>
               </div>
               <div
@@ -70,12 +106,15 @@ const Record = () => {
               >
                 <label className={RecordStyles.RegFormLabel}>Full Name:</label>
                 <Form.Item
+                  
                   name="fullName"
                   style={{
                     flex: "2",
                   }}
+                  
                 >
-                  <Input readOnly />
+                  <Input placeholder={fullNameValue}/>
+
                 </Form.Item>
               </div>
               <div
@@ -94,7 +133,7 @@ const Record = () => {
                     flex: "2",
                   }}
                 >
-                  <Input readOnly />
+                  <Input placeholder={nameWithInitial} />
                 </Form.Item>
               </div>
               <div
@@ -111,7 +150,7 @@ const Record = () => {
                     flex: "2",
                   }}
                 >
-                  <TextArea rows={4} readOnly />
+                  <TextArea rows={4} placeholder={address} />
                 </Form.Item>
               </div>
               <div
@@ -130,7 +169,7 @@ const Record = () => {
                     flex: "2",
                   }}
                 >
-                  <Input readOnly />
+                  <Input placeholder={mobileNumber} />
                 </Form.Item>
               </div>
               <div
@@ -164,7 +203,7 @@ const Record = () => {
                     flex: "2",
                   }}
                 >
-                  <Input readOnly />
+                  <Input placeholder={school} />
                 </Form.Item>
               </div>
               <div className={RecordStyles.buttonGroup}>

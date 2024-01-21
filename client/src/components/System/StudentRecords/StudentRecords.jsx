@@ -5,7 +5,7 @@ import StuRecStyles from "./StudentRecords.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, message } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const StudentRecords = () => {
@@ -14,7 +14,9 @@ const StudentRecords = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [registeredStudentDtails, setRegisteredStudentDetails] = useState([]);
-  const getAllRegisteredStudentData = async () => {
+  const navigate = useNavigate();
+
+const getAllRegisteredStudentData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -27,6 +29,20 @@ const StudentRecords = () => {
       message.error("Data fetched Unsuccessfull");
     }
   };
+
+const handleView = async(id)=>{
+    try {
+
+      console.log(id);
+      message.success("Record Page Navigate Successfull")
+      navigate("/record",{state:{id:id}})
+      
+    } catch (error) {
+       message.error("Record Page Navigate Unsuccessfull")
+    }
+}
+
+
   useEffect(() => {
     getAllRegisteredStudentData().then(() => setLoading(false));
   }, []);
@@ -221,9 +237,9 @@ const StudentRecords = () => {
               borderColor: "#73d13d",
               color: "#73d13d",
             }}
-            href="/record"
+            // href="/record"
             type="ghost"
-            onClick={() => {}}
+            onClick={() => handleView(record._id)}
           >
             View
           </Button>
