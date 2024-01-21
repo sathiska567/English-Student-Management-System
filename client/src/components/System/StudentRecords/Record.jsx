@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import RecordStyles from "./Record.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { Form, Input, Button, DatePicker, message } from "antd";
@@ -12,37 +12,60 @@ const Record = () => {
   const location = useLocation();
   const [fullNameValue, setFullNameValue] = useState("");
   const [indexNumberValue, setIndexNumberValue] = useState("");
-  const [nameWithInitial,setNameWithInitial] = useState("")
-  const [address,setAddress] = useState("")
-  const [mobileNumber,setMobileNumber] = useState("")
-  const [school,setSchool] = useState("")
+  const [nameWithInitial, setNameWithInitial] = useState("");
+  const [address, setAddress] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [school, setSchool] = useState("");
+  const [birthday, setBirthday] = useState("");
 
+  const [formValues, setFormValues] = useState({
+    fullName: "",
+    indexNumber: "",
+    nameWithInitials: "",
+    address: "",
+    mobileNumber: "",
+    school: "",
+    birthday: "",
+  });
+const [loading, setLoading] = useState(true);
 
+const getOneUserRecords = async () => {
+  try {
+    const id = location.state.id;
 
-const getOneUserRecords = async()=>{
-    try {
-       const id = location.state.id;
-       const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details",{id:id})
-       console.log(response.data.details);
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/registration/get-only-one-user-details",
+      { id: id }
+    );
+    console.log(response.data.details);
 
-      setFullNameValue(response.data.details.fullName)
-      setIndexNumberValue(response.data.details.indexNumber)
-      setNameWithInitial(response.data.details.nameWithInitials)
-      setMobileNumber(response.data.details.mobileNumber)
-      setSchool(response.data.details.school)
-      setAddress(response.data.details.address)
+    const date = new Date(response.data.details.birthday);
+    const formattedDate = date.toISOString().split("T")[0];
 
-       console.log(fullNameValue);
+    setFormValues({
+      fullName: response.data.details.fullName,
+      indexNumber: response.data.details.indexNumber,
+      nameWithInitials: response.data.details.nameWithInitials,
+      mobileNumber: response.data.details.mobileNumber,
+      school: response.data.details.school,
+      address: response.data.details.address,
+      birthday: formattedDate, // Use formattedDate here
+    });
 
-    } catch (error) {
-       message.error("Student Data fetched unsuccessfull.please Try again later.")
-    }
+    setLoading(false); // Add this line
+  } catch (error) {
+    message.error("Student Data fetched unsuccessfull.please Try again later.");
+    setLoading(false); // Add this line
   }
+};
 
- useEffect(()=>{   
-  getOneUserRecords()
- },[])
+useEffect(() => {
+  getOneUserRecords();
+}, []);
 
+if (loading) {
+  return <div>Loading...</div>;
+}
   return (
     <div>
       <SystemSideBar>
@@ -54,28 +77,32 @@ const getOneUserRecords = async()=>{
               backgroundColor: "white",
               boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
             }}
+            initialValues={formValues}
           >
             <div className={RecordStyles.formHeader}>
-              <p style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                flex : "30",
-
-              }}>Place Student Name With Initials</p> 
-                <a 
-                    href="/records"
-                    style={{
-                        display: "flex",
-                        flex : "2",
-                    }}
-                >
-                    <CloseSquareOutlined
-                        style={{
-                        color: "#ff7875",
-                        fontSize: "20px",
-                        }}
-                    />
-                </a>
+              <p
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  flex: "30",
+                }}
+              >
+                Place Student Name With Initials
+              </p>
+              <a
+                href="/records"
+                style={{
+                  display: "flex",
+                  flex: "2",
+                }}
+              >
+                <CloseSquareOutlined
+                  style={{
+                    color: "#ff7875",
+                    fontSize: "20px",
+                  }}
+                />
+              </a>
             </div>
             <div className={RecordStyles.formDetails}>
               <div
@@ -89,15 +116,8 @@ const getOneUserRecords = async()=>{
                   Index Number:
                 </label>
 
-                <Form.Item
-                  name="indexNumber"
-                  style={{
-                    flex: "2",
-                  }}
-                  
-                >
-                  <Input  placeholder={indexNumberValue} />
-
+                <Form.Item name="indexNumber" style={{ flex: "2" }}>
+                  <Input />
                 </Form.Item>
               </div>
               <div
@@ -108,16 +128,8 @@ const getOneUserRecords = async()=>{
                 }}
               >
                 <label className={RecordStyles.RegFormLabel}>Full Name:</label>
-                <Form.Item
-                  
-                  name="fullName"
-                  style={{
-                    flex: "2",
-                  }}
-                  
-                >
-                  <Input placeholder={fullNameValue}/>
-
+                <Form.Item name="fullName" style={{ flex: "2" }}>
+                  <Input value={fullNameValue} readOnly />
                 </Form.Item>
               </div>
               <div
@@ -130,13 +142,8 @@ const getOneUserRecords = async()=>{
                 <label className={RecordStyles.RegFormLabel}>
                   Name with Initials:
                 </label>
-                <Form.Item
-                  name="nameWithInitials"
-                  style={{
-                    flex: "2",
-                  }}
-                >
-                  <Input placeholder={nameWithInitial} />
+                <Form.Item name="nameWithInitials" style={{ flex: "2" }}>
+                  <Input value={nameWithInitial} readOnly />
                 </Form.Item>
               </div>
               <div
@@ -147,13 +154,9 @@ const getOneUserRecords = async()=>{
                 }}
               >
                 <label className={RecordStyles.RegFormLabel}>Address:</label>
-                <Form.Item
-                  name="address"
-                  style={{
-                    flex: "2",
-                  }}
-                >
-                  <TextArea rows={4} placeholder={address} />
+
+                <Form.Item name="address" style={{ flex: "2" }}>
+                  <TextArea rows={4} value={address} readOnly />
                 </Form.Item>
               </div>
               <div
@@ -166,13 +169,9 @@ const getOneUserRecords = async()=>{
                 <label className={RecordStyles.RegFormLabel}>
                   Mobile Number:
                 </label>
-                <Form.Item
-                  name="mobileNumber"
-                  style={{
-                    flex: "2",
-                  }}
-                >
-                  <Input placeholder={mobileNumber} />
+
+                <Form.Item name="mobileNumber" style={{ flex: "2" }}>
+                  <Input value={mobileNumber} readOnly />
                 </Form.Item>
               </div>
               <div
@@ -183,13 +182,8 @@ const getOneUserRecords = async()=>{
                 }}
               >
                 <label className={RecordStyles.RegFormLabel}>Birthday:</label>
-                <Form.Item
-                  name="birthDay"
-                  style={{
-                    flex: "2",
-                  }}
-                >
-                  <DatePicker />
+                <Form.Item name="birthday" style={{ flex: "2" }}>
+                  <Input value={birthday} readOnly />
                 </Form.Item>
               </div>
               <div
@@ -206,7 +200,7 @@ const getOneUserRecords = async()=>{
                     flex: "2",
                   }}
                 >
-                  <Input placeholder={school} />
+                  <Input readOnly/>
                 </Form.Item>
               </div>
               <div className={RecordStyles.buttonGroup}>
