@@ -4,7 +4,7 @@ import RecordStyles from "./Record.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { Form, Input, Button, DatePicker, message } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 const { TextArea } = Input;
 
@@ -18,6 +18,17 @@ const Record = () => {
   const [school, setSchool] = useState("");
   const [birthday, setBirthday] = useState("");
 
+  const [newFullNameValue, setNewFullNameValue] = useState("");
+  const [newIndexNumberValue, setNewIndexNumberValue] = useState("");
+  const [newNameWithInitial, setNewNameWithInitial] = useState("");
+  const [newAddress, setNewAddress] = useState("");
+  const [newMobileNumber, setNewMobileNumber] = useState("");
+  const [newSchool, setNewSchool] = useState("");
+  const [newBirthday, setNewBirthday] = useState("");
+
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+
   const [formValues, setFormValues] = useState({
     fullName: "",
     indexNumber: "",
@@ -27,6 +38,20 @@ const Record = () => {
     school: "",
     birthday: "",
   });
+  
+  // const [newFormValues, setNewFormValues] = useState({
+  //   fullName: newFullNameValue,
+  //   indexNumber: newIndexNumberValue,
+  //   nameWithInitials: newNameWithInitial,
+  //   address: newAddress,
+  //   mobileNumber: newMobileNumber,
+  //   school: newSchool,
+  //   birthday: newBirthday,
+  // });
+ 
+
+
+
 const [loading, setLoading] = useState(true);
 
 const getOneUserRecords = async () => {
@@ -59,6 +84,38 @@ const getOneUserRecords = async () => {
   }
 };
 
+
+
+const handleDelete = async()=>{
+  try {
+    const id = location.state.id;
+    const response = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record",{id:id})
+    message.success("Student Deleted Successfully.");
+    navigate("/records")
+    
+  } catch (error) {
+     message.error("Student Deleted Unsuccessfull.please Try again later.");
+  }
+}
+
+
+const handleUpdate = async(values)=>{
+   try {
+// update-student-record
+    const id = location.state.id;
+    console.log(values);
+
+   const response = await axios.post("http://localhost:8080/api/v1/registration/update-student-record",{id:id,values})
+   navigate("/records")
+   message.success("Student Updated Successfully.");
+   } 
+
+   catch (error) {
+    message.error("Student Updated Unsuccessfull.please Try again later.");
+   }
+}
+
+
 useEffect(() => {
   getOneUserRecords();
 }, []);
@@ -72,11 +129,13 @@ if (loading) {
         <div className={RecordStyles.formContainer}>
           <Form
             layout="verticle"
+            form={form}
             className="m-3"
             style={{
               backgroundColor: "white",
               boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
             }}
+            onFinish={handleUpdate}
             initialValues={formValues}
           >
             <div className={RecordStyles.formHeader}>
@@ -117,7 +176,7 @@ if (loading) {
                 </label>
 
                 <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                  <Input />
+                  <Input onChange={(e)=>setNewIndexNumberValue(e.target.value)} />
                 </Form.Item>
               </div>
               <div
@@ -129,7 +188,7 @@ if (loading) {
               >
                 <label className={RecordStyles.RegFormLabel}>Full Name:</label>
                 <Form.Item name="fullName" style={{ flex: "2" }}>
-                  <Input value={fullNameValue} readOnly />
+                  <Input value={fullNameValue} onChange={(e)=>setNewFullNameValue(e.target.value || fullNameValue )}/>
                 </Form.Item>
               </div>
               <div
@@ -143,7 +202,7 @@ if (loading) {
                   Name with Initials:
                 </label>
                 <Form.Item name="nameWithInitials" style={{ flex: "2" }}>
-                  <Input value={nameWithInitial} readOnly />
+                  <Input value={nameWithInitial} onChange={(e)=>setNewNameWithInitial(e.target.value || nameWithInitial )} />
                 </Form.Item>
               </div>
               <div
@@ -156,7 +215,7 @@ if (loading) {
                 <label className={RecordStyles.RegFormLabel}>Address:</label>
 
                 <Form.Item name="address" style={{ flex: "2" }}>
-                  <TextArea rows={4} value={address} readOnly />
+                  <TextArea rows={4} value={address} onChange={(e)=>setNewAddress(e.target.value || address)} />
                 </Form.Item>
               </div>
               <div
@@ -171,7 +230,7 @@ if (loading) {
                 </label>
 
                 <Form.Item name="mobileNumber" style={{ flex: "2" }}>
-                  <Input value={mobileNumber} readOnly />
+                  <Input value={mobileNumber} onChange={(e)=>setNewMobileNumber(e.target.value || mobileNumber)} />
                 </Form.Item>
               </div>
               <div
@@ -183,7 +242,7 @@ if (loading) {
               >
                 <label className={RecordStyles.RegFormLabel}>Birthday:</label>
                 <Form.Item name="birthday" style={{ flex: "2" }}>
-                  <Input value={birthday} readOnly />
+                  <Input value={birthday} onChange={(e)=>setNewBirthday(e.target.value || birthday)}/>
                 </Form.Item>
               </div>
               <div
@@ -200,13 +259,13 @@ if (loading) {
                     flex: "2",
                   }}
                 >
-                  <Input readOnly/>
+                  <Input onChange={(e)=>setNewSchool(e.target.value || school)}/>
                 </Form.Item>
               </div>
               <div className={RecordStyles.buttonGroup}>
-                <Button
+                {/* <Button
                   type="submit"
-                  onClick={() => {}}
+                  // onClick={() => handleUpdate()}
                   style={{
                     color: "#73d13d",
                     border: "1px solid #73d13d",
@@ -214,11 +273,27 @@ if (loading) {
                   }}
                 >
                   Update Record
-                </Button>
+                </Button> */}
+
+                <button
+                style={{
+                  color: "#73d13d",
+                  border: "1px solid #73d13d",
+                  width: "150px",
+                  cursor:"pointer",
+                  borderRadius:"5px"
+                }}
+                
+                >
+                
+                Update Records
+                
+                </button>
+
                 <Button
                   type="submit"
                   danger
-                  onClick={() => {}}
+                  onClick={() => handleDelete()}
                   style={{
                     color: "#ff7875",
                     border: "1px solid #ff7875",

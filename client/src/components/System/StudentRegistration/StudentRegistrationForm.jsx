@@ -7,6 +7,7 @@ import axios from 'axios';
 const onChange = (e) => {
   console.log(e.target.value);
 };
+
 const levels = [
   "Level 1",
   "Level 2",
@@ -90,7 +91,8 @@ const StudentRegistrationForm = () => {
 
 // Handle backend response and get all input values
 const handleFinish = async(values) => {
-  console.log("Success:", values);   
+  console.log("Success:", values); 
+    
   try {
     const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
     console.log(response.data);

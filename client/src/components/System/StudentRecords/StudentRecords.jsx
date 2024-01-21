@@ -16,7 +16,7 @@ const StudentRecords = () => {
   const [registeredStudentDtails, setRegisteredStudentDetails] = useState([]);
   const navigate = useNavigate();
 
-const getAllRegisteredStudentData = async () => {
+  const getAllRegisteredStudentData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -31,31 +31,31 @@ const getAllRegisteredStudentData = async () => {
   };
 
 
-const handleView = async(id)=>{
+  const handleView = async (id) => {
     try {
 
       console.log(id);
       message.success("Record Page Navigate Successfull")
-      navigate("/record",{state:{id:id}})
-      
+      navigate("/record", { state: { id: id } })
+
     } catch (error) {
-       message.error("Record Page Navigate Unsuccessfull")
+      message.error("Record Page Navigate Unsuccessfull")
     }
-}
+  }
 
 
-const handleDeleteStudentRecords = async(id)=>{
-   console.log(id);
+  const handleDeleteStudentRecords = async (id) => {
+    console.log(id);
 
-   try {
-    const respone = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record",{id:id})
-    message.success("Record Delete Successfull");
-    window.location.reload();
-    
-   } catch (error) {
-     message.error("Record Delete Unsuccessfull");
-   }
-}
+    try {
+      const respone = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record", { id: id })
+      message.success("Record Delete Successfull");
+      window.location.reload();
+
+    } catch (error) {
+      message.error("Record Delete Unsuccessfull");
+    }
+  }
 
   useEffect(() => {
     getAllRegisteredStudentData().then(() => setLoading(false));
@@ -162,9 +162,9 @@ const handleDeleteStudentRecords = async(id)=>{
     onFilter: (value, record) =>
       record[dataIndex]
         ? record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
         : "",
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
@@ -206,40 +206,58 @@ const handleDeleteStudentRecords = async(id)=>{
       render: (text, record) => {
         const renderFunction = getColumnSearchProps("fullName").render;
         return (
-          <span>
+          <div>
+            <span>
             {renderFunction ? renderFunction(text, record) : record.fullName}
           </span>
+          </div>
+          
         );
       },
     },
     {
-      title: "Current Course",
+      title: "Current Course and Levels",
       dataIndex: "currentCourseTitle",
       key: "currentCourseTitle",
       width: "14%",
       ...getColumnSearchProps("courseTitle"),
+      render: ((text, record) => (
+        <div>
+         
+          <span>Current British Level :<br/> <b>{record.currentBritishLevel}</b></span><br /><br />
+          <span>Current General Level :<br/> <b>{record.currentGeneralLevel}</b></span>
+
+        </div>
+      ))
     },
+
+    // {
+    //   title: "Current Level",
+    //   dataIndex: "currentCourseLevel",
+    //   key: "currentCourseLevel",
+    //   width: "14%",
+    //   ...getColumnSearchProps("currentCourseLevel"),
+    // },
     {
-      title: "Current Level",
-      dataIndex: "currentCourseLevel",
-      key: "currentCourseLevel",
-      width: "14%",
-      ...getColumnSearchProps("currentCourseLevel"),
-    },
-    {
-      title: "Completed Course",
+      title: "Completed Course and Levels",
       dataIndex: "completedCourseTitle",
       key: "completedCourseTitle",
       width: "14%",
       ...getColumnSearchProps("completedCourseTitle"),
+      render:((text,record)=>(
+        <div>
+          <span>Completed British Level :<br/> <b>{record.completedBritishLevels}</b></span><br /><br />
+          <span>Completed General Level :<br/> <b>{record.completedGeneralLevels}</b></span>
+        </div>
+      ))
     },
-    {
-      title: "Completed Levels",
-      dataIndex: "completedCourseLevels",
-      key: "completedCourseLevels",
-      width: "14%",
-      ...getColumnSearchProps("completedCourseLevels"),
-    },
+    // {
+    //   title: "Completed Levels",
+    //   dataIndex: "completedCourseLevels",
+    //   key: "completedCourseLevels",
+    //   width: "14%",
+    //   ...getColumnSearchProps("completedCourseLevels"),
+    // },
     {
       title: "Actions",
       key: "actions",

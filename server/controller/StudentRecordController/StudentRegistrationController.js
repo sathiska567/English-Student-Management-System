@@ -107,4 +107,43 @@ const deleteStudentRecord = async(req,res)=>{
 }
 
 
-module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails,getOneUserRegistrationDetails,deleteStudentRecord}
+// Update Student records
+const updateStudentRecord = async(req,res)=>{
+   try {
+    console.log(req.body);
+    const {id} = req.body
+    const response = await StudentRegistrationModel.findByIdAndUpdate({_id:id},
+    {
+      indexNumber:req.body.values.indexNumber,
+      fullName:req.body.values.fullName,
+      nameWithInitials:req.body.values.nameWithInitials,
+      address:req.body.values.address,
+      mobileNumber:req.body.values.mobileNumber,
+      birthday:req.body.values.birthday,
+      school:req.body.values.school,    
+    },{new:true})
+
+    if(!response){
+      return res.status(404).send({
+        success:false,
+        message:"Student Registration Record Not Found",
+      })
+    }
+
+    res.status(200).send({
+      success:true,
+      message:"Student Registration Record Updated Successfully",
+      response
+    })
+    
+   } catch (error) {
+    res.status(400).send({
+      success:true,
+      message:"Student Registration Record Updated Unsuccessfully",
+      error
+    })
+   }
+}
+
+
+module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails,getOneUserRegistrationDetails,deleteStudentRecord,updateStudentRecord}
