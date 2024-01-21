@@ -95,11 +95,11 @@ const handleFinish = async(values) => {
   const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
    
   try {
-    message.success(response.data.message)
+    message.success("Student Registration Successfull")
     window.location.reload();
 
   } catch (error) {
-      message.error(response.data.message)
+      message.error("Student Registration Unsuccessfull")
   }
 
 };
