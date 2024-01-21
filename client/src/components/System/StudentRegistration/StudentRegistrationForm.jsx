@@ -90,11 +90,10 @@ const StudentRegistrationForm = () => {
 
 // Handle backend response and get all input values
 const handleFinish = async(values) => {
-  console.log("Success:", values);
-
-  const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
-   
+  console.log("Success:", values);   
   try {
+    const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
+    console.log(response.data);
     message.success("Student Registration Successfull")
     window.location.reload();
 

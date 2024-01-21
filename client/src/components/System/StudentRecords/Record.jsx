@@ -88,13 +88,16 @@ const getOneUserRecords = async()=>{
                 <label className={RecordStyles.RegFormLabel}>
                   Index Number:
                 </label>
+
                 <Form.Item
                   name="indexNumber"
                   style={{
                     flex: "2",
                   }}
+                  
                 >
-                  <Input placeholder={indexNumberValue} />
+                  <Input  placeholder={indexNumberValue} />
+
                 </Form.Item>
               </div>
               <div
