@@ -86,4 +86,25 @@ const getOneUserRegistrationDetails = async(req,res)=>{
 }
 
 
-module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails,getOneUserRegistrationDetails}
+// delete student controller
+const deleteStudentRecord = async(req,res)=>{
+  try {
+    const {id} = req.body
+    const response = await StudentRegistrationModel.findByIdAndDelete({_id:id})
+
+    res.status(200).send({
+      success:true,
+      message:"Student Registration Record Deleted Successfully",
+    })
+    
+  } catch (error) {
+     res.status(400).send({
+      success:false,
+      message:"Student Registration Record Deleted Unsuccessfully"
+     })
+  }
+
+}
+
+
+module.exports = {studentRegistrationRecordController,getStudnetRegistrationDetails,getOneUserRegistrationDetails,deleteStudentRecord}

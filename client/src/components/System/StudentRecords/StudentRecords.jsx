@@ -24,11 +24,12 @@ const getAllRegisteredStudentData = async () => {
       );
       console.log(response);
       setRegisteredStudentDetails(response.data.AllRegistereddetails);
-      message.success(response.data.message);
+      message.success("Data fetched Successfull");
     } catch (error) {
       message.error("Data fetched Unsuccessfull");
     }
   };
+
 
 const handleView = async(id)=>{
     try {
@@ -42,6 +43,19 @@ const handleView = async(id)=>{
     }
 }
 
+
+const handleDeleteStudentRecords = async(id)=>{
+   console.log(id);
+
+   try {
+    const respone = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record",{id:id})
+    message.success("Record Delete Successfull");
+    window.location.reload();
+    
+   } catch (error) {
+     message.error("Record Delete Unsuccessfull");
+   }
+}
 
   useEffect(() => {
     getAllRegisteredStudentData().then(() => setLoading(false));
@@ -245,9 +259,7 @@ const handleView = async(id)=>{
           </Button>
           <Button
             danger
-            onClick={() => {
-              /* Delete action */
-            }}
+            onClick={() => handleDeleteStudentRecords(record._id)}
           >
             Delete
           </Button>
