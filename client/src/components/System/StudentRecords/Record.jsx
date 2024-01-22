@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import RecordStyles from "./Record.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
-import { Form, Input, Button, DatePicker, message } from "antd";
+import { Form, Input, Button, DatePicker, message, Select } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -260,8 +260,10 @@ if (loading) {
                   }}
                 >
                   <Input onChange={(e)=>setNewSchool(e.target.value || school)}/>
-                </Form.Item>
+                </Form.Item>                 
               </div>
+
+              
               <div className={RecordStyles.buttonGroup}>
                 {/* <Button
                   type="submit"

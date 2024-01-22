@@ -24,7 +24,6 @@ const StudentRecords = () => {
       );
       console.log(response);
       setRegisteredStudentDetails(response.data.AllRegistereddetails);
-      message.success("Data fetched Successfull");
     } catch (error) {
       message.error("Data fetched Unsuccessfull");
     }
@@ -224,8 +223,8 @@ const StudentRecords = () => {
       render: ((text, record) => (
         <div>
          
-          <span>Current British Level :<br/> <b>{record.currentBritishLevel}</b></span><br /><br />
-          <span>Current General Level :<br/> <b>{record.currentGeneralLevel}</b></span>
+          <span>Current British Level :<br/> <b>{record.currentBritishLevel.join(" , ")}</b></span><br /><br />
+          <span>Current General Level :<br/> <b>{record.currentGeneralLevel.join(" , ")}</b></span>
 
         </div>
       ))
@@ -246,8 +245,8 @@ const StudentRecords = () => {
       ...getColumnSearchProps("completedCourseTitle"),
       render:((text,record)=>(
         <div>
-          <span>Completed British Level :<br/> <b>{record.completedBritishLevels}</b></span><br /><br />
-          <span>Completed General Level :<br/> <b>{record.completedGeneralLevels}</b></span>
+          <span>Completed British Level :<br/> <b>{record.completedBritishLevels.join(" , ")}</b></span><br /><br />
+          <span>Completed General Level :<br/> <b>{record.completedGeneralLevels.join(" , ")}</b></span>
         </div>
       ))
     },
