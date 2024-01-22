@@ -3,6 +3,7 @@ import StuRegFormStyles from "./StudentRegistrationForm.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { Form, Input, DatePicker, Select, Tag, Button, message } from "antd";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const onChange = (e) => {
   console.log(e.target.value);
@@ -58,6 +59,7 @@ const StudentRegistrationForm = () => {
   const [completedBritishLevels, setCompletedBritishLevels] = useState([]);
   const [currentGeneralLevel, setCurrentGeneralLevel] = useState(null);
   const [completedGeneralLevels, setCompletedGeneralLevels] = useState([]);
+  const navigate = useNavigate();
 
   const handleCurrentBritishLevelChange = (value) => {
     setCurrentBritishLevel(value[value.length - 1]);
@@ -97,7 +99,7 @@ const handleFinish = async(values) => {
     const response = await axios.post('http://localhost:8080/api/v1/registration/student-registration', values);
     console.log(response.data);
     message.success("Student Registration Successfull")
-    window.location.reload();
+    window.location.reload()
 
   } catch (error) {
       message.error("Student Registration Unsuccessfull")
