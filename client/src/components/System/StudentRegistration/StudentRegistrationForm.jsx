@@ -9,27 +9,40 @@ const onChange = (e) => {
   console.log(e.target.value);
 };
 
-const levels = [
+const britishLevels = [
+  "Starter Level",
+  "Movers Level",
+  "Flyers Level",
+  "CET Level ",
+  "PET Level ",
+  "FET Level ",
+];
+
+const generalLevels = [
   "Level 1",
   "Level 2",
   "Level 3",
   "Level 4",
   "Level 5",
   "Level 6",
+  "Level 7",
+  "Level 8",
+  "Level 9",
+  "Level 10"
 ];
+
 const britishColors = ["red", "orange", "yellow", "green", "blue", "purple"];
 const generalColors = ["pink", "cyan", "lime", "violet", "indigo", "maroon"];
 
-const britishOptions = levels.map((level, index) => ({
+const britishOptions = britishLevels.map((level, index) => ({
   value: level,
   color: britishColors[index],
 }));
 
-const generalOptions = levels.map((level, index) => ({
+const generalOptions = generalLevels.map((level, index) => ({
   value: level,
   color: generalColors[index],
 }));
-
 const tagRender = (props, options) => {
   const { label, value, closable, onClose } = props;
   const onPreventMouseDown = (event) => {
@@ -346,10 +359,7 @@ const handleFinishFailed = (errorInfo) => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Current British English Level:
                 </label>
-                <Form.Item
-                  style={{ flex: "2" }}
-                  name="currentBritishLevel"
-                >
+                <Form.Item style={{ flex: "2" }} name="currentBritishLevel">
                   <Select
                     placeholder="Select Only One Current British English Level"
                     mode="multiple"
@@ -372,10 +382,7 @@ const handleFinishFailed = (errorInfo) => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Completed British English Level:
                 </label>
-                <Form.Item
-                  style={{ flex: "2" }}
-                  name="completedBritishLevels"
-                >
+                <Form.Item style={{ flex: "2" }} name="completedBritishLevels">
                   <Select
                     placeholder="Select Completed British English Levels"
                     mode="multiple"
@@ -400,10 +407,7 @@ const handleFinishFailed = (errorInfo) => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Current General English Level:
                 </label>
-                <Form.Item
-                  style={{ flex: "2" }}
-                  name="currentGeneralLevel"
-                >
+                <Form.Item style={{ flex: "2" }} name="currentGeneralLevel">
                   <Select
                     placeholder="Select Only One Current General English Level"
                     mode="multiple"
@@ -426,10 +430,7 @@ const handleFinishFailed = (errorInfo) => {
                 <label className={StuRegFormStyles.RegFormLabel}>
                   Completed General English Level:
                 </label>
-                <Form.Item
-                  style={{ flex: "2" }}
-                  name="completedGeneralLevels"
-                >
+                <Form.Item style={{ flex: "2" }} name="completedGeneralLevels">
                   <Select
                     placeholder="Select Completed General English Levels"
                     mode="multiple"
@@ -459,21 +460,18 @@ const handleFinishFailed = (errorInfo) => {
                   Create Student Record
                 </Button> */}
 
-                <button 
-
-                type = "submit"
-                style={{
-                  color: "#73d13d",
-                  border: "1px solid #73d13d",
-                  width: "200px",
-                  padding:"10px",
-                  cursor:"pointer",
-                }}
-
+                <Button
+                  type = "ghost"
+                  htmlType="submit"
+                  style={{
+                    color: "#73d13d",
+                    border: "1px solid #73d13d",
+                    width: "180px",
+                    cursor: "pointer",
+                  }}
                 >
-                   Create Student Record                  
-                </button>
-
+                  Create Student Record
+                </Button>
               </div>
             </div>
           </Form>

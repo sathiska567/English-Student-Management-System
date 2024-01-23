@@ -111,7 +111,7 @@ const handleUpdate = async(values)=>{
    } 
 
    catch (error) {
-    message.error("Student Updated Unsuccessfull.please Try again later.");
+    message.error("Student Updated Unsuccessful.please Try again later.");
    }
 }
 
@@ -176,7 +176,9 @@ if (loading) {
                 </label>
 
                 <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                  <Input onChange={(e)=>setNewIndexNumberValue(e.target.value)} />
+                  <Input
+                    onChange={(e) => setNewIndexNumberValue(e.target.value)}
+                  />
                 </Form.Item>
               </div>
               <div
@@ -188,7 +190,12 @@ if (loading) {
               >
                 <label className={RecordStyles.RegFormLabel}>Full Name:</label>
                 <Form.Item name="fullName" style={{ flex: "2" }}>
-                  <Input value={fullNameValue} onChange={(e)=>setNewFullNameValue(e.target.value || fullNameValue )}/>
+                  <Input
+                    value={fullNameValue}
+                    onChange={(e) =>
+                      setNewFullNameValue(e.target.value || fullNameValue)
+                    }
+                  />
                 </Form.Item>
               </div>
               <div
@@ -202,7 +209,12 @@ if (loading) {
                   Name with Initials:
                 </label>
                 <Form.Item name="nameWithInitials" style={{ flex: "2" }}>
-                  <Input value={nameWithInitial} onChange={(e)=>setNewNameWithInitial(e.target.value || nameWithInitial )} />
+                  <Input
+                    value={nameWithInitial}
+                    onChange={(e) =>
+                      setNewNameWithInitial(e.target.value || nameWithInitial)
+                    }
+                  />
                 </Form.Item>
               </div>
               <div
@@ -215,7 +227,11 @@ if (loading) {
                 <label className={RecordStyles.RegFormLabel}>Address:</label>
 
                 <Form.Item name="address" style={{ flex: "2" }}>
-                  <TextArea rows={4} value={address} onChange={(e)=>setNewAddress(e.target.value || address)} />
+                  <TextArea
+                    rows={4}
+                    value={address}
+                    onChange={(e) => setNewAddress(e.target.value || address)}
+                  />
                 </Form.Item>
               </div>
               <div
@@ -230,7 +246,12 @@ if (loading) {
                 </label>
 
                 <Form.Item name="mobileNumber" style={{ flex: "2" }}>
-                  <Input value={mobileNumber} onChange={(e)=>setNewMobileNumber(e.target.value || mobileNumber)} />
+                  <Input
+                    value={mobileNumber}
+                    onChange={(e) =>
+                      setNewMobileNumber(e.target.value || mobileNumber)
+                    }
+                  />
                 </Form.Item>
               </div>
               <div
@@ -242,7 +263,10 @@ if (loading) {
               >
                 <label className={RecordStyles.RegFormLabel}>Birthday:</label>
                 <Form.Item name="birthday" style={{ flex: "2" }}>
-                  <Input value={birthday} onChange={(e)=>setNewBirthday(e.target.value || birthday)}/>
+                  <Input
+                    value={birthday}
+                    onChange={(e) => setNewBirthday(e.target.value || birthday)}
+                  />
                 </Form.Item>
               </div>
               <div
@@ -259,15 +283,51 @@ if (loading) {
                     flex: "2",
                   }}
                 >
-                  <Input onChange={(e)=>setNewSchool(e.target.value || school)}/>
-                </Form.Item>                 
+                  <Input
+                    onChange={(e) => setNewSchool(e.target.value || school)}
+                  />
+                </Form.Item>
               </div>
-
-              
+              {/* <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <label className={RecordStyles.RegFormLabel}>
+                  Current British English Course:
+                </label>
+                <Form.Item name="address" style={{ flex: "2" }}>
+                  <TextArea
+                    rows={4}
+                    value={address}
+                    onChange={(e) => setNewAddress(e.target.value || address)}
+                  />
+                </Form.Item>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <label className={RecordStyles.RegFormLabel}>
+                  Completed British English Courses:
+                </label>
+                <Form.Item name="address" style={{ flex: "2" }}>
+                  <TextArea
+                    rows={4}
+                    value={address}
+                    onChange={(e) => setNewAddress(e.target.value || address)}
+                  />
+                </Form.Item>
+              </div> */}
               <div className={RecordStyles.buttonGroup}>
                 {/* <Button
                   type="submit"
-                  // onClick={() => handleUpdate()}
+                  onClick={() => handleUpdate(formValues)}
                   style={{
                     color: "#73d13d",
                     border: "1px solid #73d13d",
@@ -276,21 +336,28 @@ if (loading) {
                 >
                   Update Record
                 </Button> */}
-
-                <button
-                style={{
-                  color: "#73d13d",
-                  border: "1px solid #73d13d",
-                  width: "150px",
-                  cursor:"pointer",
-                  borderRadius:"5px"
-                }}
-                
+                <Button
+                  type="ghost"
+                  htmlType="submit"
+                  style={{
+                    color: "#73d13d",
+                    border: "1px solid #73d13d",
+                    width: "150px",
+                  }}
                 >
-                
-                Update Records
-                
-                </button>
+                  Update Record
+                </Button>
+                {/* <button
+                  style={{
+                    color: "#73d13d",
+                    border: "1px solid #73d13d",
+                    width: "150px",
+                    cursor: "pointer",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Update Records
+                </button> */}
 
                 <Button
                   type="submit"

@@ -23,6 +23,12 @@ const StudentRecords = () => {
         "http://localhost:8080/api/v1/registration/get-student-details"
       );
       console.log(response);
+      response.data.AllRegistereddetails.forEach((record) => {
+        record.completedCourseTitleSearch = [
+          ...record.completedBritishLevels,
+          ...record.completedGeneralLevels,
+        ];
+      });
       setRegisteredStudentDetails(response.data.AllRegistereddetails);
     } catch (error) {
       message.error("Data fetched Unsuccessfull");
@@ -142,7 +148,7 @@ const StudentRecords = () => {
             type="link"
             size="small"
             onClick={() => {
-              close();
+              confirm();
             }}
           >
             close
@@ -160,11 +166,24 @@ const StudentRecords = () => {
 
     onFilter: (value, record) =>
       record[dataIndex]
-        ? record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase())
+        ? Array.isArray(record[dataIndex]) // Check if the record[dataIndex] is an array
+          ? value
+              .toLowerCase()
+              .split(",")
+              .every(
+                (
+                  val // Split the search value into an array and check if every value
+                ) =>
+                  record[dataIndex].some((item) =>
+                    item.toLowerCase().includes(val.trim())
+                  ) // is included in any item in the array
+              )
+          : record[dataIndex]
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
         : "",
+
     onFilterDropdownVisibleChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current.select());
@@ -207,27 +226,62 @@ const StudentRecords = () => {
         return (
           <div>
             <span>
-            {renderFunction ? renderFunction(text, record) : record.fullName}
-          </span>
+              {renderFunction ? renderFunction(text, record) : record.fullName}
+            </span>
           </div>
-          
         );
       },
     },
     {
       title: "Current Course and Levels",
-      dataIndex: "currentCourseTitle",
-      key: "currentCourseTitle",
+      dataIndex: "currentCourseTitleSearch",
+      key: "currentCourseTitleSearch",
       width: "14%",
-      ...getColumnSearchProps("courseTitle"),
-      render: ((text, record) => (
-        <div>
-         
-          <span>Current British Level :<br/> <b>{record.currentBritishLevel.join(" , ")}</b></span><br /><br />
-          <span>Current General Level :<br/> <b>{record.currentGeneralLevel.join(" , ")}</b></span>
+      ...getColumnSearchProps("currentCourseTitleSearch"),
+      render: (text, record) => {
+        // Ensure currentBritishLevel and currentGeneralLevel are arrays
+        if (!Array.isArray(record.currentBritishLevel)) {
+          record.currentBritishLevel = [record.currentBritishLevel];
+        }
+        if (!Array.isArray(record.currentGeneralLevel)) {
+          record.currentGeneralLevel = [record.currentGeneralLevel];
+        }
 
-        </div>
-      ))
+        // Combine currentBritishLevel and currentGeneralLevel into a single string
+        record.currentCourseTitleSearch = [
+          ...record.currentBritishLevel,
+          ...record.currentGeneralLevel,
+        ].join(" , ");
+
+        return (
+          <div>
+            <span>
+              Current British Level :<br />{" "}
+              <b>
+                <Highlighter
+                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+                  searchWords={[searchText]}
+                  autoEscape
+                  textToHighlight={record.currentBritishLevel.join(" , ")}
+                />
+              </b>
+            </span>
+            <br />
+            <br />
+            <span>
+              Current General Level :<br />{" "}
+              <b>
+                <Highlighter
+                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+                  searchWords={[searchText]}
+                  autoEscape
+                  textToHighlight={record.currentGeneralLevel.join(" , ")}
+                />
+              </b>
+            </span>
+          </div>
+        );
+      },
     },
 
     // {
@@ -239,16 +293,54 @@ const StudentRecords = () => {
     // },
     {
       title: "Completed Course and Levels",
-      dataIndex: "completedCourseTitle",
-      key: "completedCourseTitle",
+      dataIndex: "completedCourseTitleSearch",
+      key: "conpletedCourseTitleSearch",
       width: "14%",
-      ...getColumnSearchProps("completedCourseTitle"),
-      render:((text,record)=>(
-        <div>
-          <span>Completed British Level :<br/> <b>{record.completedBritishLevels.join(" , ")}</b></span><br /><br />
-          <span>Completed General Level :<br/> <b>{record.completedGeneralLevels.join(" , ")}</b></span>
-        </div>
-      ))
+      ...getColumnSearchProps("currentCourseTitleSearch"),
+      render: (text, record) => {
+        // Ensure completedBritishLevels and completedGeneralLevels are arrays
+        if (!Array.isArray(record.completedBritishLevels)) {
+          record.completedBritishLevels = [record.completedBritishLevels];
+        }
+        if (!Array.isArray(record.completedGeneralLevels)) {
+          record.completedGeneralLevels = [record.completedGeneralLevels];
+        }
+
+        // Combine completedBritishLevels and completedGeneralLevels into a single string
+        record.currentCourseTitleSearch = [
+          ...record.completedBritishLevels,
+          ...record.completedGeneralLevels,
+        ].join(" , ");
+
+        return (
+          <div>
+            <span>
+              Completed British Level :<br />{" "}
+              <b>
+                <Highlighter
+                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+                  searchWords={[searchText]}
+                  autoEscape
+                  textToHighlight={record.completedBritishLevels.join(" , ")}
+                />
+              </b>
+            </span>
+            <br />
+            <br />
+            <span>
+              Completed General Level :<br />{" "}
+              <b>
+                <Highlighter
+                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+                  searchWords={[searchText]}
+                  autoEscape
+                  textToHighlight={record.completedGeneralLevels.join(" , ")}
+                />
+              </b>
+            </span>
+          </div>
+        );
+      },
     },
     // {
     //   title: "Completed Levels",
@@ -274,10 +366,7 @@ const StudentRecords = () => {
           >
             View
           </Button>
-          <Button
-            danger
-            onClick={() => handleDeleteStudentRecords(record._id)}
-          >
+          <Button danger onClick={() => handleDeleteStudentRecords(record._id)}>
             Delete
           </Button>
         </Space>
@@ -291,7 +380,7 @@ const StudentRecords = () => {
         <Table
           columns={columns}
           dataSource={registeredStudentDtails}
-          pagination={{ pageSize: 8 }}
+          pagination={{ pageSize: 3 }}
         />
       </SystemSideBar>
     </div>
