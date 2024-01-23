@@ -126,7 +126,7 @@ const StudentRecords = () => {
             Search
           </Button>
           <Button
-            onClick={() => clearFilters && handleReset(clearFilters, confirm)} // Pass confirm here
+            onClick={() => clearFilters && handleReset(clearFilters, confirm)}
             size="small"
             style={{
               width: 90,

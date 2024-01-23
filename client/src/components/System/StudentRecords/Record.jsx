@@ -17,7 +17,6 @@ const Record = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [school, setSchool] = useState("");
   const [birthday, setBirthday] = useState("");
-
   const [newFullNameValue, setNewFullNameValue] = useState("");
   const [newIndexNumberValue, setNewIndexNumberValue] = useState("");
   const [newNameWithInitial, setNewNameWithInitial] = useState("");
@@ -39,19 +38,6 @@ const Record = () => {
     birthday: "",
   });
   
-  // const [newFormValues, setNewFormValues] = useState({
-  //   fullName: newFullNameValue,
-  //   indexNumber: newIndexNumberValue,
-  //   nameWithInitials: newNameWithInitial,
-  //   address: newAddress,
-  //   mobileNumber: newMobileNumber,
-  //   school: newSchool,
-  //   birthday: newBirthday,
-  // });
- 
-
-
-
 const [loading, setLoading] = useState(true);
 
 const getOneUserRecords = async () => {
@@ -75,6 +61,7 @@ const getOneUserRecords = async () => {
       school: response.data.details.school,
       address: response.data.details.address,
       birthday: formattedDate, // Use formattedDate here
+      
     });
 
     setLoading(false); // Add this line
@@ -146,7 +133,7 @@ if (loading) {
                   flex: "30",
                 }}
               >
-                Place Student Name With Initials
+                {formValues.indexNumber} - {formValues.nameWithInitials}
               </p>
               <a
                 href="/records"
@@ -288,7 +275,7 @@ if (loading) {
                   />
                 </Form.Item>
               </div>
-              {/* <div
+              <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -323,7 +310,7 @@ if (loading) {
                     onChange={(e) => setNewAddress(e.target.value || address)}
                   />
                 </Form.Item>
-              </div> */}
+              </div>
               <div className={RecordStyles.buttonGroup}>
                 {/* <Button
                   type="submit"

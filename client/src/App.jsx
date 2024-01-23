@@ -6,6 +6,8 @@ import StudentRegistration from "./components/System/StudentRegistration/Student
 import StudentRecords from "./components/System/StudentRecords/StudentRecords";
 import PaymentRecords from './components/System/PaymentRecords/PaymentRecords';
 import Record from './components/System/StudentRecords/Record';
+import ViewPaymentRecord from './components/System/PaymentRecords/ViewPaymentRecord';
+import MarkPaymentRecord from './components/System/PaymentRecords/MarkPaymentRecord';
 function App() {
 
 
@@ -23,6 +25,12 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/record" element={<Record />} />
+        </Routes>
+        <Routes>
+          <Route path="/markPayment" element={<MarkPaymentRecord />} />
+        </Routes>
+        <Routes>
+          <Route path="/viewPayment" element={<ViewPaymentRecord />} />
         </Routes>
       </BrowserRouter>
     </>
