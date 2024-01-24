@@ -1,34 +1,51 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import paymentStyles from './PaymentRecords.module.css';
 import SystemSideBar from '../SystemSideBar/SystemSideBar';
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
+import axios from "axios";
 
-const data = [
-  {
-    key: "1",
-    studentID: "S001",
-    studentName: "John Doe",
-    actions: "Edit",
-  },
-  {
-    key: "2",
-    studentID: "S002",
-    studentName: "Jane Smith",
-    actions: "Edit",
-  },
-  // Add more objects for more rows
-];
+// const data = [
+//   {
+//     key: "1",
+//     studentID: "S001",
+//     studentName: "John Doe",
+//     actions: "Edit",
+//   },
+//   {
+//     key: "2",
+//     studentID: "S002",
+//     studentName: "Jane Smith",
+//     actions: "Edit",
+//   },
+//   // Add more objects for more rows
+// ];
 
 const PaymentRecords = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const [userDetails,setUserDetails] = useState([]);
+
+const getAllUsersDetails = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/api/v1/registration/get-student-details");
+    console.log(response.data.AllRegistereddetails);
+    setUserDetails(response.data.AllRegistereddetails);
+    
+  } catch (error) {
+     message.error("Error fetching data");
+  }
+}
+
+useEffect(()=>{
+  getAllUsersDetails();
+},[])
 
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
@@ -41,7 +58,7 @@ const PaymentRecords = () => {
     confirm();
   };
 
-  const getColumnSearchProps = (dataIndex) => ({
+ const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -147,6 +164,8 @@ const PaymentRecords = () => {
         text
       ),
   });
+
+
   const columns = [
     {
       title: "Student ID",
@@ -154,6 +173,9 @@ const PaymentRecords = () => {
       key: "studentID",
       width: "30%",
       ...getColumnSearchProps("studentID"),
+      render:((text,record)=>(
+        <span>{record.indexNumber}</span>
+      ))
     },
     {
       title: "Student Name",
@@ -161,7 +183,18 @@ const PaymentRecords = () => {
       key: "studentName",
       width: "40%",
       ...getColumnSearchProps("studentName"),
+      render:((text,record)=>(
+        <span>{record.fullName}</span>
+      ))
     },
+    // {
+    //   title: "Student Name",
+    //   dataIndex: "studentName",
+    //   key: "studentName",
+    //   width: "40%",
+    //   ...getColumnSearchProps("studentName"),
+
+    // },
     {
       title: "Actions",
       dataIndex: "actions",
@@ -196,7 +229,7 @@ const PaymentRecords = () => {
   ];
   return (
   <SystemSideBar>
-    <Table columns={columns} dataSource={data} />;
+    <Table columns={columns} dataSource={userDetails} />;
   </SystemSideBar>
 
   );
