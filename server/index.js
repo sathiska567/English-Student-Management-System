@@ -5,6 +5,7 @@ const cors = require("cors");
 
 require("./db/db");
 const studentRegistration = require("./routes/StudentRecordsRoute/StudentRegistrationRecord") 
+const paymentRecordRouter = require("./routes/PaymentRecorsRoutes/paymentRecordRoute")
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 
 // CREATE API ROUTES
 app.use("/api/v1/registration", studentRegistration);
+app.use("/api/v1/payment",paymentRecordRouter)
 
 
 const PORT = process.env.PORT || 3000; // Define a default port if PORT is not set in .env
