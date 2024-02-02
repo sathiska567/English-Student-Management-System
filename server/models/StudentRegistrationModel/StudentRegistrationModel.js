@@ -1,63 +1,125 @@
 const mongoose = require('mongoose');
 
-const studentRegistrationDataModel = new mongoose.Schema({
-    indexNumber: {
-        type: String,
-        required: ["Index number is required", true]
-    },
-
+const studentRecordSchema = new mongoose.Schema({
     fullName: {
         type: String,
-        required: ["Full Name is required", true]
+        required: [true, "Your details are required!"]
     },
-
-    nameWithInitials: { // Corrected field name
+    nameWithInitials: {
         type: String,
-        required: ["Name with initial is required", true]
+        required: [true, "Your details are required!"]
+    },
+    email: {
+        type: String,
+        required: [true, "Your details are required!"]
     },
 
     address: {
         type: String,
-        required: ["Address is required", true]
+        required: [true, "Your details are required!"]
     },
 
     mobileNumber: {
-        type: String,
-        required: ["Mobile Number is required", true]
+        type: Number,
+        required: [true, "Your details are required!"]
     },
-
-    birthday: {
+    birthDay: {
         type: Object,
-        required: ["BirthDay is required", true]
+        required: [true, "Your details are required!"]
     },
-
     school: {
         type: String,
-        required: ["School is required", true]
+        required: [true, "Your details are required!"]
+    },
+    examination: {
+        type: Array,
+        required: [true, "Your details are required!"]
     },
 
-    currentBritishLevel: {
-        type: [String],
-        required: ["Current British English Level is required", true]
+    cambrige: {
+     type:String,
+     required: [true, "Your details are required!"]
     },
 
-    completedBritishLevels: {
-        type: [String],
-        required: ["Completed British English Level is required", true]
+    elocution: {
+     type:String,
+     required: [true, "Your details are required!"]
     },
 
-    currentGeneralLevel: {
-        type: [String],
-        required: ["Current General English Level is required", true]
+    general: {
+     type:String,
+     required: [true, "Your details are required!"]
     },
 
-    completedGeneralLevels: {
-        type: [String],
-        required: ["Completed General English Level is required", true]
+    mothersMobileNumber: {
+     type:Number,
+     required: [true, "Your details are required!"]
+    },
+
+    fathersMobileNumber: {
+     type:Number,
+     required: [true, "Your details are required!"]
+    },
+
+    GuardianMobileNumber: {
+     type:Number,
+     required: [true, "Your details are required!"]
+    },
+
+    grade: {
+     type:Number,
+    //  required: [false, "Your details are required!"]
+    },
+
+    fartherName: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    motherName: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    GuardianName: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    fartherOccupation: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    motherOccupation: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    GuardianOccupation: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    fartherEmail: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+
+    motherEmail: {
+     type:String,
+     required: [true, "Your details are required!"]
+    },
+    
+    GuardianEmail: {
+     type:String,
+     required: [true, "Your details are required!"]
     },
 
 });
 
-const StudentRecordsModel = mongoose.model('StudentRecordsNew', studentRegistrationDataModel);
+// Define mongoose model
+const StudentRecord = mongoose.model('StudentRecord', studentRecordSchema);
 
-module.exports = StudentRecordsModel;
+// Export the model
+module.exports = StudentRecord;

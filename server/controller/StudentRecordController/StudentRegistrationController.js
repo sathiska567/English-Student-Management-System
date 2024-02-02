@@ -36,6 +36,8 @@ const getStudnetRegistrationDetails = async(req,res)=>{
 
         try {
           const AllRegistereddetails = await StudentRegistrationModel.find({})
+
+          console.log(AllRegistereddetails);
           
           res.status(200).send({
                 success:true,

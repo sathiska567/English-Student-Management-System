@@ -23,12 +23,14 @@ const StudentRecords = () => {
         "http://localhost:8080/api/v1/registration/get-student-details"
       );
       console.log(response);
+      
       response.data.AllRegistereddetails.forEach((record) => {
         record.completedCourseTitleSearch = [
           ...record.completedBritishLevels,
           ...record.completedGeneralLevels,
         ];
       });
+
       setRegisteredStudentDetails(response.data.AllRegistereddetails);
     } catch (error) {
       message.error("Data fetched Unsuccessfull");
