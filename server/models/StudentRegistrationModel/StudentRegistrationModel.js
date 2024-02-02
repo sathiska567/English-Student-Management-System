@@ -58,6 +58,6 @@ const studentRegistrationDataModel = new mongoose.Schema({
 
 });
 
-const StudentRecordsModel = mongoose.model('StudentRecords', studentRegistrationDataModel);
+const StudentRecordsModel = mongoose.model('StudentRecordsNew', studentRegistrationDataModel);
 
 module.exports = StudentRecordsModel;
