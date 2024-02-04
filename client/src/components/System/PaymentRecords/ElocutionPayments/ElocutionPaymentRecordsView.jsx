@@ -1,14 +1,12 @@
-import React from 'react';
-import viewPaymentRecordStyles from './ViewPaymentRecord.module.css';
-import SystemSideBar from '../SystemSideBar/SystemSideBar';
+import React from "react";
+import viewPaymentRecordStyles from "./ElocutionPaymentRecordsView.module.css";
+import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import { Form, Input, Button } from "antd";
-import { 
-  CloseSquareOutlined,
- } from "@ant-design/icons";
+import { CloseSquareOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-const ViewPaymentRecord = () => {
+const ElocutionPaymentRecordsView = () => {
   return (
     <SystemSideBar>
       <div className={viewPaymentRecordStyles.formContainer}>
@@ -31,7 +29,7 @@ const ViewPaymentRecord = () => {
               Place Student Name With Initials - Payment Record
             </p>
             <a
-              href="/payments"
+              href="/ElocutionPayments"
               style={{
                 display: "flex",
                 flex: "2",
@@ -185,6 +183,6 @@ const ViewPaymentRecord = () => {
       </div>
     </SystemSideBar>
   );
-}
+};
 
-export default ViewPaymentRecord
+export default ElocutionPaymentRecordsView;

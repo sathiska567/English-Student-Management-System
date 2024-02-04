@@ -1,6 +1,6 @@
 import React from "react";
-import markPaymentRecordStyles from "./MarkPaymentRecord.module.css";
-import SystemSideBar from "../SystemSideBar/SystemSideBar";
+import markPaymentRecordStyles from "./CambridgePaymentRecordsMark.module.css";
+import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import {
   Form,
   Input,
@@ -45,7 +45,7 @@ const items = [
   },
 ];
 
-const ViewPaymentRecord = () => {
+const CambridgePaymentRecordsMark = () => {
   const [form] = Form.useForm();
   const handleMenuClick = ({ key }) => {
     let selectedCourse, selectedLevel;
@@ -108,7 +108,7 @@ const ViewPaymentRecord = () => {
               Place Student Name With Initials - Payment Register
             </p>
             <a
-              href="/payments"
+              href="/CambridgePaymentRecords"
               style={{
                 display: "flex",
                 flex: "2",
@@ -246,14 +246,12 @@ const ViewPaymentRecord = () => {
                 style={{
                   flex: "2",
                 }}
-                rules={
-                  [
-                    {
-                      required: true,
-                      message: "Please select a course level",
-                    },
-                  ]
-                }
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select a course level",
+                  },
+                ]}
               >
                 <Input readOnly />
               </Form.Item>
@@ -323,4 +321,4 @@ const ViewPaymentRecord = () => {
   );
 };
 
-export default ViewPaymentRecord;
+export default CambridgePaymentRecordsMark;

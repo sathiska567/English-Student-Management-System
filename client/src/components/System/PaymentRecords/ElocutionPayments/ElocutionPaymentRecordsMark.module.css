@@ -1,0 +1,57 @@
+.formContainer {
+  width: 60vw;
+  height: 50vh;
+  margin: 20px auto;
+}
+
+.formHeader {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-weight: regular;
+  background-color: #3a444d;
+  border: none;
+  color: white;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  line-height: 0.5rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.formDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  background-color: white;
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin: 0 auto;
+  margin-top: 2rem;
+  height: 60vh;
+  overflow-y: auto;
+}
+
+.RegFormLabel {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3a444d;
+  margin-bottom: 1.6rem;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  gap: 5rem;
+}
+
+:global(.ant-input-disabled) {
+  background-color: white !important;
+  cursor: auto !important;
+}
