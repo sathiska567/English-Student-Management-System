@@ -1,125 +1,65 @@
 const mongoose = require('mongoose');
 
-const studentRecordSchema = new mongoose.Schema({
-    fullName: {
-        type: String,
-        required: [true, "Your details are required!"]
-    },
-    nameWithInitials: {
-        type: String,
-        required: [true, "Your details are required!"]
-    },
-    email: {
-        type: String,
-        required: [true, "Your details are required!"]
-    },
+const studentRegistrationDataModel = new mongoose.Schema({
+        indexNumber:{
+            type:String,
+            required:["Index number is required",true]
+        },
 
-    address: {
-        type: String,
-        required: [true, "Your details are required!"]
-    },
+        fullName:{
+            type:String,
+            required:["Full Name is required",true]
+        },
 
-    mobileNumber: {
-        type: Number,
-        required: [true, "Your details are required!"]
-    },
-    birthDay: {
-        type: Object,
-        required: [true, "Your details are required!"]
-    },
-    school: {
-        type: String,
-        required: [true, "Your details are required!"]
-    },
-    examination: {
-        type: Array,
-        required: [true, "Your details are required!"]
-    },
+        nameWithinitial:{
+            type:String,
+            required:["Name with initial is required",true]
+        },
 
-    cambrige: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
+        address:{
+            type:String,
+            required:["Address is required",true]
+        },
 
-    elocution: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
+        mobileNumber:{
+            type:String,
+            required:["Mobile Number is required",true]
+        },
 
-    general: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
+        Birthday:{
+            type:Object,
+            required:["BirthDay is required",true]
+        },
 
-    mothersMobileNumber: {
-     type:Number,
-     required: [true, "Your details are required!"]
-    },
+        School:{
+            type:String,
+            required:["School is required",true]
+        },
 
-    fathersMobileNumber: {
-     type:Number,
-     required: [true, "Your details are required!"]
-    },
+        currentBritishLevel:{
+            type:String,
+            required:["Current British English Level is required",true]
+        },
 
-    GuardianMobileNumber: {
-     type:Number,
-     required: [true, "Your details are required!"]
-    },
+        completedBritishLevel:{
+            type:String,
+            required:["Completed British English Level is required",true]
+        },
 
-    grade: {
-     type:Number,
-    //  required: [false, "Your details are required!"]
-    },
+        currentGeneralLevel:{
+            type:String,
+            required:["Current General English Level is required",true]
+        },
 
-    fartherName: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
 
-    motherName: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
+        completedGeneralLevel:{
+            type:String,
+            required:["Completed General English Level is required",true]
+        },
 
-    GuardianName: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
+})
 
-    fartherOccupation: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
 
-    motherOccupation: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
+const StudentRecordsModel = mongoose.model('StudentRecords', studentRegistrationDataModel);
 
-    GuardianOccupation: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
-
-    fartherEmail: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
-
-    motherEmail: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
-    
-    GuardianEmail: {
-     type:String,
-     required: [true, "Your details are required!"]
-    },
-
-});
-
-// Define mongoose model
-const StudentRecord = mongoose.model('StudentRecord', studentRecordSchema);
-
-// Export the model
-module.exports = StudentRecord;
+module.exports = StudentRecordsModel;
