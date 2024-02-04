@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const studentRegistrationDataModel = new mongoose.Schema({
-        indexNumber:{
+    indexNumber:{
             type:String,
             required:["Index number is required",true]
         },
@@ -11,7 +11,7 @@ const studentRegistrationDataModel = new mongoose.Schema({
             required:["Full Name is required",true]
         },
 
-        nameWithinitial:{
+        nameWithInitials:{
             type:String,
             required:["Name with initial is required",true]
         },
@@ -26,34 +26,34 @@ const studentRegistrationDataModel = new mongoose.Schema({
             required:["Mobile Number is required",true]
         },
 
-        Birthday:{
+        birthday:{
             type:Object,
             required:["BirthDay is required",true]
         },
 
-        School:{
+        school:{
             type:String,
             required:["School is required",true]
         },
 
         currentBritishLevel:{
-            type:String,
+            type:Array,
             required:["Current British English Level is required",true]
         },
 
-        completedBritishLevel:{
-            type:String,
+        completedBritishLevels:{
+            type:Array,
             required:["Completed British English Level is required",true]
         },
 
-        currentGeneralLevel:{
-            type:String,
+        completedGeneralLevels:{
+            type:Array,
             required:["Current General English Level is required",true]
         },
 
 
         completedGeneralLevel:{
-            type:String,
+            type:Array,
             required:["Completed General English Level is required",true]
         },
 
