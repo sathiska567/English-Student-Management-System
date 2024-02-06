@@ -15,15 +15,15 @@ import { Link } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
-const SystemSideBar = ({children}) => {
+const SystemSideBar = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-const location = useLocation();
+  const location = useLocation();
   return (
     <Layout className={SideBarStyles.layout}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsible collapsed={collapsed} width={210}>
         <div className={SideBarStyles.welcome} style={{ color: "white" }}>
           Hi{!collapsed && <span>, Admin</span>}
         </div>
@@ -39,8 +39,14 @@ const location = useLocation();
           <Menu.Item key="/records" icon={<DatabaseOutlined />}>
             <Link to="/records">Student Records</Link>
           </Menu.Item>
-          <Menu.Item key="/payments" icon={<DollarOutlined />}>
-            <Link to="/payments">Payment Records</Link>
+          <Menu.Item key="/CambridgePaymentRecords" icon={<DollarOutlined />}>
+            <Link to="/CambridgePaymentRecords">Cambridge Payments</Link>
+          </Menu.Item>
+          <Menu.Item key="/ElocutionPayments" icon={<DollarOutlined />}>
+            <Link to="/ElocutionPayments">Elocution Payments</Link>
+          </Menu.Item>
+          <Menu.Item key="/GeneralPayments" icon={<DollarOutlined />}>
+            <Link to="/GeneralPayments">General Payments</Link>
           </Menu.Item>
           <Menu.Item
             className="logout-button"
