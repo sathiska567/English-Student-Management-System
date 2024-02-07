@@ -11,8 +11,8 @@ const router = express.Router();
 router.get("/get-student-details",getStudnetRegistrationDetails)
 
 
-// // GET ONE USER DETAILS USING ID || POST
-// router.post("/get-only-one-user-details",getOneUserRegistrationDetails)
+// GET ONE USER DETAILS USING ID || POST
+router.post("/get-only-one-user-details",getOneUserRegistrationDetails)
 
 
 // // DELETE STUDENT RECORD ROUTE || POST

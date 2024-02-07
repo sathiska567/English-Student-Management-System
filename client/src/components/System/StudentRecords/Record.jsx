@@ -28,6 +28,9 @@ const Record = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+
+  console.log(location);
+
   const [formValues, setFormValues] = useState({
     fullName: "",
     indexNumber: "",
@@ -43,26 +46,23 @@ const [loading, setLoading] = useState(true);
 const getOneUserRecords = async () => {
   try {
     const id = location.state.id;
+    console.log(id);
+    const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details",{ id: id });
+    console.log(response);
 
-    const response = await axios.post(
-      "http://localhost:8080/api/v1/registration/get-only-one-user-details",
-      { id: id }
-    );
-    console.log(response.data.details);
+    // const date = new Date(response.data.details.birthday);
+    // const formattedDate = date.toISOString().split("T")[0];
 
-    const date = new Date(response.data.details.birthday);
-    const formattedDate = date.toISOString().split("T")[0];
-
-    setFormValues({
-      fullName: response.data.details.fullName,
-      indexNumber: response.data.details.indexNumber,
-      nameWithInitials: response.data.details.nameWithInitials,
-      mobileNumber: response.data.details.mobileNumber,
-      school: response.data.details.school,
-      address: response.data.details.address,
-      birthday: formattedDate, // Use formattedDate here
+    // setFormValues({
+    //   fullName: response.data.details.fullName,
+    //   indexNumber: response.data.details.indexNumber,
+    //   nameWithInitials: response.data.details.nameWithInitials,
+    //   mobileNumber: response.data.details.mobileNumber,
+    //   school: response.data.details.school,
+    //   address: response.data.details.address,
+    //   birthday: formattedDate, // Use formattedDate here
       
-    });
+    // });
 
     setLoading(false); // Add this line
   } catch (error) {
