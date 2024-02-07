@@ -205,21 +205,21 @@ const StudentRecords = () => {
   });
 
   const columns = [
-    {
-      title: "Student ID",
-      dataIndex: "indexNumber",
-      key: "indexNumber",
-      width: "10%",
-      ...getColumnSearchProps("indexNumber"),
-      render: (text, record) => {
-        const renderFunction = getColumnSearchProps("indexNumber").render;
-        return (
-          <span>
-            {renderFunction ? renderFunction(text, record) : record.indexNumber}
-          </span>
-        );
-      },
-    },
+    // {
+    //   title: "Student ID",
+    //   dataIndex: "indexNumber",
+    //   key: "indexNumber",
+    //   width: "10%",
+    //   ...getColumnSearchProps("indexNumber"),
+    //   render: (text, record) => {
+    //     const renderFunction = getColumnSearchProps("indexNumber").render;
+    //     return (
+    //       <span>
+    //         {renderFunction ? renderFunction(text, record) : record.indexNumber}
+    //       </span>
+    //     );
+    //   },
+    // },
     {
       title: "Student Name",
       dataIndex: "fullName",
@@ -237,13 +237,6 @@ const StudentRecords = () => {
         );
       },
     },
-
-    // {
-    //   title:"Examination",
-    //   detaIndex:"examination",
-    //   key:"examination",
-    //   width:"5%"
-    //  }
 
   
     {
