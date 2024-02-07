@@ -23,6 +23,10 @@ const StudentRecords = () => {
         "http://localhost:8080/api/v1/registration/get-student-details"
       );
       console.log(response);
+
+      
+      setRegisteredStudentDetails(response.data.AllRegistereddetails);
+      console.log(registeredStudentDtails);
       
       response.data.AllRegistereddetails.forEach((record) => {
         record.completedCourseTitleSearch = [
@@ -31,7 +35,6 @@ const StudentRecords = () => {
         ];
       });
 
-      setRegisteredStudentDetails(response.data.AllRegistereddetails);
     } catch (error) {
       message.error("Data fetched Unsuccessfull");
     }
@@ -234,57 +237,58 @@ const StudentRecords = () => {
         );
       },
     },
+
+    // {
+    //   title:"Examination",
+    //   detaIndex:"examination",
+    //   key:"examination",
+    //   width:"5%"
+    //  }
+
+  
     {
-      title: "Current Course and Levels",
-      dataIndex: "currentCourseTitleSearch",
-      key: "currentCourseTitleSearch",
+      title: "Cambrige Examination",
+      dataIndex: "examination",
+      key: "examination",
       width: "14%",
       ...getColumnSearchProps("currentCourseTitleSearch"),
       render: (text, record) => {
         // Ensure currentBritishLevel and currentGeneralLevel are arrays
-        if (!Array.isArray(record.currentBritishLevel)) {
-          record.currentBritishLevel = [record.currentBritishLevel];
+        if (!Array.isArray(record.cambrige || record.general)) {
+          record.cambrige = [record.cambrige];
+          
         }
-        if (!Array.isArray(record.currentGeneralLevel)) {
+        if (!Array.isArray(record.general)) {
           record.currentGeneralLevel = [record.currentGeneralLevel];
         }
 
-        // Combine currentBritishLevel and currentGeneralLevel into a single string
+        // Combine cambrige and currentGeneralLevel into a single string
         record.currentCourseTitleSearch = [
-          ...record.currentBritishLevel,
+          ...record.cambrige,
           ...record.currentGeneralLevel,
         ].join(" , ");
 
         return (
           <div>
             <span>
-              Current British Level :<br />{" "}
+              
               <b>
                 <Highlighter
                   highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
                   searchWords={[searchText]}
                   autoEscape
-                  textToHighlight={record.currentBritishLevel.join(" , ")}
+                  textToHighlight={record.cambrige.join(" , ")}
                 />
               </b>
             </span>
             <br />
             <br />
-            <span>
-              Current General Level :<br />{" "}
-              <b>
-                <Highlighter
-                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-                  searchWords={[searchText]}
-                  autoEscape
-                  textToHighlight={record.currentGeneralLevel.join(" , ")}
-                />
-              </b>
-            </span>
+            
           </div>
         );
       },
     },
+
 
     // {
     //   title: "Current Level",
@@ -293,57 +297,92 @@ const StudentRecords = () => {
     //   width: "14%",
     //   ...getColumnSearchProps("currentCourseLevel"),
     // },
+
     {
-      title: "Completed Course and Levels",
-      dataIndex: "completedCourseTitleSearch",
-      key: "conpletedCourseTitleSearch",
+      title: "General Examination",
+      dataIndex: "geberalExamination",
+      key: "geberalExamination",
       width: "14%",
       ...getColumnSearchProps("currentCourseTitleSearch"),
       render: (text, record) => {
         // Ensure completedBritishLevels and completedGeneralLevels are arrays
-        if (!Array.isArray(record.completedBritishLevels)) {
-          record.completedBritishLevels = [record.completedBritishLevels];
+        if (!Array.isArray(record.general)) {
+          record.general = [record.general];
         }
         if (!Array.isArray(record.completedGeneralLevels)) {
           record.completedGeneralLevels = [record.completedGeneralLevels];
         }
 
-        // Combine completedBritishLevels and completedGeneralLevels into a single string
+        // Combine general and completedGeneralLevels into a single string
         record.currentCourseTitleSearch = [
-          ...record.completedBritishLevels,
+          ...record.general,
           ...record.completedGeneralLevels,
         ].join(" , ");
 
         return (
           <div>
             <span>
-              Completed British Level :<br />{" "}
+              
               <b>
                 <Highlighter
                   highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
                   searchWords={[searchText]}
                   autoEscape
-                  textToHighlight={record.completedBritishLevels.join(" , ")}
+                  textToHighlight={record.general.join(" , ")}
                 />
               </b>
             </span>
             <br />
             <br />
-            <span>
-              Completed General Level :<br />{" "}
-              <b>
-                <Highlighter
-                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-                  searchWords={[searchText]}
-                  autoEscape
-                  textToHighlight={record.completedGeneralLevels.join(" , ")}
-                />
-              </b>
-            </span>
+            
           </div>
         );
       },
     },
+
+
+    {
+      title: "Elocution",
+      dataIndex: "elocution",
+      key: "elocution",
+      width: "14%",
+      ...getColumnSearchProps("currentCourseTitleSearch"),
+      render: (text, record) => {
+        // Ensure completedBritishLevels and completedGeneralLevels are arrays
+        if (!Array.isArray(record.elocution)) {
+          record.elocution = [record.elocution];
+        }
+        if (!Array.isArray(record.completedGeneralLevels)) {
+          record.completedGeneralLevels = [record.completedGeneralLevels];
+        }
+
+        // Combine general and completedGeneralLevels into a single string
+        record.currentCourseTitleSearch = [
+          ...record.elocution,
+          ...record.completedGeneralLevels,
+        ].join(" , ");
+
+        return (
+          <div>
+            <span>
+              
+              <b>
+                <Highlighter
+                  highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+                  searchWords={[searchText]}
+                  autoEscape
+                  textToHighlight={record.elocution.join(" , ")}
+                />
+              </b>
+            </span>
+            <br />
+            <br />
+            
+          </div>
+        );
+      },
+    },
+
     // {
     //   title: "Completed Levels",
     //   dataIndex: "completedCourseLevels",
@@ -374,6 +413,8 @@ const StudentRecords = () => {
         </Space>
       ),
     },
+
+
   ];
 
   return (
