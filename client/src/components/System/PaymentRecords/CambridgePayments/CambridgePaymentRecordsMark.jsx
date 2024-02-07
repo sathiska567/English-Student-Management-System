@@ -5,65 +5,16 @@ import {
   Form,
   Input,
   Button,
-  Dropdown,
-  Space,
   DatePicker,
   Checkbox,
   Col,
   Row,
 } from "antd";
-import { CloseSquareOutlined, DownOutlined } from "@ant-design/icons";
+import { CloseSquareOutlined } from "@ant-design/icons";
 
-const items = [
-  {
-    key: "1-1",
-    label: "British English",
-    children: [
-      { key: "1-1-1", label: "Starter Level" },
-      { key: "1-1-2", label: "Movers Level" },
-      { key: "1-1-3", label: "Flyers Level" },
-      { key: "1-1-4", label: "CET Level" },
-      { key: "1-1-5", label: "PET Level" },
-      { key: "1-1-6", label: "FET Level" },
-    ],
-  },
-  {
-    key: "1-2",
-    label: "General English",
-    children: [
-      { key: "1-2-1", label: "Level 1" },
-      { key: "1-2-2", label: "Level 2" },
-      { key: "1-2-3", label: "Level 3" },
-      { key: "1-2-4", label: "Level 4" },
-      { key: "1-2-5", label: "Level 5" },
-      { key: "1-2-6", label: "Level 6" },
-      { key: "1-2-7", label: "Level 7" },
-      { key: "1-2-8", label: "Level 8" },
-      { key: "1-2-9", label: "Level 9" },
-      { key: "1-2-10", label: "Level 10" },
-    ],
-  },
-];
 
 const CambridgePaymentRecordsMark = () => {
   const [form] = Form.useForm();
-  const handleMenuClick = ({ key }) => {
-    let selectedCourse, selectedLevel;
-    for (let item of items) {
-      const foundCourse = item.children.find((child) => child.key === key);
-      if (foundCourse) {
-        selectedCourse = item;
-        selectedLevel = foundCourse;
-        break;
-      }
-    }
-    if (selectedCourse && selectedLevel) {
-      form.setFieldsValue({
-        courseTitle: selectedCourse.label,
-        courseLevel: selectedLevel.label,
-      });
-    }
-  };
 
   const checkboxValues = [
     "January",
@@ -175,37 +126,7 @@ const CambridgePaymentRecordsMark = () => {
               <Form.Item name="fullName" style={{ flex: "2" }}>
                 <Input readOnly />
               </Form.Item>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <label className={markPaymentRecordStyles.RegFormLabel}></label>
-              <Form.Item
-                name="fullName"
-                style={{
-                  flex: "2",
-                }}
-              >
-                <Dropdown
-                  menu={{
-                    items,
-                    onClick: handleMenuClick,
-                  }}
-                >
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                      Select Course and Level
-                      <DownOutlined />
-                    </Space>
-                  </a>
-                </Dropdown>
-              </Form.Item>
-            </div>
-
+            </div>       
             <div
               style={{
                 display: "flex",
@@ -256,6 +177,8 @@ const CambridgePaymentRecordsMark = () => {
                 <Input readOnly />
               </Form.Item>
             </div>
+
+
             <div
               style={{
                 display: "flex",

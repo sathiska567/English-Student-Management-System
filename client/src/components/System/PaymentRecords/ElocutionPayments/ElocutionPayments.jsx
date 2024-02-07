@@ -224,7 +224,7 @@ const ElocutionPayments = () => {
   ];
   return (
     <SystemSideBar>
-      <Table columns={columns} dataSource={userDetails} />;
+      <Table columns={columns} dataSource={userDetails} />
     </SystemSideBar>
   );
 };

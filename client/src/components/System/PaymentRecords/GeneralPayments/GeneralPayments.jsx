@@ -182,14 +182,7 @@ const GeneralPayments = () => {
       ...getColumnSearchProps("studentName"),
       render: (text, record) => <span>{record.fullName}</span>,
     },
-    // {
-    //   title: "Student Name",
-    //   dataIndex: "studentName",
-    //   key: "studentName",
-    //   width: "40%",
-    //   ...getColumnSearchProps("studentName"),
 
-    // },
     {
       title: "Actions",
       dataIndex: "actions",
@@ -224,7 +217,7 @@ const GeneralPayments = () => {
   ];
   return (
     <SystemSideBar>
-      <Table columns={columns} dataSource={userDetails} />;
+      <Table columns={columns} dataSource={userDetails} />
     </SystemSideBar>
   );
 };

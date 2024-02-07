@@ -23,7 +23,13 @@ const SystemSideBar = ({ children }) => {
   const location = useLocation();
   return (
     <Layout className={SideBarStyles.layout}>
-      <Sider trigger={null} collapsible collapsed={collapsed} width={210}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        width={210}
+      >
         <div className={SideBarStyles.welcome} style={{ color: "white" }}>
           Hi{!collapsed && <span>, Admin</span>}
         </div>
@@ -83,7 +89,7 @@ const SystemSideBar = ({ children }) => {
               marginLeft: "16px",
             }}
           >
-            Student Management System
+            G U Language Centre - Student Management System
           </span>
         </Header>
         <Content
