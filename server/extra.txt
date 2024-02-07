@@ -1,0 +1,70 @@
+const mongoose = require('mongoose');
+
+const studentRegistrationDataModel = new mongoose.Schema({
+    // indexNumber:{
+    //         type:String,
+    //         required:["Index number is required",true]
+    //     },
+
+        fullName:{
+            type:String,
+            required:["Full Name is required",true]
+        },
+
+        nameWithInitials:{
+            type:String,
+            required:["Name with initial is required",true]
+        },
+
+        email:{
+            type:String,
+            required:["Email required",true]
+        },
+
+        address:{
+            type:String,
+            required:["Address is required",true]
+        },
+
+        mobileNumber:{
+            type:String,
+            required:["Mobile Number is required",true]
+        },
+
+        birthday:{
+            type:Object,
+            required:["BirthDay is required",true]
+        },
+
+        school:{
+            type:String,
+            required:["School is required",true]
+        },
+
+        currentBritishLevel:{
+            type:Array,
+            required:["Current British English Level is required",true]
+        },
+
+        completedBritishLevels:{
+            type:Array,
+            required:["Completed British English Level is required",true]
+        },
+
+        completedGeneralLevels:{
+            type:Array,
+            required:["Current General English Level is required",true]
+        },
+
+
+        completedGeneralLevel:{
+            type:Array,
+            required:["Completed General English Level is required",true]
+        },
+
+})
+
+
+const StudentRecordsModel = mongoose.model('StudentRecords', studentRegistrationDataModel);
+
+module.exports = StudentRecordsModel;

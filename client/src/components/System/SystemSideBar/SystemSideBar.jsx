@@ -33,9 +33,9 @@ const SystemSideBar = ({ children }) => {
           defaultSelectedKeys={["1"]}
           selectedKeys={[location.pathname]}
         >
-          <Menu.Item key="/register" icon={<UserOutlined />}>
+          {/* <Menu.Item key="/register" icon={<UserOutlined />}>
             <Link to="/register">Student Registration</Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key="/records" icon={<DatabaseOutlined />}>
             <Link to="/records">Student Records</Link>
           </Menu.Item>
