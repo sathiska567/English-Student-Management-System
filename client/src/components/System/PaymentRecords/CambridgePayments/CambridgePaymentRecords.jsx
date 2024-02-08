@@ -6,6 +6,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // const data = [
 //   {
@@ -28,6 +29,7 @@ const CambridgePaymentRecords = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [userDetails, setUserDetails] = useState([]);
+  const navigate = useNavigate();
 
   const getAllUsersDetails = async () => {
     try {
@@ -40,6 +42,43 @@ const CambridgePaymentRecords = () => {
       message.error("Error fetching data");
     }
   };
+
+
+  const handleDelete = async (id) => {
+    try {
+
+      if (window.confirm("Are you sure you want to delete the data?")) {
+
+        console.log(id);
+        const response = await axios.post("http://localhost:8080/api/v1/delete/delete-route", { id })
+        console.log(response.data);
+
+        if (response.data.success) {
+          message.success("Data deleted successfully");
+          window.location.reload();
+        }
+      } else {
+        message.info("Deletion canceled by user");
+      }
+
+
+    } catch (error) {
+      message.error("Error deleting data");
+    }
+  }
+
+
+  const handleMarkPaymentRecord = async(id)=>{
+     console.log(id);
+     try {
+      navigate("/CambridgePaymentRecordsMark",{state:{id:id}})
+      message.success("Payment Record navigate Successfully");
+      
+     } catch (error) {
+        message.error("Error In page navigating");
+     }
+  }
+
 
   useEffect(() => {
     getAllUsersDetails();
@@ -203,7 +242,8 @@ const CambridgePaymentRecords = () => {
               color: "#ffc53d",
             }}
             type="ghost"
-            href="/CambridgePaymentRecordsMark"
+            // href="/CambridgePaymentRecordsMark"
+            onClick={()=>handleMarkPaymentRecord(record._id)}
           >
             Mark Payments
           </Button>
@@ -217,7 +257,7 @@ const CambridgePaymentRecords = () => {
           >
             View Payments
           </Button>
-          <Button danger>Delete</Button>
+          <Button danger onClick={()=>handleDelete(record._id)}>Delete</Button>
         </Space>
       ),
     },

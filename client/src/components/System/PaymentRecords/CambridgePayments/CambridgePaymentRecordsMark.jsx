@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import markPaymentRecordStyles from "./CambridgePaymentRecordsMark.module.css";
 import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import {
@@ -9,12 +9,19 @@ import {
   Checkbox,
   Col,
   Row,
+  message,
 } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 
 const CambridgePaymentRecordsMark = () => {
   const [form] = Form.useForm();
+  const location = useLocation();
+  const [paidMonth , setPaidMonth] = useState([]);
+
+  console.log(location);
 
   const checkboxValues = [
     "January",
@@ -33,8 +40,52 @@ const CambridgePaymentRecordsMark = () => {
 
   const currentMonth = new Date().getMonth();
   const onChange = (checkedValues) => {
-    console.log("checked = ", checkedValues);
+    // console.log("checked = ", checkedValues);
+    setPaidMonth(checkedValues)
   };
+
+
+//  get one user details || post
+const getUserDetails = async()=>{
+ try {
+  const id = location.state.id;
+  const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details",{ id: id });
+  console.log(response);
+  
+ } catch (error) {
+  message.error(error.message);
+ }
+
+}
+
+
+const handleUpdate = async()=>{
+   console.log(location.state.id);
+   const updatedId = location.state.id;
+   console.log(paidMonth);
+
+   try {
+    const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-cambrige",{updatedId,paidMonth})
+    console.log(response);
+
+    if(response.data.success){
+      message.success(response.data.message);
+      window.location.reload();
+    }
+    else{
+      message.error(response.data.message);
+    }
+    
+   } catch (error) {
+      message.error(error.message);
+   }
+ 
+}
+
+
+useEffect(()=>{
+  getUserDetails()
+},[])
 
   return (
     <SystemSideBar>
@@ -142,12 +193,12 @@ const CambridgePaymentRecordsMark = () => {
                 style={{
                   flex: "2",
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select a course title",
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please select a course title",
+                //   },
+                // ]}
               >
                 <Input readOnly />
               </Form.Item>
@@ -167,12 +218,12 @@ const CambridgePaymentRecordsMark = () => {
                 style={{
                   flex: "2",
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select a course level",
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please select a course level",
+                //   },
+                // ]}
               >
                 <Input readOnly />
               </Form.Item>
@@ -222,6 +273,8 @@ const CambridgePaymentRecordsMark = () => {
                   border: "1px solid #73d13d",
                   width: "200px",
                 }}
+                onClick={handleUpdate}
+               
               >
                 Update Payment Record
               </Button>

@@ -113,6 +113,21 @@ const studentRegistrationDataModel = new mongoose.Schema({
             required:["Guardian Occupation is required",true]
         },
 
+        markPaymentCambrige:{
+            type:[String],
+            default:[]
+        },
+        
+        markPaymentGeneral:{
+            type:[String],
+            default:[]
+        },
+
+        markPaymentElocution:{
+            type:[String],
+            default:[]
+        },
+
     
 })
 

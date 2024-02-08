@@ -72,16 +72,26 @@ const getOneUserRecords = async () => {
 };
 
 
-
-const handleDelete = async()=>{
+const handleDelete = async (id) => {
   try {
-    const id = location.state.id;
-    const response = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record",{id:id})
-    message.success("Student Deleted Successfully.");
-    navigate("/records")
-    
+
+    if (window.confirm("Are you sure you want to delete the data?")) {
+
+      console.log(id);
+      const response = await axios.post("http://localhost:8080/api/v1/delete/delete-route", { id })
+      console.log(response.data);
+
+      if (response.data.success) {
+        message.success("Data deleted successfully");
+        window.location.reload();
+      }
+    } else {
+      message.info("Deletion canceled by user");
+    }
+
+
   } catch (error) {
-     message.error("Student Deleted Unsuccessfull.please Try again later.");
+    message.error("Error deleting data");
   }
 }
 

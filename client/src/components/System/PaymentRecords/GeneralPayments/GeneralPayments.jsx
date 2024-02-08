@@ -41,6 +41,30 @@ const GeneralPayments = () => {
     }
   };
 
+const handleDelete = async (id) => {
+    try {
+
+      if (window.confirm("Are you sure you want to delete the data?")) {
+
+        console.log(id);
+        const response = await axios.post("http://localhost:8080/api/v1/delete/delete-route", { id })
+        console.log(response.data);
+
+        if (response.data.success) {
+          message.success("Data deleted successfully");
+          window.location.reload();
+        }
+      } else {
+        message.info("Deletion canceled by user");
+      }
+
+
+    } catch (error) {
+      message.error("Error deleting data");
+    }
+  }
+
+
   useEffect(() => {
     getAllUsersDetails();
   }, []);
@@ -57,6 +81,11 @@ const GeneralPayments = () => {
     setSearchedColumn("");
     confirm();
   };
+
+
+
+
+
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -210,7 +239,7 @@ const GeneralPayments = () => {
           >
             View Payments
           </Button>
-          <Button danger>Delete</Button>
+          <Button danger onClick={() => handleDelete(record._id)}>Delete</Button>
         </Space>
       ),
     },
