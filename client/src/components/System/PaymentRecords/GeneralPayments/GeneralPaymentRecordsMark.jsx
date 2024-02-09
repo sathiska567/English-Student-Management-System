@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import markPaymentRecordStyles from "./GeneralPaymentRecordsMark.module.css";
 import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import {
@@ -12,11 +12,16 @@ import {
   Row,
 } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 
 const GeneralPaymentRecordsMark = () => {
   const [form] = Form.useForm();
+  const location = useLocation();
+  const [paidMonth , setPaidMonth] = useState([]);
   
+  console.log(location.state);
 
   const checkboxValues = [
     "January",
@@ -36,7 +41,34 @@ const GeneralPaymentRecordsMark = () => {
   const currentMonth = new Date().getMonth();
   const onChange = (checkedValues) => {
     console.log("checked = ", checkedValues);
+    setPaidMonth(checkedValues)
   };
+ 
+
+  
+  const handleUpdate = async()=>{
+    console.log(location.state.id);
+    const updatedId = location.state.id;
+    console.log(paidMonth);
+ 
+    try {
+     const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-general",{updatedId,paidMonth})
+     console.log(response);
+ 
+     if(response.data.success){
+       message.success(response.data.message);
+      //  window.location.reload();
+     }
+     else{
+       message.error(response.data.message);
+     }
+     
+    } catch (error) {
+       message.error(error.message);
+    }
+  
+ }
+ 
 
   return (
     <SystemSideBar>
@@ -145,12 +177,12 @@ const GeneralPaymentRecordsMark = () => {
                 style={{
                   flex: "2",
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select a course title",
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please select a course title",
+                //   },
+                // ]}
               >
                 <Input readOnly />
               </Form.Item>
@@ -170,12 +202,12 @@ const GeneralPaymentRecordsMark = () => {
                 style={{
                   flex: "2",
                 }}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select a course level",
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "Please select a course level",
+                //   },
+                // ]}
               >
                 <Input readOnly />
               </Form.Item>
@@ -223,6 +255,7 @@ const GeneralPaymentRecordsMark = () => {
                   border: "1px solid #73d13d",
                   width: "200px",
                 }}
+                onClick={handleUpdate}
               >
                 Update Payment Record
               </Button>

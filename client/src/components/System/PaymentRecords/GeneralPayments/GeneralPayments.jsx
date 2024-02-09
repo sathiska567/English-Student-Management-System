@@ -6,6 +6,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // const data = [
 //   {
@@ -28,6 +29,7 @@ const GeneralPayments = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [userDetails, setUserDetails] = useState([]);
+  const navigate = useNavigate();
 
   const getAllUsersDetails = async () => {
     try {
@@ -65,6 +67,30 @@ const handleDelete = async (id) => {
   }
 
 
+const handleNavigate = async(id)=>{
+  console.log(id);
+  try {
+    navigate("/GeneralPaymentRecordsMark",{state:{id:id}})
+    message.success("Navigation successful");
+  } catch (error) {
+    message.error("Error navigating to GeneralPaymentRecordsMark");
+  }
+}
+
+
+const handleViewPayment = async(id)=>{
+   console.log(id);
+     
+   try {
+
+     navigate("/GeneralPaymentRecordsView",{state:{id:id}})
+     message.success("Navigation successful");
+
+   } catch (error) {
+      message.error("Error navigating to viewPayment-history");
+   }
+}
+
   useEffect(() => {
     getAllUsersDetails();
   }, []);
@@ -81,10 +107,6 @@ const handleDelete = async (id) => {
     setSearchedColumn("");
     confirm();
   };
-
-
-
-
 
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -225,7 +247,8 @@ const handleDelete = async (id) => {
               color: "#ffc53d",
             }}
             type="ghost"
-            href="/GeneralPaymentRecordsMark"
+            // href="/GeneralPaymentRecordsMark"
+            onClick={()=>handleNavigate(record._id)}
           >
             Mark Payments
           </Button>
@@ -235,7 +258,8 @@ const handleDelete = async (id) => {
               color: "#73d13d",
             }}
             type="ghost"
-            href="/GeneralPaymentRecordsView"
+            onClick={()=>handleViewPayment(record._id)}
+            // href="/GeneralPaymentRecordsView"
           >
             View Payments
           </Button>
