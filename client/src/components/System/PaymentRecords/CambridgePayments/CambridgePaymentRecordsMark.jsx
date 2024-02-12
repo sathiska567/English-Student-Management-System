@@ -20,6 +20,9 @@ const CambridgePaymentRecordsMark = () => {
   const [form] = Form.useForm();
   const location = useLocation();
   const [paidMonth , setPaidMonth] = useState([]);
+  const [Paidyear,setPaidYear] = useState(null)
+  const [userDetails , setUserDetails] = useState([]);
+
 
   console.log(location);
 
@@ -50,7 +53,8 @@ const getUserDetails = async()=>{
  try {
   const id = location.state.id;
   const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details",{ id: id });
-  console.log(response);
+  console.log(response.data.details);
+  setUserDetails(response.data.details);
   
  } catch (error) {
   message.error(error.message);
@@ -62,15 +66,15 @@ const getUserDetails = async()=>{
 const handleUpdate = async()=>{
    console.log(location.state.id);
    const updatedId = location.state.id;
-   console.log(paidMonth);
+   console.log(paidMonth,Paidyear);
 
    try {
-    const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-cambrige",{updatedId,paidMonth})
+    const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-cambrige",{updatedId,paidMonth,Paidyear})
     console.log(response);
 
     if(response.data.success){
       message.success(response.data.message);
-      window.location.reload();
+      // window.location.reload();
     }
     else{
       message.error(response.data.message);
@@ -146,7 +150,7 @@ useEffect(()=>{
                   },
                 ]}
               >
-                <DatePicker picker="year" />
+                <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)} />
               </Form.Item>
             </div>
             <div
@@ -161,7 +165,7 @@ useEffect(()=>{
               </label>
 
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input placeholder={userDetails._id} />
               </Form.Item>
             </div>
             <div
@@ -175,10 +179,11 @@ useEffect(()=>{
                 Full Name:
               </label>
               <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input placeholder={userDetails.fullName} />
               </Form.Item>
             </div>       
-            <div
+
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -202,8 +207,8 @@ useEffect(()=>{
               >
                 <Input readOnly />
               </Form.Item>
-            </div>
-            <div
+            </div> */}
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -227,7 +232,7 @@ useEffect(()=>{
               >
                 <Input readOnly />
               </Form.Item>
-            </div>
+            </div> */}
 
 
             <div
