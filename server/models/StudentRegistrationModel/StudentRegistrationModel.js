@@ -113,6 +113,21 @@ const studentRegistrationDataModel = new mongoose.Schema({
             required:["Guardian Occupation is required",true]
         },
 
+        PaidyearCambrige:{
+            type:Number,
+            
+           },
+
+        PaidyearGeneral:{
+            type:Number,
+            
+           },
+
+        PaidyearElocution:{
+            type:Number,
+            
+           },
+
         markPaymentCambrige:{
             type:[String],
             default:[]

@@ -3,10 +3,10 @@ const studentRegistrationModel = require("../../models/StudentRegistrationModel/
 const updatePaymentController = async (req, res) => {
         try {
 
-                const { updatedId, paidMonth } = req.body;
-                console.log(updatedId, paidMonth);
+                const { updatedId, paidMonth,Paidyear} = req.body;
+                console.log(updatedId, paidMonth,Paidyear);
 
-                const updateUser = await studentRegistrationModel.findByIdAndUpdate(updatedId, { markPaymentCambrige: paidMonth }, { new: true });
+                const updateUser = await studentRegistrationModel.findByIdAndUpdate(updatedId, { markPaymentCambrige: paidMonth , PaidyearCambrige:Paidyear }, { new: true });
                 console.log(updateUser);
                 if (!updateUser) {
                         return res.status(404).send({
