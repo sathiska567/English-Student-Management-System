@@ -13,8 +13,23 @@ import axios from "axios";
 const CambridgePaymentRecordsView = () => {
   const location = useLocation();
   const [userDetails, setUserDetails] = useState([]);
-  const [paymentMonth,setPaymentMonth] = useState([]);
-
+  const [paymentMonth, setPaymentMonth] = useState([]);
+  const [checkedList, setCheckedList] = useState([]);
+  
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
   console.log("User payment record view", location.state);
 
   const checkboxValues = [
@@ -36,6 +51,7 @@ const CambridgePaymentRecordsView = () => {
   );
   const currentMonth = new Date().getMonth();
   const onChange = (checkedValues) => {
+    setCheckedList(checkedValues);
     console.log("checked = ", checkedValues);
     setPaymentHistory(
       paymentHistory.map((record) =>
@@ -44,6 +60,14 @@ const CambridgePaymentRecordsView = () => {
           : { ...record, Payment_Status: "Unpaid" }
       )
     );
+  };
+
+  const handleCheckboxChange = (e, month) => {
+    if (e.target.checked) {
+      setCheckedList((prevState) => [...prevState, month]);
+    } else {
+      setCheckedList((prevState) => prevState.filter((m) => m !== month));
+    }
   };
 
   const downloadPaymentHistory = (values) => {
@@ -142,33 +166,42 @@ const CambridgePaymentRecordsView = () => {
     doc.save("payment-history.pdf");
   };
 
+const getUserAllDetails = async () => {
+  try {
+    const id = location.state.id;
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/registration/get-only-one-user-details",
+      { id: id }
+    );
 
-
-  // GET User All Details
-  const getUserAllDetails = async () => {
-    try {
-      const id = location.state.id;
-      console.log(id);
-      const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details", { id: id });
-      console.log(response.data.details);
-
-      if (response.data.message) {
-        message.success("Data Fetched successful")
-        setUserDetails(response.data.details);
-        // set payment details
-        setPaymentMonth(response.data.details.markPaymentCambrige)
-        // console.log(paymentMonth);
-      }
-
-    } catch (error) {
-      message.error(error.message);
+    if (response.data.message) {
+      setUserDetails(response.data.details);
     }
-
+  } catch (error) {
+    message.error(error.message);
   }
+};
 
-  useEffect(() => {
-    getUserAllDetails();
-  }, [])
+useEffect(() => {
+  getUserAllDetails();
+  if (userDetails && userDetails.markPaymentCambrige) {
+    // Convert the markPaymentCambrige array to an array of month names
+    const checkedMonths = userDetails.markPaymentCambrige.reduce(
+      (months, isPaid, index) => {
+        // If the month is paid, add its name to the months array
+        if (isPaid) {
+          months.push(monthNames[index]); // monthNames is an array of month names
+        }
+
+        return months;
+      },
+      []
+    );
+
+    setCheckedList(checkedMonths);
+  }
+}, [userDetails]);
+
 
   return (
     <SystemSideBar>
@@ -305,20 +338,47 @@ const CambridgePaymentRecordsView = () => {
                   flex: "2",
                 }}
               >
-                <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
+                <Checkbox.Group
+                  key={checkedList.toString()}
+                  style={{ width: "100%" }}
+                  onChange={onChange}
+                  value={checkedList}
+                >
                   <Row>
-                    {paymentHistory.map((record, index) => (
-                      <Col span={8} key={record.Month}>
-                        <Checkbox
-                          value={record.Month}
-                          disabled={index > currentMonth}
-                          // checked={record.Payment_Status === "Paid"}
-                          defaultChecked={true}
-                        >
-                          {record.Month}
-                        </Checkbox>
-                      </Col>
-                    ))}
+                    {paymentHistory.map((record, index) => {
+                      const isChecked = checkedList.includes(record.Month);
+                      console.log(
+                        "Checkbox:",
+                        record.Month,
+                        "Is Checked:",
+                        isChecked
+                      );
+
+                      return (
+                        <Col span={8} key={record.Month}>
+                          <label className="ant-checkbox-wrapper">
+                            <span
+                              className={`ant-checkbox ${
+                                isChecked ? "ant-checkbox-checked" : ""
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                className="ant-checkbox-input"
+                                value={record.Month}
+                                checked={isChecked} // Set the checked prop
+                                disabled={index > currentMonth}
+                                onChange={(e) =>
+                                  handleCheckboxChange(e, record.Month)
+                                } // Add this line
+                              />
+                              <span className="ant-checkbox-inner"></span>
+                            </span>
+                            <span>{record.Month}</span>
+                          </label>
+                        </Col>
+                      );
+                    })}
                   </Row>
                 </Checkbox.Group>
               </Form.Item>
