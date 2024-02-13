@@ -59,6 +59,7 @@ const getStudnetRegistrationDetails = async(req,res)=>{
 const getOneUserRegistrationDetails = async(req,res)=>{
   try {
     const {id} = req.body
+    // console.log(id);
 
     const details = await StudentRegistrationModel.findOne({_id:id})
 

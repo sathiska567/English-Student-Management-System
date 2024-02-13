@@ -80,6 +80,18 @@ const CambridgePaymentRecords = () => {
   }
 
 
+  const handleViewPaymentRecord = async(id)=>{
+    console.log(id);
+    try {
+     navigate("/CambridgePaymentRecordsView",{state:{id:id}})
+     message.success("Payment Record view navigate Successfully");
+     
+    } catch (error) {
+       message.error("Error In page navigating");
+    }
+  }
+
+
   useEffect(() => {
     getAllUsersDetails();
   }, []);
@@ -253,7 +265,8 @@ const CambridgePaymentRecords = () => {
               color: "#73d13d",
             }}
             type="ghost"
-            href="/CambridgePaymentRecordsView"
+            // href="/CambridgePaymentRecordsView"
+            onClick={()=>handleViewPaymentRecord(record._id)}
           >
             View Payments
           </Button>

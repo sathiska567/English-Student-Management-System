@@ -1,14 +1,21 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import viewPaymentRecordStyles from "./CambridgePaymentRecordsView.module.css";
 import SystemSideBar from "../../SystemSideBar/SystemSideBar";
-import { Form, Input, Checkbox, Col, Row, Button } from "antd";
+import { Form, Input, Checkbox, Col, Row, Button, message } from "antd";
 import { CloseSquareOutlined, DownloadOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import logo from "../logo.png";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const CambridgePaymentRecordsView = () => {
+  const location = useLocation();
+  const [userDetails, setUserDetails] = useState([]);
+
+  console.log("User payment record view", location.state);
+
   const checkboxValues = [
     "January",
     "February",
@@ -134,6 +141,31 @@ const CambridgePaymentRecordsView = () => {
     doc.save("payment-history.pdf");
   };
 
+
+
+  // GET User All Details
+  const getUserAllDetails = async () => {
+    try {
+      const id = location.state.id;
+      console.log(id);
+      const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details", { id: id });
+      console.log(response.data.details);
+
+      if (response.data.message) {
+        message.success("Data Fetched successful")
+        setUserDetails(response.data.details);
+      }
+
+    } catch (error) {
+      message.error(error.message);
+    }
+
+  }
+
+  useEffect(() => {
+    getUserAllDetails();
+  }, [])
+
   return (
     <SystemSideBar>
       <div className={viewPaymentRecordStyles.formContainer}>
@@ -184,7 +216,7 @@ const CambridgePaymentRecordsView = () => {
               </label>
 
               <Form.Item name="year" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails.PaidyearCambrige} />
               </Form.Item>
             </div>
             <div
@@ -199,7 +231,7 @@ const CambridgePaymentRecordsView = () => {
               </label>
 
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails._id} />
               </Form.Item>
             </div>
             <div
@@ -213,10 +245,10 @@ const CambridgePaymentRecordsView = () => {
                 Full Name:
               </label>
               <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails.fullName} />
               </Form.Item>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -229,9 +261,9 @@ const CambridgePaymentRecordsView = () => {
               <Form.Item name="courseTitle" style={{ flex: "2" }}>
                 <Input readOnly />
               </Form.Item>
-            </div>
+            </div> */}
 
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -244,7 +276,8 @@ const CambridgePaymentRecordsView = () => {
               <Form.Item name="courseLevel" style={{ flex: "2" }}>
                 <Input readOnly />
               </Form.Item>
-            </div>
+            </div> */}
+
             <div
               style={{
                 display: "flex",
@@ -268,7 +301,8 @@ const CambridgePaymentRecordsView = () => {
                         <Checkbox
                           value={record.Month}
                           disabled={index > currentMonth}
-                          checked={record.Payment_Status === "Paid"}
+                          // checked={record.Payment_Status === "Paid"}
+                          defaultChecked={true}
                         >
                           {record.Month}
                         </Checkbox>
