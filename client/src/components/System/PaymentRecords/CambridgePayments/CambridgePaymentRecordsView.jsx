@@ -13,6 +13,7 @@ import axios from "axios";
 const CambridgePaymentRecordsView = () => {
   const location = useLocation();
   const [userDetails, setUserDetails] = useState([]);
+  const [paymentMonth,setPaymentMonth] = useState([]);
 
   console.log("User payment record view", location.state);
 
@@ -154,6 +155,9 @@ const CambridgePaymentRecordsView = () => {
       if (response.data.message) {
         message.success("Data Fetched successful")
         setUserDetails(response.data.details);
+        // set payment details
+        setPaymentMonth(response.data.details.markPaymentCambrige)
+        // console.log(paymentMonth);
       }
 
     } catch (error) {
@@ -276,6 +280,13 @@ const CambridgePaymentRecordsView = () => {
               <Form.Item name="courseLevel" style={{ flex: "2" }}>
                 <Input readOnly />
               </Form.Item>
+            </div> */}
+
+            {/* <div>
+               {paymentMonth.map((data)=>(
+                    <p>{data}</p>
+               ))}
+
             </div> */}
 
             <div
