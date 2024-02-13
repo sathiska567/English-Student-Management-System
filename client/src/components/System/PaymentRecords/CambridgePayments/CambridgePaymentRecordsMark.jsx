@@ -19,9 +19,9 @@ import axios from "axios";
 const CambridgePaymentRecordsMark = () => {
   const [form] = Form.useForm();
   const location = useLocation();
-  const [paidMonth , setPaidMonth] = useState([]);
-  const [Paidyear,setPaidYear] = useState(null)
-  const [userDetails , setUserDetails] = useState([]);
+  const [paidMonth, setPaidMonth] = useState([]);
+  const [Paidyear, setPaidYear] = useState(null)
+  const [userDetails, setUserDetails] = useState([]);
 
 
   console.log(location);
@@ -48,48 +48,48 @@ const CambridgePaymentRecordsMark = () => {
   };
 
 
-//  get one user details || post
-const getUserDetails = async()=>{
- try {
-  const id = location.state.id;
-  const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details",{ id: id });
-  console.log(response.data.details);
-  setUserDetails(response.data.details);
-  
- } catch (error) {
-  message.error(error.message);
- }
+  //  get one user details || post
+  const getUserDetails = async () => {
+    try {
+      const id = location.state.id;
+      const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details", { id: id });
+      console.log(response.data.details);
+      setUserDetails(response.data.details);
 
-}
-
-
-const handleUpdate = async()=>{
-   console.log(location.state.id);
-   const updatedId = location.state.id;
-   console.log(paidMonth,Paidyear);
-
-   try {
-    const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-cambrige",{updatedId,paidMonth,Paidyear})
-    console.log(response);
-
-    if(response.data.success){
-      message.success(response.data.message);
-      // window.location.reload();
-    }
-    else{
-      message.error(response.data.message);
-    }
-    
-   } catch (error) {
+    } catch (error) {
       message.error(error.message);
-   }
- 
-}
+    }
+
+  }
 
 
-useEffect(()=>{
-  getUserDetails()
-},[])
+  const handleUpdate = async () => {
+    console.log(location.state.id);
+    const updatedId = location.state.id;
+    console.log(paidMonth, Paidyear);
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-cambrige", { updatedId, paidMonth, Paidyear })
+      console.log(response);
+
+      if (response.data.success) {
+        message.success(response.data.message);
+        // window.location.reload();
+      }
+      else {
+        message.error(response.data.message);
+      }
+
+    } catch (error) {
+      message.error(error.message);
+    }
+
+  }
+
+
+  useEffect(() => {
+    getUserDetails()
+  }, [])
 
   return (
     <SystemSideBar>
@@ -165,7 +165,7 @@ useEffect(()=>{
               </label>
 
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input placeholder={userDetails._id} />
+                <Input placeholder={userDetails._id} readOnly />
               </Form.Item>
             </div>
             <div
@@ -178,10 +178,12 @@ useEffect(()=>{
               <label className={markPaymentRecordStyles.RegFormLabel}>
                 Full Name:
               </label>
+
               <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input placeholder={userDetails.fullName} />
+                <Input placeholder={userDetails?.fullName} readOnly />
               </Form.Item>
-            </div>       
+
+            </div>
 
             {/* <div
               style={{
@@ -279,7 +281,7 @@ useEffect(()=>{
                   width: "200px",
                 }}
                 onClick={handleUpdate}
-               
+
               >
                 Update Payment Record
               </Button>
