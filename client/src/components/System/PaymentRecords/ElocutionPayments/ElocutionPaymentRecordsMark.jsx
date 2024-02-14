@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import markPaymentRecordStyles from "./ElocutionPaymentRecordsMark.module.css";
 import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import {
@@ -13,7 +13,7 @@ import {
   message,
 } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -21,6 +21,9 @@ const ElocutionPaymentRecordsMark = () => {
   const [form] = Form.useForm();
   const [paidMonth , setPaidMonth] = useState([]);
   const location = useLocation();
+  const [Paidyear, setPaidYear] = useState(null)
+  const [userDetails, setUserDetails] = useState([]);
+  const navigation = useNavigate();
 
   const checkboxValues = [
     "January",
@@ -44,17 +47,34 @@ const ElocutionPaymentRecordsMark = () => {
   };
 
 
-  const handleUpdate = async()=>{
+    //  get one user details || post
+ const getUserDetails = async () => {
+      try {
+        const id = location.state.id;
+        const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details", { id: id });
+        console.log(response.data.details);
+        setUserDetails(response.data.details);
+  
+      } catch (error) {
+        message.error(error.message);
+      }
+  
+    }
+
+
+const handleUpdate = async()=>{
     console.log(location.state.id);
     const updatedId = location.state.id;
-    console.log(paidMonth);
+    // console.log(paidMonth,Paidyear);
  
-    try {
-     const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-elocution",{updatedId,paidMonth})
+  try {
+
+     const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-elocution",{updatedId,Paidyear,paidMonth})
      console.log(response);
  
      if(response.data.success){
        message.success(response.data.message);
+       navigation("/ElocutionPayments")
       //  window.location.reload();
      }
      else{
@@ -66,6 +86,11 @@ const ElocutionPaymentRecordsMark = () => {
     }
   
  }
+
+
+ useEffect(()=>{
+  getUserDetails();
+ },[])
 
   return (
     <SystemSideBar>
@@ -126,7 +151,7 @@ const ElocutionPaymentRecordsMark = () => {
                   },
                 ]}
               >
-                <DatePicker picker="year" />
+                <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)}/>
               </Form.Item>
             </div>
             <div
@@ -141,7 +166,7 @@ const ElocutionPaymentRecordsMark = () => {
               </label>
 
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails._id} />
               </Form.Item>
             </div>
             <div
@@ -155,11 +180,11 @@ const ElocutionPaymentRecordsMark = () => {
                 Full Name:
               </label>
               <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails.fullName} />
               </Form.Item>
             </div>
             
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -183,8 +208,8 @@ const ElocutionPaymentRecordsMark = () => {
               >
                 <Input readOnly />
               </Form.Item>
-            </div>
-            <div
+            </div> */}
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -208,7 +233,7 @@ const ElocutionPaymentRecordsMark = () => {
               >
                 <Input readOnly />
               </Form.Item>
-            </div>
+            </div> */}
             <div
               style={{
                 display: "flex",

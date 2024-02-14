@@ -270,7 +270,7 @@ const CambridgePaymentRecords = () => {
           >
             View Payments
           </Button>
-          <Button danger onClick={()=>handleDelete(record._id)}>Delete</Button>
+          {/* <Button danger onClick={()=>handleDelete(record._id)}>Delete</Button> */}
         </Space>
       ),
     },
