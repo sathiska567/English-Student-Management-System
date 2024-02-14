@@ -174,7 +174,8 @@ const getUserAllDetails = async () => {
       { id: id }
     );
 
-    if (response.data.message) {
+    if (response.data.success) {
+      // message.success(response.data.message);
       setUserDetails(response.data.details);
     }
   } catch (error) {
@@ -383,6 +384,7 @@ useEffect(() => {
                 </Checkbox.Group>
               </Form.Item>
             </div>
+            
             <div className={viewPaymentRecordStyles.buttonGroup}>
               <Button
                 type="ghost"

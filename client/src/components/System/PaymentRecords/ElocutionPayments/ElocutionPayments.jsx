@@ -66,9 +66,21 @@ const ElocutionPayments = () => {
     }
   }
 
-  const hanldeMarkPayment = async (id) => {
+const hanldeMarkPayment = async (id) => {
       navigate("/ElocutionPaymentRecordsMark",{state:{id:id}})
       message.success("Payment marked page navigate successfully");
+  }
+
+
+const handleViewPaymentRecord = async(id)=>{
+    console.log(id);
+    try {
+     navigate("/ElocutionPaymentRecordsView",{state:{id:id}})
+     message.success("Payment Record view navigate Successfully");
+     
+    } catch (error) {
+       message.error("Error In page navigating");
+    }
   }
 
 
@@ -245,11 +257,12 @@ const ElocutionPayments = () => {
               color: "#73d13d",
             }}
             type="ghost"
-            href="/ElocutionPaymentRecordsView"
+            // href="/ElocutionPaymentRecordsView"
+            onClick={()=>handleViewPaymentRecord(record._id)}
           >
             View Payments
           </Button>
-          <Button danger onClick={()=>handleDelete(record._id)}>Delete</Button>
+          {/* <Button danger onClick={()=>handleDelete(record._id)}>Delete</Button> */}
         </Space>
       ),
     },

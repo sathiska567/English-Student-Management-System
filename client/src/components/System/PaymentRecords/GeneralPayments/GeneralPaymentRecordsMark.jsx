@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import markPaymentRecordStyles from "./GeneralPaymentRecordsMark.module.css";
 import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import {
@@ -10,13 +10,22 @@ import {
   Checkbox,
   Col,
   Row,
+  message,
 } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const GeneralPaymentRecordsMark = () => {
   const [form] = Form.useForm();
+  const [paidMonth , setPaidMonth] = useState([]);
+  const location = useLocation();
+  const [Paidyear, setPaidYear] = useState(null)
+  const [userDetails, setUserDetails] = useState([]);
+  const navigation = useNavigate();
   
+  console.log(location);
 
   const checkboxValues = [
     "January",
@@ -36,7 +45,54 @@ const GeneralPaymentRecordsMark = () => {
   const currentMonth = new Date().getMonth();
   const onChange = (checkedValues) => {
     console.log("checked = ", checkedValues);
+    setPaidMonth(checkedValues)
   };
+
+      //  get one user details || post
+const getUserDetails = async () => {
+  try {
+    const id = location.state.id;
+    const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details", { id: id });
+    console.log(response.data.details);
+    setUserDetails(response.data.details);
+
+  } catch (error) {
+    message.error(error.message);
+  }
+
+}
+
+
+const handleUpdate = async()=>{
+  console.log(location.state.id);
+  const updatedId = location.state.id;
+  console.log(paidMonth,Paidyear);
+
+try {
+
+   const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-general",{updatedId,Paidyear,paidMonth})
+   console.log(response);
+
+   if(response.data.success){
+     message.success(response.data.message);
+     navigation("/GeneralPayments")
+    //  window.location.reload();
+   }
+   else{
+     message.error(response.data.message);
+   }
+   
+  } catch (error) {
+     message.error(error.message);
+  }
+
+}
+
+
+useEffect(()=>{
+  getUserDetails();
+ },[])
+
 
   return (
     <SystemSideBar>
@@ -97,7 +153,7 @@ const GeneralPaymentRecordsMark = () => {
                   },
                 ]}
               >
-                <DatePicker picker="year" />
+                <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)} />
               </Form.Item>
             </div>
             <div
@@ -112,7 +168,7 @@ const GeneralPaymentRecordsMark = () => {
               </label>
 
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails._id} />
               </Form.Item>
             </div>
             <div
@@ -126,11 +182,11 @@ const GeneralPaymentRecordsMark = () => {
                 Full Name:
               </label>
               <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails.fullName}  />
               </Form.Item>
             </div>
            
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -179,7 +235,7 @@ const GeneralPaymentRecordsMark = () => {
               >
                 <Input readOnly />
               </Form.Item>
-            </div>
+            </div> */}
             <div
               style={{
                 display: "flex",
@@ -223,6 +279,7 @@ const GeneralPaymentRecordsMark = () => {
                   border: "1px solid #73d13d",
                   width: "200px",
                 }}
+                onClick={handleUpdate}
               >
                 Update Payment Record
               </Button>

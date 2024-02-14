@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import viewPaymentRecordStyles from "./GeneralPaymentRecordsView.module.css";
 import SystemSideBar from "../../SystemSideBar/SystemSideBar";
 import { Form, Input, Checkbox, Col, Row, Button } from "antd";
@@ -7,8 +7,31 @@ import { CloseSquareOutlined, DownloadOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import logo from "../logo.png";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const GeneralPaymentRecordsView = () => {
+  const location = useLocation();
+  const [userDetails, setUserDetails] = useState([]);
+  const [paymentMonth, setPaymentMonth] = useState([]);
+  const [checkedList, setCheckedList] = useState([]);
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+
   const checkboxValues = [
     "January",
     "February",
@@ -26,6 +49,7 @@ const GeneralPaymentRecordsView = () => {
   const [paymentHistory, setPaymentHistory] = useState(
     checkboxValues.map((month) => ({ Month: month, Payment_Status: "Unpaid" }))
   );
+
   const currentMonth = new Date().getMonth();
   const onChange = (checkedValues) => {
     console.log("checked = ", checkedValues);
@@ -134,6 +158,50 @@ const GeneralPaymentRecordsView = () => {
     doc.save("payment-history.pdf");
   };
 
+
+    // GET ONE USER DETAILS
+const getUserAllDetails = async () => {
+  try {
+    const id = location.state.id;
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/registration/get-only-one-user-details",
+      { id: id }
+    );
+
+    if (response.data.success) {
+      // message.success(response.data.message);
+      setUserDetails(response.data.details);
+    }
+
+    // console.log(userDetails);
+
+
+  } catch (error) {
+    message.error(error.message);
+  }
+};
+
+
+useEffect(() => {
+  getUserAllDetails();
+  if (userDetails && userDetails.markPaymentGeneral) {
+    // Convert the markPaymentCambrige array to an array of month names
+    const checkedMonths = userDetails.markPaymentGeneral.reduce(
+      (months, isPaid, index) => {
+        // If the month is paid, add its name to the months array
+        if (isPaid) {
+          months.push(monthNames[index]); // monthNames is an array of month names
+        }
+
+        return months;
+      },
+      []
+    );
+
+    setCheckedList(checkedMonths);
+  }
+}, [userDetails]);
+
   return (
     <SystemSideBar>
       <div className={viewPaymentRecordStyles.formContainer}>
@@ -184,7 +252,7 @@ const GeneralPaymentRecordsView = () => {
               </label>
 
               <Form.Item name="year" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails.PaidyearGeneral}/>
               </Form.Item>
             </div>
             <div
@@ -199,7 +267,7 @@ const GeneralPaymentRecordsView = () => {
               </label>
 
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails._id}   />
               </Form.Item>
             </div>
             <div
@@ -213,10 +281,10 @@ const GeneralPaymentRecordsView = () => {
                 Full Name:
               </label>
               <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly />
+                <Input readOnly placeholder={userDetails.fullName}/>
               </Form.Item>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -244,8 +312,8 @@ const GeneralPaymentRecordsView = () => {
               <Form.Item name="courseLevel" style={{ flex: "2" }}>
                 <Input readOnly />
               </Form.Item>
-            </div>
-            <div
+            </div> */}
+                    <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -261,19 +329,47 @@ const GeneralPaymentRecordsView = () => {
                   flex: "2",
                 }}
               >
-                <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
+                <Checkbox.Group
+                  key={checkedList.toString()}
+                  style={{ width: "100%" }}
+                  onChange={onChange}
+                  value={checkedList}
+                >
                   <Row>
-                    {paymentHistory.map((record, index) => (
-                      <Col span={8} key={record.Month}>
-                        <Checkbox
-                          value={record.Month}
-                          disabled={index > currentMonth}
-                          checked={record.Payment_Status === "Paid"}
-                        >
-                          {record.Month}
-                        </Checkbox>
-                      </Col>
-                    ))}
+                    {paymentHistory.map((record, index) => {
+                      const isChecked = checkedList.includes(record.Month);
+                      // console.log(
+                      //   "Checkbox:",
+                      //   record.Month,
+                      //   "Is Checked:",
+                      //   isChecked
+                      // );
+
+                      return (
+                        <Col span={8} key={record.Month}>
+                          <label className="ant-checkbox-wrapper">
+                            <span
+                              className={`ant-checkbox ${
+                                isChecked ? "ant-checkbox-checked" : ""
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                className="ant-checkbox-input"
+                                value={record.Month}
+                                checked={isChecked} // Set the checked prop
+                                disabled={index > currentMonth}
+                                onChange={(e) =>
+                                  handleCheckboxChange(e, record.Month)
+                                } // Add this line
+                              />
+                              <span className="ant-checkbox-inner"></span>
+                            </span>
+                            <span>{record.Month}</span>
+                          </label>
+                        </Col>
+                      );
+                    })}
                   </Row>
                 </Checkbox.Group>
               </Form.Item>
