@@ -49,7 +49,11 @@ const monthNames = [
   const [paymentHistory, setPaymentHistory] = useState(
     checkboxValues.map((month) => ({ Month: month, Payment_Status: "Unpaid" }))
   );
+
+
   const currentMonth = new Date().getMonth();
+
+  
   const onChange = (checkedValues) => {
     setCheckedList(checkedValues);
     console.log("checked = ", checkedValues);

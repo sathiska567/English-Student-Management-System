@@ -45,6 +45,8 @@ const Record = () => {
 
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [userDetails,setUserDetails] = useState([]);
+  const [birthDay,setBirthDay] = useState("");
 
   console.log(location);
 
@@ -60,7 +62,7 @@ const Record = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const getOneUserRecords = async () => {
+const getOneUserRecords = async () => {
     try {
       const id = location.state.id;
       console.log(id);
@@ -69,9 +71,12 @@ const Record = () => {
         { id: id }
       );
       console.log(response);
+      setUserDetails(response.data.details)
 
-      // const date = new Date(response.data.details.birthday);
-      // const formattedDate = date.toISOString().split("T")[0];
+      const date = new Date(response.data.details.birthDay);     
+      const formattedDate = date.toISOString().split("T")[0];
+      // console.log(formattedDate);
+      setBirthDay(formattedDate)
 
       // setFormValues({
       //   fullName: response.data.details.fullName,
@@ -115,18 +120,18 @@ const Record = () => {
     }
   };
 
-  const handleUpdate = async (values) => {
+const handleUpdate = async (values) => {
     try {
       // update-student-record
       const id = location.state.id;
       console.log(values);
 
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/registration/update-student-record",
-        { id: id, values }
-      );
-      navigate("/records");
-      message.success("Student Updated Successfully.");
+      // const response = await axios.post(
+      //   "http://localhost:8080/api/v1/registration/update-student-record",
+      //   { id: id, values }
+      // );
+      // navigate("/records");
+      // message.success("Student Updated Successfully.");
     } catch (error) {
       message.error("Student Updated Unsuccessful.please Try again later.");
     }
@@ -211,6 +216,7 @@ const Record = () => {
                     onChange={(e) =>
                       setNewFullNameValue(e.target.value || fullNameValue)
                     }
+                    placeholder={userDetails.fullName}
                   />
                 </Form.Item>
               </div>
@@ -230,6 +236,7 @@ const Record = () => {
                     onChange={(e) =>
                       setNewNameWithInitial(e.target.value || nameWithInitial)
                     }
+                    placeholder={userDetails.nameWithInitials}
                   />
                 </Form.Item>
               </div>
@@ -247,6 +254,7 @@ const Record = () => {
                     rows={4}
                     value={address}
                     onChange={(e) => setNewAddress(e.target.value || address)}
+                    placeholder={userDetails.address}
                   />
                 </Form.Item>
               </div>
@@ -268,6 +276,7 @@ const Record = () => {
                     onChange={(e) =>
                       setNewMobileNumber(e.target.value || mobileNumber)
                     }
+                    placeholder={userDetails.mobileNumber}
                   />
                 </Form.Item>
               </div>
@@ -289,6 +298,7 @@ const Record = () => {
                     onChange={(e) =>
                       setWhatsAppNumber(e.target.value || whatsAppNumber)
                     }
+                    placeholder={userDetails.mobileNumber}
                   />
                 </Form.Item>
               </div>
@@ -307,6 +317,7 @@ const Record = () => {
                   <Input
                     value={birthday}
                     onChange={(e) => setNewBirthday(e.target.value || birthday)}
+                    placeholder={birthDay}
                   />
                 </Form.Item>
               </div>
@@ -327,6 +338,7 @@ const Record = () => {
                 >
                   <Input
                     onChange={(e) => setNewSchool(e.target.value || school)}
+                    placeholder={userDetails.school}
                   />
                 </Form.Item>
               </div>
@@ -344,6 +356,7 @@ const Record = () => {
                   <Input
                     value={grade}
                     onChange={(e) => setGrade(e.target.value || grade)}
+                    placeholder={userDetails.grade || "Not Selected"} 
                   />
                 </Form.Item>
               </div>
@@ -410,6 +423,7 @@ const Record = () => {
                   <Input
                     value={nameOfFather}
                     onChange={(e) => setNameOfFather(e.target.value || grade)}
+                    placeholder={userDetails.fartherName}
                   />
                 </Form.Item>
               </div>
@@ -428,6 +442,7 @@ const Record = () => {
                     onChange={(e) =>
                       setFathersOccupation(e.target.value || grade)
                     }
+                    placeholder={userDetails.fartherOccupation}
                   />
                 </Form.Item>
               </div>
@@ -448,6 +463,7 @@ const Record = () => {
                     onChange={(e) =>
                       setFathersContactNumber(e.target.value || grade)
                     }
+                    placeholder={userDetails.fathersMobileNumber}
                   />
                 </Form.Item>
               </div>
@@ -464,6 +480,7 @@ const Record = () => {
                   <Input
                     value={fathersEmail}
                     onChange={(e) => setFathersEmail(e.target.value || grade)}
+                    placeholder={userDetails.fartherEmail}
                   />
                 </Form.Item>
               </div>
@@ -484,6 +501,7 @@ const Record = () => {
                   <Input
                     value={nameOfMother}
                     onChange={(e) => setNameOfMother(e.target.value || grade)}
+                    placeholder={userDetails.motherName}
                   />
                 </Form.Item>
               </div>
@@ -502,6 +520,7 @@ const Record = () => {
                     onChange={(e) =>
                       setMothersOccupation(e.target.value || grade)
                     }
+                    placeholder={userDetails.motherOccupation}
                   />
                 </Form.Item>
               </div>
@@ -522,6 +541,7 @@ const Record = () => {
                     onChange={(e) =>
                       setMothersContactNumber(e.target.value || grade)
                     }
+                    placeholder={userDetails.mothersMobileNumber || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -538,6 +558,7 @@ const Record = () => {
                   <Input
                     value={mothersEmail}
                     onChange={(e) => setMothersEmail(e.target.value || grade)}
+                    placeholder={userDetails.mothersEmail || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -558,6 +579,7 @@ const Record = () => {
                   <Input
                     value={nameOfGuardian}
                     onChange={(e) => setNameOfGuardian(e.target.value || grade)}
+                    placeholder={userDetails.nameOfGuardian || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -576,6 +598,7 @@ const Record = () => {
                     onChange={(e) =>
                       setGuardianOccupation(e.target.value || grade)
                     }
+                    placeholder={userDetails.GuardianOccupation}
                   />
                 </Form.Item>
               </div>
@@ -596,6 +619,7 @@ const Record = () => {
                     onChange={(e) =>
                       setGuardianContactNumber(e.target.value || grade)
                     }
+                    placeholder={userDetails.GuardianMobileNumber || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -612,6 +636,7 @@ const Record = () => {
                   <Input
                     value={Guardian}
                     onChange={(e) => setGuardian(e.target.value || grade)}
+                    placeholder={userDetails.GuardianEmail || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -625,6 +650,7 @@ const Record = () => {
                     border: "1px solid #73d13d",
                     width: "150px",
                   }}
+                  onClick={handleUpdate}
                 >
                   Update Record
                 </Button>
