@@ -19,8 +19,8 @@ router.post("/get-only-one-user-details",getOneUserRegistrationDetails)
 // router.post("/delete-student-record",deleteStudentRecord)
 
 
-// // HANDLE STUDENT RECORD UPDATE ROUTE || POST
-// router.post("/update-student-record",updateStudentRecord)
+// HANDLE STUDENT RECORD UPDATE ROUTE || POST
+router.post("/update-student-record",updateStudentRecord)
 
 
 module.exports = router;

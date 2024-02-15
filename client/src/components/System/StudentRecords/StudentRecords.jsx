@@ -16,7 +16,7 @@ const StudentRecords = () => {
   const [registeredStudentDtails, setRegisteredStudentDetails] = useState([]);
   const navigate = useNavigate();
 
-  const getAllRegisteredStudentData = async () => {
+const getAllRegisteredStudentData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -28,12 +28,12 @@ const StudentRecords = () => {
       setRegisteredStudentDetails(response.data.AllRegistereddetails);
       console.log(registeredStudentDtails);
       
-      response.data.AllRegistereddetails.forEach((record) => {
-        record.completedCourseTitleSearch = [
-          ...record.completedBritishLevels,
-          ...record.completedGeneralLevels,
-        ];
-      });
+      // response.data.AllRegistereddetails.forEach((record) => {
+      //   record.completedCourseTitleSearch = [
+      //     ...record.completedBritishLevels,
+      //     ...record.completedGeneralLevels,
+      //   ];
+      // });
 
     } catch (error) {
       message.error("Data fetched Unsuccessfull");
@@ -41,7 +41,7 @@ const StudentRecords = () => {
   };
 
 
-  const handleView = async (id) => {
+const handleView = async (id) => {
     try {
 
       console.log(id);
@@ -54,7 +54,7 @@ const StudentRecords = () => {
   }
 
 
-  const handleDeleteStudentRecords = async (id) => {
+const handleDeleteStudentRecords = async (id) => {
     console.log(id);
 
     try {
