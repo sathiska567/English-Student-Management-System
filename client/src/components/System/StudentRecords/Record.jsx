@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import RecordStyles from "./Record.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, Checkbox, message, Space } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -167,7 +167,7 @@ const handleUpdate = async (values) => {
                   flex: "30",
                 }}
               >
-                {formValues.indexNumber} - {formValues.nameWithInitials}
+                {formValues.indexNumber} {userDetails.fullName} {formValues.nameWithInitials}
               </p>
               <a
                 href="/records"
@@ -196,7 +196,7 @@ const handleUpdate = async (values) => {
                   Index Number:
                 </label>
 
-                <Form.Item name="indexNumber" style={{ flex: "2" }}>
+                <Form.Item name="indexNumber" style={{ flex: "2"}}>
                   <Input
                     onChange={(e) => setNewIndexNumberValue(e.target.value)}
                   />
@@ -236,7 +236,7 @@ const handleUpdate = async (values) => {
                     onChange={(e) =>
                       setNewNameWithInitial(e.target.value || nameWithInitial)
                     }
-                    placeholder={userDetails.nameWithInitials}
+                    defaultValue="hdbfhebrheberb"
                   />
                 </Form.Item>
               </div>
