@@ -240,7 +240,7 @@ useEffect(() => {
             </a>
           </div>
           <div className={viewPaymentRecordStyles.formDetails}>
-            <div
+          <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -250,12 +250,14 @@ useEffect(() => {
               <label className={viewPaymentRecordStyles.RegFormLabel}>
                 Year:
               </label>
-
-              <Form.Item name="year" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails.PaidyearGeneral}/>
+              <Form.Item style={{ flex: "2" }}>
+                <Input
+                  readOnly
+                  value={userDetails ? userDetails.PaidyearGeneral: ""}
+                />
               </Form.Item>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -266,10 +268,10 @@ useEffect(() => {
                 Index Number:
               </label>
 
-              <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails._id}   />
+              <Form.Item style={{ flex: "2" }}>
+                <Input readOnly value={userDetails ? userDetails._id : ""} />
               </Form.Item>
-            </div>
+            </div> */}
             <div
               style={{
                 display: "flex",
@@ -280,8 +282,11 @@ useEffect(() => {
               <label className={viewPaymentRecordStyles.RegFormLabel}>
                 Full Name:
               </label>
-              <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails.fullName}/>
+              <Form.Item style={{ flex: "2" }}>
+                <Input
+                  readOnly
+                  value={userDetails ? userDetails.fullName : ""}
+                />
               </Form.Item>
             </div>
             {/* <div
