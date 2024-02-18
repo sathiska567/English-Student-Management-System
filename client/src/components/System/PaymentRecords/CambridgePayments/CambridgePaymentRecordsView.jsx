@@ -49,11 +49,7 @@ const monthNames = [
   const [paymentHistory, setPaymentHistory] = useState(
     checkboxValues.map((month) => ({ Month: month, Payment_Status: "Unpaid" }))
   );
-
-
   const currentMonth = new Date().getMonth();
-
-  
   const onChange = (checkedValues) => {
     setCheckedList(checkedValues);
     console.log("checked = ", checkedValues);
@@ -178,8 +174,7 @@ const getUserAllDetails = async () => {
       { id: id }
     );
 
-    if (response.data.success) {
-      // message.success(response.data.message);
+    if (response.data.message) {
       setUserDetails(response.data.details);
     }
   } catch (error) {
@@ -256,12 +251,14 @@ useEffect(() => {
               <label className={viewPaymentRecordStyles.RegFormLabel}>
                 Year:
               </label>
-
-              <Form.Item name="year" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails.PaidyearCambrige} />
+              <Form.Item style={{ flex: "2" }}>
+                <Input
+                  readOnly
+                  value={userDetails ? userDetails.PaidyearCambrige : ""}
+                />
               </Form.Item>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -272,10 +269,10 @@ useEffect(() => {
                 Index Number:
               </label>
 
-              <Form.Item name="indexNumber" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails._id} />
+              <Form.Item style={{ flex: "2" }}>
+                <Input readOnly value={userDetails ? userDetails._id : ""} />
               </Form.Item>
-            </div>
+            </div> */}
             <div
               style={{
                 display: "flex",
@@ -286,8 +283,11 @@ useEffect(() => {
               <label className={viewPaymentRecordStyles.RegFormLabel}>
                 Full Name:
               </label>
-              <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails.fullName} />
+              <Form.Item style={{ flex: "2" }}>
+                <Input
+                  readOnly
+                  value={userDetails ? userDetails.fullName : ""}
+                />
               </Form.Item>
             </div>
             {/* <div
@@ -388,7 +388,6 @@ useEffect(() => {
                 </Checkbox.Group>
               </Form.Item>
             </div>
-            
             <div className={viewPaymentRecordStyles.buttonGroup}>
               <Button
                 type="ghost"
