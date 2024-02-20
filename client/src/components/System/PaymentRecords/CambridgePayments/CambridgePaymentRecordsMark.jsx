@@ -153,7 +153,8 @@ const CambridgePaymentRecordsMark = () => {
                 <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)} />
               </Form.Item>
             </div>
-            <div
+
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -167,7 +168,8 @@ const CambridgePaymentRecordsMark = () => {
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
                 <Input placeholder={userDetails._id} readOnly />
               </Form.Item>
-            </div>
+            </div> */}
+
             <div
               style={{
                 display: "flex",
@@ -179,8 +181,8 @@ const CambridgePaymentRecordsMark = () => {
                 Full Name:
               </label>
 
-              <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input placeholder={userDetails?.fullName} readOnly />
+              <Form.Item style={{ flex: "2" }}>
+                <Input value={userDetails?.fullName} readOnly />
               </Form.Item>
 
             </div>

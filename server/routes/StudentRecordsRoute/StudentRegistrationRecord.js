@@ -15,8 +15,8 @@ router.get("/get-student-details",getStudnetRegistrationDetails)
 router.post("/get-only-one-user-details",getOneUserRegistrationDetails)
 
 
-// // DELETE STUDENT RECORD ROUTE || POST
-// router.post("/delete-student-record",deleteStudentRecord)
+// DELETE STUDENT RECORD ROUTE || POST
+router.post("/delete-student-record",deleteStudentRecord)
 
 
 // HANDLE STUDENT RECORD UPDATE ROUTE || POST
