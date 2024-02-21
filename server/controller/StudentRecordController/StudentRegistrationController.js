@@ -114,17 +114,11 @@ const deleteStudentRecord = async(req,res)=>{
 const updateStudentRecord = async(req,res)=>{
    try {
     console.log(req.body);
-    const {id} = req.body
+    const {id,index} = req.body
     const response = await StudentRegistrationModel.findByIdAndUpdate({_id:id},
     {
-      indexNumber:req.body.values.indexNumber,
-      fullName:req.body.values.fullName,
-      nameWithInitials:req.body.values.nameWithInitials,
-      address:req.body.values.address,
-      mobileNumber:req.body.values.mobileNumber,
-      birthday:req.body.values.birthday,
-      school:req.body.values.school,
-      index:req.body.index    
+      indexNumber:index
+
     },{new:true})
 
     if(!response){

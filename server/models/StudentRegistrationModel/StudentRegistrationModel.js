@@ -143,8 +143,9 @@ const studentRegistrationDataModel = new mongoose.Schema({
             default:[]
         },
 
-        index:{
+        indexNumber:{
             type:String,
+            default:""
         }
 
     

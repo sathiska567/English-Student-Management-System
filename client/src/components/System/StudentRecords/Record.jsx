@@ -98,10 +98,10 @@ const Record = () => {
         );
         console.log(response.data);
 
-        if (response.data.success) {
-          message.success("Data deleted successfully");
-          window.location.reload();
-        }
+        // if (response.data.success) {
+        //   message.success("Data deleted successfully");
+        //   // window.location.reload();
+        // }
       } else {
         message.info("Deletion canceled by user");
       }
@@ -112,17 +112,24 @@ const Record = () => {
 
   const handleUpdate = async (values) => {
     try {
-      // update-student-record
-      const id = location.state.id;
-      console.log(id,newIndexNumberValue);
+      const userConfirmed = window.confirm("Are you sure you want to update the student record?");
 
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/registration/update-student-record",
-        { id:id, index:newIndexNumberValue }
-      );
-      navigate("/records");
-      message.success("Student Updated Successfully.");
-      
+      if (userConfirmed) {
+        // update-student-record
+        const id = location.state.id;
+        console.log(id, newIndexNumberValue);
+
+        const response = await axios.post(
+          "http://localhost:8080/api/v1/registration/update-student-record",
+          { id: id, index: newIndexNumberValue }
+        );
+        // message.success(response.data.message);
+        navigate("/records");
+      } else {
+        message.info("Student Record Update Canceled");
+      }
+
+
     } catch (error) {
       message.error("Student Updated Unsuccessful.please Try again later.");
     }
@@ -147,7 +154,7 @@ const Record = () => {
               backgroundColor: "white",
               boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
             }}
-            onFinish={handleUpdate}
+            // onFinish={handleUpdate}
             initialValues={formValues}
           >
             <div className={RecordStyles.formHeader}>
@@ -187,9 +194,10 @@ const Record = () => {
                   Index Number:
                 </label>
 
-                <Form.Item name="indexNumber" style={{ flex: "2" }}>
+                <Form.Item name='indexNumber' style={{ flex: "2" }}>
                   <Input
                     onChange={(e) => setNewIndexNumberValue(e.target.value)}
+                    placeholder={userDetails.indexNumber || " "}
                   />
                 </Form.Item>
               </div>
@@ -339,7 +347,7 @@ const Record = () => {
                 </Form.Item>
               </div>
 
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -358,7 +366,7 @@ const Record = () => {
                   >
                     <Checkbox
                       className="myCheckbox"
-                      value="Cambridge Assessment"
+                      defaultChecked={userDetails.elocution}
                       onChange={(e) => setCambrige(e.target.value)}
                     >
                       Cambridge Assessments
@@ -379,7 +387,7 @@ const Record = () => {
                     </Checkbox>
                   </Checkbox.Group>
                 </Form.Item>
-              </div>
+              </div> */}
 
               <div className={RecordStyles.RegHeadersTop}>
                 {"Enter Parents' / Guardian's Details:"}
@@ -623,7 +631,7 @@ const Record = () => {
                     border: "1px solid #73d13d",
                     width: "150px",
                   }}
-                  onClick={handleUpdate}
+                  onClick={() => handleUpdate()}
                 >
                   Update Record
                 </Button>
