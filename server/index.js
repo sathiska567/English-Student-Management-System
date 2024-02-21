@@ -8,6 +8,7 @@ const studentRegistration = require("./routes/StudentRecordsRoute/StudentRegistr
 const paymentRecordRouter = require("./routes/PaymentRecorsRoutes/paymentRecordRoute")
 const deteleRoute = require("./routes/DeleteRoute/DeleteRoute")
 const updateOneUserRoute = require("./routes/UpdateOneUserDetailsRoute/updateOneUserDetailsRoute")
+const GetCourseViseStudentDetailsRoute = require("./routes/GetCourseViseStudentDetailsRoute/GetCourseViseStudentDetailsRoute")
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/api/v1/registration", studentRegistration);
 app.use("/api/v1/payment",paymentRecordRouter)
 app.use("/api/v1/delete",deteleRoute)
 app.use("/api/v1/update",updateOneUserRoute)
+app.use("/api/v1/getUser",GetCourseViseStudentDetailsRoute)
 
 
 const PORT = process.env.PORT || 3000; // Define a default port if PORT is not set in .env
