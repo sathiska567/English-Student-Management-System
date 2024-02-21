@@ -12,7 +12,7 @@ import {
   message,
 } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -22,6 +22,7 @@ const CambridgePaymentRecordsMark = () => {
   const [paidMonth, setPaidMonth] = useState([]);
   const [Paidyear, setPaidYear] = useState(null)
   const [userDetails, setUserDetails] = useState([]);
+  const naviagte = useNavigate()
 
 
   console.log(location);
@@ -75,6 +76,7 @@ const CambridgePaymentRecordsMark = () => {
       if (response.data.success) {
         message.success(response.data.message);
         // window.location.reload();
+        naviagte("/CambridgePaymentRecords")
       }
       else {
         message.error(response.data.message);
