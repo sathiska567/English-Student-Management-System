@@ -154,7 +154,7 @@ const handleUpdate = async()=>{
                 <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)}/>
               </Form.Item>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -168,7 +168,7 @@ const handleUpdate = async()=>{
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
                 <Input readOnly placeholder={userDetails._id} />
               </Form.Item>
-            </div>
+            </div> */}
             <div
               style={{
                 display: "flex",
@@ -179,8 +179,8 @@ const handleUpdate = async()=>{
               <label className={markPaymentRecordStyles.RegFormLabel}>
                 Full Name:
               </label>
-              <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails.fullName} />
+              <Form.Item style={{ flex: "2" }}>
+                <Input readOnly value={userDetails.fullName} />
               </Form.Item>
             </div>
             

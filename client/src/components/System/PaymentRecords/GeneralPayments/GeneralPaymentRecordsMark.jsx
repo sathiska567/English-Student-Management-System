@@ -23,7 +23,7 @@ const GeneralPaymentRecordsMark = () => {
   const location = useLocation();
   const [Paidyear, setPaidYear] = useState(null)
   const [userDetails, setUserDetails] = useState([]);
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   
   console.log(location);
 
@@ -75,8 +75,8 @@ try {
 
    if(response.data.success){
      message.success(response.data.message);
-     navigation("/GeneralPayments")
-    //  window.location.reload();
+     navigate("/GeneralPayments")
+     window.location.reload();
    }
    else{
      message.error(response.data.message);
@@ -156,7 +156,7 @@ useEffect(()=>{
                 <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)} />
               </Form.Item>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -170,7 +170,7 @@ useEffect(()=>{
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
                 <Input readOnly placeholder={userDetails._id} />
               </Form.Item>
-            </div>
+            </div> */}
             <div
               style={{
                 display: "flex",
@@ -181,8 +181,8 @@ useEffect(()=>{
               <label className={markPaymentRecordStyles.RegFormLabel}>
                 Full Name:
               </label>
-              <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input readOnly placeholder={userDetails.fullName}  />
+              <Form.Item style={{ flex: "2" }}>
+                <Input readOnly value={userDetails.fullName} />
               </Form.Item>
             </div>
            

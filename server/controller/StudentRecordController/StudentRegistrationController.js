@@ -89,41 +89,36 @@ const getOneUserRegistrationDetails = async(req,res)=>{
 }
 
 
-// // delete student controller
-// const deleteStudentRecord = async(req,res)=>{
-//   try {
-//     const {id} = req.body
-//     const response = await StudentRegistrationModel.findByIdAndDelete({_id:id})
+// delete student controller
+const deleteStudentRecord = async(req,res)=>{
+  try {
+    const {id} = req.body
+    const response = await StudentRegistrationModel.findByIdAndDelete({_id:id})
 
-//     res.status(200).send({
-//       success:true,
-//       message:"Student Registration Record Deleted Successfully",
-//     })
+    res.status(200).send({
+      success:true,
+      message:"Student Registration Record Deleted Successfully",
+    })
     
-//   } catch (error) {
-//      res.status(400).send({
-//       success:false,
-//       message:"Student Registration Record Deleted Unsuccessfully"
-//      })
-//   }
+  } catch (error) {
+     res.status(400).send({
+      success:false,
+      message:"Student Registration Record Deleted Unsuccessfully"
+     })
+  }
 
-// }
+}
 
 
 // Update Student records
 const updateStudentRecord = async(req,res)=>{
    try {
     console.log(req.body);
-    const {id} = req.body
+    const {id,index} = req.body
     const response = await StudentRegistrationModel.findByIdAndUpdate({_id:id},
     {
-      indexNumber:req.body.values.indexNumber,
-      fullName:req.body.values.fullName,
-      nameWithInitials:req.body.values.nameWithInitials,
-      address:req.body.values.address,
-      mobileNumber:req.body.values.mobileNumber,
-      birthday:req.body.values.birthday,
-      school:req.body.values.school,    
+      indexNumber:index
+
     },{new:true})
 
     if(!response){
@@ -133,11 +128,17 @@ const updateStudentRecord = async(req,res)=>{
       })
     }
 
-    res.status(200).send({
+    console.log(res.status(200).send({
       success:true,
       message:"Student Registration Record Updated Successfully",
       response
-    })
+    }));
+
+    // res.status(200).send({
+    //   success:true,
+    //   message:"Student Registration Record Updated Successfully",
+    //   response
+    // })
     
    } catch (error) {
     res.status(400).send({
@@ -149,4 +150,4 @@ const updateStudentRecord = async(req,res)=>{
 }
 
 
-module.exports = {getStudnetRegistrationDetails,getOneUserRegistrationDetails,updateStudentRecord}
+module.exports = {getStudnetRegistrationDetails,getOneUserRegistrationDetails,updateStudentRecord,deleteStudentRecord}

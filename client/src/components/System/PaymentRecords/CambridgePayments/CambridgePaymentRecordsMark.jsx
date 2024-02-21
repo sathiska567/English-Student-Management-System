@@ -12,7 +12,7 @@ import {
   message,
 } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -22,6 +22,7 @@ const CambridgePaymentRecordsMark = () => {
   const [paidMonth, setPaidMonth] = useState([]);
   const [Paidyear, setPaidYear] = useState(null)
   const [userDetails, setUserDetails] = useState([]);
+  const naviagte = useNavigate()
 
 
   console.log(location);
@@ -75,6 +76,7 @@ const CambridgePaymentRecordsMark = () => {
       if (response.data.success) {
         message.success(response.data.message);
         // window.location.reload();
+        naviagte("/CambridgePaymentRecords")
       }
       else {
         message.error(response.data.message);
@@ -153,7 +155,8 @@ const CambridgePaymentRecordsMark = () => {
                 <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)} />
               </Form.Item>
             </div>
-            <div
+
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -167,7 +170,8 @@ const CambridgePaymentRecordsMark = () => {
               <Form.Item name="indexNumber" style={{ flex: "2" }}>
                 <Input placeholder={userDetails._id} readOnly />
               </Form.Item>
-            </div>
+            </div> */}
+
             <div
               style={{
                 display: "flex",
@@ -179,8 +183,8 @@ const CambridgePaymentRecordsMark = () => {
                 Full Name:
               </label>
 
-              <Form.Item name="fullName" style={{ flex: "2" }}>
-                <Input placeholder={userDetails?.fullName} readOnly />
+              <Form.Item style={{ flex: "2" }}>
+                <Input value={userDetails?.fullName} readOnly />
               </Form.Item>
 
             </div>

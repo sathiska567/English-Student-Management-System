@@ -41,12 +41,12 @@ const Record = () => {
   const [GuardianOccupation, setGuardianOccupation] = useState("");
   const [GuardianContactNumber, setGuardianContactNumber] = useState("");
   const [Guardian, setGuardian] = useState("");
-  
+
 
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [userDetails,setUserDetails] = useState([]);
-  const [birthDay,setBirthDay] = useState("");
+  const [userDetails, setUserDetails] = useState([]);
+  const [birthDay, setBirthDay] = useState("");
 
   console.log(location);
 
@@ -62,7 +62,7 @@ const Record = () => {
 
   const [loading, setLoading] = useState(true);
 
-const getOneUserRecords = async () => {
+  const getOneUserRecords = async () => {
     try {
       const id = location.state.id;
       console.log(id);
@@ -73,23 +73,13 @@ const getOneUserRecords = async () => {
       console.log(response);
       setUserDetails(response.data.details)
 
-      const date = new Date(response.data.details.birthDay);     
+      const date = new Date(response.data.details.birthDay);
       const formattedDate = date.toISOString().split("T")[0];
+
       // console.log(formattedDate);
       setBirthDay(formattedDate)
-
-      // setFormValues({
-      //   fullName: response.data.details.fullName,
-      //   indexNumber: response.data.details.indexNumber,
-      //   nameWithInitials: response.data.details.nameWithInitials,
-      //   mobileNumber: response.data.details.mobileNumber,
-      //   school: response.data.details.school,
-      //   address: response.data.details.address,
-      //   birthday: formattedDate, // Use formattedDate here
-
-      // });
-
       setLoading(false); // Add this line
+
     } catch (error) {
       message.error(
         "Student Data fetched unsuccessfull.please Try again later."
@@ -108,10 +98,10 @@ const getOneUserRecords = async () => {
         );
         console.log(response.data);
 
-        if (response.data.success) {
-          message.success("Data deleted successfully");
-          window.location.reload();
-        }
+        // if (response.data.success) {
+        //   message.success("Data deleted successfully");
+        //   // window.location.reload();
+        // }
       } else {
         message.info("Deletion canceled by user");
       }
@@ -120,18 +110,26 @@ const getOneUserRecords = async () => {
     }
   };
 
-const handleUpdate = async (values) => {
+  const handleUpdate = async (values) => {
     try {
-      // update-student-record
-      const id = location.state.id;
-      console.log(values);
+      const userConfirmed = window.confirm("Are you sure you want to update the student record?");
 
-      // const response = await axios.post(
-      //   "http://localhost:8080/api/v1/registration/update-student-record",
-      //   { id: id, values }
-      // );
-      // navigate("/records");
-      // message.success("Student Updated Successfully.");
+      if (userConfirmed) {
+        // update-student-record
+        const id = location.state.id;
+        console.log(id, newIndexNumberValue);
+
+        const response = await axios.post(
+          "http://localhost:8080/api/v1/registration/update-student-record",
+          { id: id, index: newIndexNumberValue }
+        );
+        // message.success(response.data.message);
+        navigate("/records");
+      } else {
+        message.info("Student Record Update Canceled");
+      }
+
+
     } catch (error) {
       message.error("Student Updated Unsuccessful.please Try again later.");
     }
@@ -156,7 +154,7 @@ const handleUpdate = async (values) => {
               backgroundColor: "white",
               boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
             }}
-            onFinish={handleUpdate}
+            // onFinish={handleUpdate}
             initialValues={formValues}
           >
             <div className={RecordStyles.formHeader}>
@@ -196,29 +194,25 @@ const handleUpdate = async (values) => {
                   Index Number:
                 </label>
 
-                <Form.Item name="indexNumber" style={{ flex: "2"}}>
+                <Form.Item name='indexNumber' style={{ flex: "2" }}>
                   <Input
                     onChange={(e) => setNewIndexNumberValue(e.target.value)}
+                    placeholder={userDetails.indexNumber || " "}
                   />
                 </Form.Item>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-              <label className={RecordStyles.RegFormLabel}>
-                Full Name:
-              </label>
-
-                <Form.Item style={{ flex: "2" }}>
-                <Input
-                  readOnly
-                  value={userDetails ? userDetails.fullName : ""}
-                />
-              </Form.Item>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <label htmlFor="fullName" className={RecordStyles.RegFormLabel}>
+                  Full Name:
+                </label>
+                <Form.Item style={{ flex: '2' }}>
+                  <Input
+                    id="fullName"
+                    name="fullName"
+                    // readOnly
+                    value={userDetails.fullName}
+                  />
+                </Form.Item>
               </div>
 
               <div
@@ -232,11 +226,10 @@ const handleUpdate = async (values) => {
                   Name with Initials:
                 </label>
                 <Form.Item style={{ flex: "2" }}>
-                <Input
-                  readOnly
-                  value={userDetails ? userDetails.nameWithInitials : ""}
-                />
-              </Form.Item>
+                  <Input
+                    value={userDetails.nameWithInitials}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -247,12 +240,11 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Address:</label>
 
-                <Form.Item name="address" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <TextArea
                     rows={4}
-                    value={address}
                     onChange={(e) => setNewAddress(e.target.value || address)}
-                    placeholder={userDetails.address}
+                    value={userDetails ? userDetails.address : ""}
                   />
                 </Form.Item>
               </div>
@@ -268,13 +260,12 @@ const handleUpdate = async (values) => {
                   Mobile Number:
                 </label>
 
-                <Form.Item name="mobileNumber" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={mobileNumber}
                     onChange={(e) =>
                       setNewMobileNumber(e.target.value || mobileNumber)
                     }
-                    placeholder={userDetails.mobileNumber}
+                    value={userDetails ? userDetails.mobileNumber : ""}
                   />
                 </Form.Item>
               </div>
@@ -290,13 +281,12 @@ const handleUpdate = async (values) => {
                   WhatsApp Number:
                 </label>
 
-                <Form.Item name="whatsAppNumber" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={whatsAppNumber}
                     onChange={(e) =>
                       setWhatsAppNumber(e.target.value || whatsAppNumber)
                     }
-                    placeholder={userDetails.mobileNumber}
+                    value={userDetails ? userDetails.mobileNumber : ""}
                   />
                 </Form.Item>
               </div>
@@ -312,11 +302,11 @@ const handleUpdate = async (values) => {
                   Date of Birth:
                 </label>
                 <Form.Item style={{ flex: "2" }}>
-                <Input
-                  readOnly
-                  value={birthDay}
-                />
-              </Form.Item>
+                  <Input
+                    readOnly
+                    value={birthDay}
+                  />
+                </Form.Item>
               </div>
 
               <div
@@ -328,14 +318,14 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>School:</label>
                 <Form.Item
-                  name="school"
                   style={{
                     flex: "2",
                   }}
                 >
                   <Input
                     onChange={(e) => setNewSchool(e.target.value || school)}
-                    placeholder={userDetails.school}
+                    value={userDetails ? userDetails.school : ""}
+                  // placeholder={userDetails.school}
                   />
                 </Form.Item>
               </div>
@@ -349,16 +339,15 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Grade:</label>
 
-                <Form.Item name="grade" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={grade}
                     onChange={(e) => setGrade(e.target.value || grade)}
-                    placeholder={userDetails.grade || "Not Selected"} 
+                    value={userDetails.grade || "Not selected"}
                   />
                 </Form.Item>
               </div>
 
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -377,7 +366,7 @@ const handleUpdate = async (values) => {
                   >
                     <Checkbox
                       className="myCheckbox"
-                      value="Cambridge Assessment"
+                      defaultChecked={userDetails.elocution}
                       onChange={(e) => setCambrige(e.target.value)}
                     >
                       Cambridge Assessments
@@ -398,7 +387,7 @@ const handleUpdate = async (values) => {
                     </Checkbox>
                   </Checkbox.Group>
                 </Form.Item>
-              </div>
+              </div> */}
 
               <div className={RecordStyles.RegHeadersTop}>
                 {"Enter Parents' / Guardian's Details:"}
@@ -417,12 +406,13 @@ const handleUpdate = async (values) => {
                 <label className={RecordStyles.RegFormLabel}>Name:</label>
 
                 <Form.Item style={{ flex: "2" }}>
-                <Input
-                  readOnly
-                  value={userDetails ? userDetails.fartherName : ""}
-                />
-              </Form.Item>
-                
+                  <Input
+                    readOnly
+                    onChange={(e) => setNameOfFather(e.target.value || "Not selected")}
+                    value={userDetails ? userDetails.fartherName : ""}
+                  />
+                </Form.Item>
+
               </div>
               <div
                 style={{
@@ -433,22 +423,14 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Occupation:</label>
 
-                {/* <Form.Item name="fathersOccupation" style={{ flex: "2" }}>
-                  <Input
-                    value={fathersOccupation}
-                    onChange={(e) =>
-                      setFathersOccupation(e.target.value || grade)
-                    }
-                    placeholder={userDetails.fartherOccupation}
-                  />
-                </Form.Item> */}
-
                 <Form.Item style={{ flex: "2" }}>
-                <Input
-                  readOnly
-                  value={userDetails ? userDetails.fartherOccupation : ""}
-                />
-              </Form.Item>
+                  <Input
+                    readOnly
+                    // setFathersOccupation
+                    onChange={(e) => setFathersOccupation(e.target.value || "Not selected")}
+                    value={userDetails ? userDetails.fartherOccupation : ""}
+                  />
+                </Form.Item>
               </div>
               <div
                 style={{
@@ -467,11 +449,11 @@ const handleUpdate = async (values) => {
                     onChange={(e) =>
                       setFathersContactNumber(e.target.value || grade)
                     }
-                    // placeholder={userDetails.fathersMobileNumber}
+                  // placeholder={userDetails.fathersMobileNumber}
                   />
                 </Form.Item>
 
-                
+
               </div>
               <div
                 style={{
@@ -486,7 +468,7 @@ const handleUpdate = async (values) => {
                   <Input
                     value={userDetails ? userDetails.fartherEmail : ""}
                     onChange={(e) => setFathersEmail(e.target.value || grade)}
-                    // placeholder={userDetails.fartherEmail}
+                  // placeholder={userDetails.fartherEmail}
                   />
                 </Form.Item>
               </div>
@@ -503,11 +485,10 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Name:</label>
 
-                <Form.Item name="nameOfMother" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={nameOfMother}
                     onChange={(e) => setNameOfMother(e.target.value || grade)}
-                    placeholder={userDetails.motherName}
+                    value={userDetails.motherName}
                   />
                 </Form.Item>
               </div>
@@ -520,13 +501,12 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Occupation:</label>
 
-                <Form.Item name="mothersOccupation" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={mothersOccupation}
                     onChange={(e) =>
                       setMothersOccupation(e.target.value || grade)
                     }
-                    placeholder={userDetails.motherOccupation}
+                    value={userDetails.motherOccupation}
                   />
                 </Form.Item>
               </div>
@@ -541,13 +521,12 @@ const handleUpdate = async (values) => {
                   Contact Number:
                 </label>
 
-                <Form.Item name="mothersContactNumber" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={mothersContactNumber}
                     onChange={(e) =>
                       setMothersContactNumber(e.target.value || grade)
                     }
-                    placeholder={userDetails.mothersMobileNumber || "not selected"}
+                    value={userDetails.mothersMobileNumber || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -560,11 +539,10 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Email:</label>
 
-                <Form.Item name="mothersEmail" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={mothersEmail}
                     onChange={(e) => setMothersEmail(e.target.value || grade)}
-                    placeholder={userDetails.mothersEmail || "not selected"}
+                    value={userDetails.mothersEmail || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -581,11 +559,10 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Name:</label>
 
-                <Form.Item name="nameOfGuardian" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={nameOfGuardian}
                     onChange={(e) => setNameOfGuardian(e.target.value || grade)}
-                    placeholder={userDetails.nameOfGuardian || "not selected"}
+                    value={userDetails.nameOfGuardian || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -598,13 +575,13 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Occupation:</label>
 
-                <Form.Item name="GuardianOccupation" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={GuardianOccupation}
+                    // value={GuardianOccupation}
                     onChange={(e) =>
                       setGuardianOccupation(e.target.value || grade)
                     }
-                    placeholder={userDetails.GuardianOccupation}
+                    value={userDetails.GuardianOccupation}
                   />
                 </Form.Item>
               </div>
@@ -619,13 +596,12 @@ const handleUpdate = async (values) => {
                   Contact Number:
                 </label>
 
-                <Form.Item name="GuardianContactNumber" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={GuardianContactNumber}
                     onChange={(e) =>
                       setGuardianContactNumber(e.target.value || grade)
                     }
-                    placeholder={userDetails.GuardianMobileNumber || "not selected"}
+                    value={userDetails.GuardianMobileNumber || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -638,11 +614,10 @@ const handleUpdate = async (values) => {
               >
                 <label className={RecordStyles.RegFormLabel}>Email:</label>
 
-                <Form.Item name="Guardian" style={{ flex: "2" }}>
+                <Form.Item style={{ flex: "2" }}>
                   <Input
-                    value={Guardian}
                     onChange={(e) => setGuardian(e.target.value || grade)}
-                    placeholder={userDetails.GuardianEmail || "not selected"}
+                    value={userDetails.GuardianEmail || "not selected"}
                   />
                 </Form.Item>
               </div>
@@ -656,21 +631,10 @@ const handleUpdate = async (values) => {
                     border: "1px solid #73d13d",
                     width: "150px",
                   }}
-                  onClick={handleUpdate}
+                  onClick={() => handleUpdate()}
                 >
                   Update Record
                 </Button>
-                {/* <button
-                  style={{
-                    color: "#73d13d",
-                    border: "1px solid #73d13d",
-                    width: "150px",
-                    cursor: "pointer",
-                    borderRadius: "5px",
-                  }}
-                >
-                  Update Records
-                </button> */}
 
                 <Button
                   type="submit"
@@ -684,6 +648,7 @@ const handleUpdate = async (values) => {
                 >
                   Delete Record
                 </Button>
+
               </div>
             </div>
           </Form>
