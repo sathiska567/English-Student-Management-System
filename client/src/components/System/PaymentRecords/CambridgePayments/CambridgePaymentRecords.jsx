@@ -31,13 +31,13 @@ const CambridgePaymentRecords = () => {
   const [userDetails, setUserDetails] = useState([]);
   const navigate = useNavigate();
 
-  const getAllUsersDetails = async () => {
+  const getCambrigeUsersDetails = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/registration/get-student-details"
+        "http://localhost:8080/api/v1/getUser/course-vise"
       );
-      console.log(response.data.AllRegistereddetails);
-      setUserDetails(response.data.AllRegistereddetails);
+      console.log(response.data.cambrige[0]);
+      setUserDetails(response.data.cambrige[0]);
     } catch (error) {
       message.error("Error fetching data");
     }
@@ -93,7 +93,7 @@ const CambridgePaymentRecords = () => {
 
 
   useEffect(() => {
-    getAllUsersDetails();
+    getCambrigeUsersDetails();
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {

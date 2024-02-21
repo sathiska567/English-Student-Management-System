@@ -31,13 +31,13 @@ const ElocutionPayments = () => {
   const [userDetails, setUserDetails] = useState([]);
   const navigate = useNavigate();
 
-  const getAllUsersDetails = async () => {
+  const getElocutionUsersDetails = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/registration/get-student-details"
+        "http://localhost:8080/api/v1/getUser/course-vise"
       );
-      console.log(response.data.AllRegistereddetails);
-      setUserDetails(response.data.AllRegistereddetails);
+      console.log(response.data.elocution[0]);
+      setUserDetails(response.data.elocution[0]);
     } catch (error) {
       message.error("Error fetching data");
     }
@@ -85,7 +85,7 @@ const handleViewPaymentRecord = async(id)=>{
 
 
   useEffect(() => {
-    getAllUsersDetails();
+    getElocutionUsersDetails();
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
