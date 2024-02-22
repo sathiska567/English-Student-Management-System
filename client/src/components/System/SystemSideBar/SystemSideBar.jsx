@@ -43,7 +43,7 @@ const SystemSideBar = ({ children }) => {
             <Link to="/register">Student Registration</Link>
           </Menu.Item> */}
           <Menu.Item key="/records" icon={<DatabaseOutlined />}>
-            <Link to="/records">Student Records</Link>
+            <Link to="/">Student Records</Link>
           </Menu.Item>
           <Menu.Item key="/CambridgePaymentRecords" icon={<DollarOutlined />}>
             <Link to="/CambridgePaymentRecords">Cambridge Payments</Link>

@@ -281,7 +281,7 @@ const handleUpdate = async()=>{
               >
                 Update Payment Record
               </Button>
-              <Button
+              {/* <Button
                 type="submit"
                 danger
                 style={{
@@ -291,7 +291,7 @@ const handleUpdate = async()=>{
                 }}
               >
                 Delete Payment Record
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Form>

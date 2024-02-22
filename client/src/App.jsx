@@ -24,7 +24,7 @@ function App() {
           <Route path="/register" element={<StudentRegistration />} />
         </Routes>
         <Routes>
-          <Route path="/records" element={<StudentRecords />} />
+          <Route path="/" element={<StudentRecords />} />
         </Routes>
         <Routes>
           <Route path="/record" element={<Record />} />

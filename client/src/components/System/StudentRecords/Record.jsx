@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import RecordStyles from "./Record.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
-import { Form, Input, Button, Checkbox, message, Space } from "antd";
+import { Form, Input, Button, Checkbox, message, Space, Modal } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -48,7 +48,7 @@ const Record = () => {
   const [userDetails, setUserDetails] = useState([]);
   const [birthDay, setBirthDay] = useState("");
 
-  console.log(location);
+  // console.log(location);
 
   const [formValues, setFormValues] = useState({
     fullName: "",
@@ -65,18 +65,18 @@ const Record = () => {
   const getOneUserRecords = async () => {
     try {
       const id = location.state.id;
-      console.log(id);
+      // console.log(id);
       const response = await axios.post(
         "http://localhost:8080/api/v1/registration/get-only-one-user-details",
         { id: id }
       );
-      console.log(response);
+      // console.log(response);
       setUserDetails(response.data.details)
 
       const date = new Date(response.data.details.birthDay);
       const formattedDate = date.toISOString().split("T")[0];
 
-      // console.log(formattedDate);
+      console.log(formattedDate);
       setBirthDay(formattedDate)
       setLoading(false); // Add this line
 
@@ -90,21 +90,44 @@ const Record = () => {
 
   const handleDelete = async (id) => {
     try {
-      if (window.confirm("Are you sure you want to delete the data?")) {
-        console.log(id);
-        const response = await axios.post(
-          "http://localhost:8080/api/v1/delete/delete-route",
-          { id }
-        );
-        console.log(response.data);
+      const confirmed = await new Promise((resolve, reject) => {
+        Modal.confirm({
+          title: 'Are you sure you want to delete this member record?',
+          okText: 'Yes',
+          okType: 'danger',
+          onOk: () => resolve(true),
+          onCancel: () => resolve(false) 
+        });
+      });
+
+      if (confirmed) {
+        const response = await axios.post("http://localhost:8080/api/v1/delete/delete-route", { id: id }) 
+        console.log(response);      
+        if (response.data.success) {
+          message.success(response.data.message);
+          // navigate("/")
+          // window.location.reload();
+        }
+        else{
+          message.success("Delete Record Cancel");
+        }
+      }
+
+
+
+      // if (window.confirm("Are you sure you want to delete the data?")) {
+      //   // console.log(id);
+      //   const response = await axios.post(
+      //     "http://localhost:8080/api/v1/delete/delete-route",
+      //     { id }
+      //   );
+        // console.log(response.data);
 
         // if (response.data.success) {
         //   message.success("Data deleted successfully");
         //   // window.location.reload();
         // }
-      } else {
-        message.info("Deletion canceled by user");
-      }
+
     } catch (error) {
       message.error("Error deleting data");
     }
@@ -112,19 +135,27 @@ const Record = () => {
 
   const handleUpdate = async (values) => {
     try {
-      const userConfirmed = window.confirm("Are you sure you want to update the student record?");
+      const confirmed = await new Promise((resolve, reject) => {
+        Modal.confirm({
+          title: 'Are you sure you want to delete this member record?',
+          okText: 'Yes',
+          okType: 'danger',
+          onOk: () => resolve(true),
+          onCancel: () => resolve(false) 
+        });
+      });
 
-      if (userConfirmed) {
+      if (confirmed) {
         // update-student-record
         const id = location.state.id;
-        console.log(id, newIndexNumberValue);
+        // console.log(id, newIndexNumberValue);
 
         const response = await axios.post(
           "http://localhost:8080/api/v1/registration/update-student-record",
           { id: id, index: newIndexNumberValue }
         );
         // message.success(response.data.message);
-        navigate("/records");
+        navigate("/");
       } else {
         message.info("Student Record Update Canceled");
       }
@@ -636,7 +667,7 @@ const Record = () => {
                   Update Record
                 </Button>
 
-                <Button
+                {/* <Button
                   type="submit"
                   danger
                   onClick={() => handleDelete()}
@@ -647,7 +678,7 @@ const Record = () => {
                   }}
                 >
                   Delete Record
-                </Button>
+                </Button> */}
 
               </div>
             </div>
