@@ -194,7 +194,12 @@ const CambridgePaymentRecords = () => {
       />
     ),
     onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -233,14 +238,6 @@ const CambridgePaymentRecords = () => {
       ...getColumnSearchProps("studentName"),
       render: (text, record) => <span>{record.fullName}</span>,
     },
-    // {
-    //   title: "Student Name",
-    //   dataIndex: "studentName",
-    //   key: "studentName",
-    //   width: "40%",
-    //   ...getColumnSearchProps("studentName"),
-
-    // },
     {
       title: "Actions",
       dataIndex: "actions",
