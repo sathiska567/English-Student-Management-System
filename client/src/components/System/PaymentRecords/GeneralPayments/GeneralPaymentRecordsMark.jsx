@@ -114,7 +114,7 @@ useEffect(()=>{
                 flex: "30",
               }}
             >
-              Place Student Name With Initials - Payment Register
+               {userDetails.fullName} - Payment Register
             </p>
             <a
               href="/GeneralPayments"

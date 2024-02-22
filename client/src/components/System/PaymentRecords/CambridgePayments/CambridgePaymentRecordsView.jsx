@@ -227,7 +227,7 @@ useEffect(() => {
                 flex: "30",
               }}
             >
-              Place Student Name With Initials - Payment History
+               {userDetails.fullName} - Payment Register
             </p>
             <a
               href="/CambridgePaymentRecords"
