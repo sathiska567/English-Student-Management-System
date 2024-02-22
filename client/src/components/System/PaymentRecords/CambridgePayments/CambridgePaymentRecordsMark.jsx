@@ -289,7 +289,7 @@ const CambridgePaymentRecordsMark = () => {
               >
                 Update Payment Record
               </Button>
-              <Button
+              {/* <Button
                 type="submit"
                 danger
                 style={{
@@ -299,7 +299,7 @@ const CambridgePaymentRecordsMark = () => {
                 }}
               >
                 Delete Payment Record
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Form>

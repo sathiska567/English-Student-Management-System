@@ -283,7 +283,7 @@ useEffect(()=>{
               >
                 Update Payment Record
               </Button>
-              <Button
+              {/* <Button
                 type="submit"
                 danger
                 style={{
@@ -293,7 +293,7 @@ useEffect(()=>{
                 }}
               >
                 Delete Payment Record
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Form>

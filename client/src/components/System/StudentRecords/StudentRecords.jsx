@@ -4,7 +4,7 @@ import Highlighter from "react-highlight-words";
 import StuRecStyles from "./StudentRecords.module.css";
 import SystemSideBar from "../SystemSideBar/SystemSideBar";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table, message } from "antd";
+import { Button, Input, Space, Table, message,Popconfirm, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -16,18 +16,18 @@ const StudentRecords = () => {
   const [registeredStudentDtails, setRegisteredStudentDetails] = useState([]);
   const navigate = useNavigate();
 
-const getAllRegisteredStudentData = async () => {
+  const getAllRegisteredStudentData = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
         "http://localhost:8080/api/v1/registration/get-student-details"
       );
-      console.log(response);
+      // console.log(response);
 
-      
+
       setRegisteredStudentDetails(response.data.AllRegistereddetails);
-      console.log(registeredStudentDtails);
-      
+      // console.log(registeredStudentDtails);
+
       // response.data.AllRegistereddetails.forEach((record) => {
       //   record.completedCourseTitleSearch = [
       //     ...record.completedBritishLevels,
@@ -41,10 +41,10 @@ const getAllRegisteredStudentData = async () => {
   };
 
 
-const handleView = async (id) => {
+  const handleView = async (id) => {
     try {
 
-      console.log(id);
+      // console.log(id);
       message.success("Record Page Navigate Successfull")
       navigate("/record", { state: { id: id } })
 
@@ -54,13 +54,65 @@ const handleView = async (id) => {
   }
 
 
-const handleDeleteStudentRecords = async (id) => {
-    console.log(id);
+  const confirm = (e) => {
+    console.log(e);
+    // handleDeleteStudentRecords(e._id)
+  };
+  const cancel = (e) => {
+    console.log(e);
+    message.error('Click on No');
+  };
+
+  // const handleDelete = async (id) => {
+  //   try {
+  //     const confirmed = await new Promise((resolve, reject) => {
+  //       Modal.confirm({
+  //         title: 'Are you sure you want to delete this member record?',
+  //         okText: 'Yes',
+  //         okType: 'danger',
+  //         onOk: () => resolve(true),
+  //         onCancel: () => resolve(false) 
+  //       });
+  //     });
+
+  //     if (confirmed) {
+  //       console.log(id);
+  //       const response = await axios.post("/delete", { id: id });
+
+
+  //       if (response.data.success) {
+  //         message.success("Deletion is successful");
+  //         window.location.reload();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting member:", error);
+
+  //     message.error("An error occurred while deleting the member");
+  //   }
+  // };
+
+  const handleDeleteStudentRecords = async (id) => {
+    // console.log(id);
 
     try {
-      const respone = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record", { id: id })
-      message.success("Record Delete Successfull");
-      window.location.reload();
+      const confirmed = await new Promise((resolve, reject) => {
+              Modal.confirm({
+                title: 'Are you sure you want to delete this member record?',
+                okText: 'Yes',
+                okType: 'danger',
+                onOk: () => resolve(true),
+                onCancel: () => resolve(false) 
+              });
+            });
+      
+            if (confirmed) {
+              const response = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record", { id: id })       
+              if (response.data.success) {
+                message.success(response.data.message);
+                window.location.reload();
+              }
+            }
 
     } catch (error) {
       message.error("Record Delete Unsuccessfull");
@@ -173,20 +225,20 @@ const handleDeleteStudentRecords = async (id) => {
       record[dataIndex]
         ? Array.isArray(record[dataIndex]) // Check if the record[dataIndex] is an array
           ? value
-              .toLowerCase()
-              .split(",")
-              .every(
-                (
-                  val // Split the search value into an array and check if every value
-                ) =>
-                  record[dataIndex].some((item) =>
-                    item.toLowerCase().includes(val.trim())
-                  ) // is included in any item in the array
-              )
+            .toLowerCase()
+            .split(",")
+            .every(
+              (
+                val // Split the search value into an array and check if every value
+              ) =>
+                record[dataIndex].some((item) =>
+                  item.toLowerCase().includes(val.trim())
+                ) // is included in any item in the array
+            )
           : record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : "",
 
     onFilterDropdownVisibleChange: (visible) => {
@@ -238,7 +290,7 @@ const handleDeleteStudentRecords = async (id) => {
       },
     },
 
-  
+
     {
       title: "Cambrige Examination",
       dataIndex: "examination",
@@ -249,7 +301,7 @@ const handleDeleteStudentRecords = async (id) => {
         // Ensure currentBritishLevel and currentGeneralLevel are arrays
         if (!Array.isArray(record.cambrige || record.general)) {
           record.cambrige = [record.cambrige];
-          
+
         }
         if (!Array.isArray(record.general)) {
           record.currentGeneralLevel = [record.currentGeneralLevel];
@@ -264,7 +316,7 @@ const handleDeleteStudentRecords = async (id) => {
         return (
           <div>
             <span>
-              
+
               <b>
                 <Highlighter
                   highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
@@ -276,7 +328,7 @@ const handleDeleteStudentRecords = async (id) => {
             </span>
             <br />
             <br />
-            
+
           </div>
         );
       },
@@ -315,7 +367,7 @@ const handleDeleteStudentRecords = async (id) => {
         return (
           <div>
             <span>
-              
+
               <b>
                 <Highlighter
                   highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
@@ -327,7 +379,7 @@ const handleDeleteStudentRecords = async (id) => {
             </span>
             <br />
             <br />
-            
+
           </div>
         );
       },
@@ -358,7 +410,7 @@ const handleDeleteStudentRecords = async (id) => {
         return (
           <div>
             <span>
-              
+
               <b>
                 <Highlighter
                   highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
@@ -370,7 +422,7 @@ const handleDeleteStudentRecords = async (id) => {
             </span>
             <br />
             <br />
-            
+
           </div>
         );
       },
@@ -400,7 +452,7 @@ const handleDeleteStudentRecords = async (id) => {
           >
             View
           </Button>
-          <Button danger onClick={() => handleDeleteStudentRecords(record._id)}>
+           <Button danger onClick={() => handleDeleteStudentRecords(record._id)}>   {/*onClick={() => handleDeleteStudentRecords(record._id)} */}
             Delete
           </Button>
         </Space>
