@@ -42,7 +42,7 @@ const SystemSideBar = ({ children }) => {
           {/* <Menu.Item key="/register" icon={<UserOutlined />}>
             <Link to="/register">Student Registration</Link>
           </Menu.Item> */}
-          <Menu.Item key="/records" icon={<DatabaseOutlined />}>
+          <Menu.Item key="/" icon={<DatabaseOutlined />}>
             <Link to="/">Student Records</Link>
           </Menu.Item>
           <Menu.Item key="/CambridgePaymentRecords" icon={<DollarOutlined />}>
@@ -57,10 +57,10 @@ const SystemSideBar = ({ children }) => {
           <Menu.Item
             className="logout-button"
             style={{ position: "absolute", bottom: 0 }}
-            key="/"
+            key="/logout"
             icon={<LogoutOutlined />}
           >
-            <Link to="/">Log out</Link>
+            <Link to="/logout">Log out</Link>
           </Menu.Item>
         </Menu>
       </Sider>

@@ -199,7 +199,7 @@ const Record = () => {
                 {formValues.indexNumber} {userDetails.fullName} {formValues.nameWithInitials}
               </p>
               <a
-                href="/records"
+                href="/"
                 style={{
                   display: "flex",
                   flex: "2",
