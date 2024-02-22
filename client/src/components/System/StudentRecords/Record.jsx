@@ -137,7 +137,7 @@ const Record = () => {
     try {
       const confirmed = await new Promise((resolve, reject) => {
         Modal.confirm({
-          title: 'Are you sure you want to delete this member record?',
+          title: 'Are you sure you want to update this member record?',
           okText: 'Yes',
           okType: 'danger',
           onOk: () => resolve(true),
