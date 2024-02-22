@@ -31,7 +31,6 @@ const GeneralPaymentRecordsView = () => {
     "December",
   ];
 
-
   const checkboxValues = [
     "January",
     "February",
@@ -62,8 +61,22 @@ const GeneralPaymentRecordsView = () => {
     );
   };
 
-  const downloadPaymentHistory = (values) => {
+  const downloadPaymentHistory = () => {
+    // Update payment status in paymentHistory based on checkedList
+    const updatedPaymentHistory = paymentHistory.map((record) => ({
+      ...record,
+      Payment_Status: checkedList.includes(record.Month) ? "Paid" : "Unpaid",
+    }));
+
+    const fullName = userDetails ? userDetails.fullName : "";
+    const indexNumber =
+      userDetails && userDetails.PaidyearCambrige
+        ? userDetails.PaidyearCambrige.toString()
+        : "";
+    const year = userDetails ? userDetails.PaidyearGeneral : "";
+    
     const doc = new jsPDF();
+
     // Add a Logo
     doc.addImage(logo, "PNG", 165, 10, 30, 30);
 
@@ -74,31 +87,19 @@ const GeneralPaymentRecordsView = () => {
     doc.text("Gayaniukwattalc@gmail.com", 15, 24);
     doc.text("www.gulcentre.com", 15, 30);
     doc.text("0750101296", 15, 37);
-
     doc.line(15, 55, 195, 55);
 
+    // Add user details
     doc.setFontSize(10);
-    const labels = ["Name", "Index", "Course Title", "Course Level", "Year"];
-    const dynamicTexts = [
-      values.fullName,
-      values.indexNumber,
-      values.courseTitle,
-      values.courseLevel,
-      values.year,
-    ];
+    doc.text("Name", 15, 70);
+    doc.text(":", 50, 70);
+    doc.text(fullName, 55, 70);
 
-    labels.forEach((label, index) => {
-      const row = Math.floor(index / 2); // 0 for first row, 1 for second row
-      const col = index % 2; // 0 for first column, 1 for second column
+    doc.text("Year", 15, 77);
+    doc.text(":", 50, 77);
+    doc.text(year.toString(), 55, 77);
 
-      const x = 15 + 100 * col; // for adjust horizontal spacing
-      const y = 70 + 7 * row; // for adjust  vertical spacing
-
-      doc.text(label, x, y);
-      doc.text(":", x + 35, y);
-      doc.text(dynamicTexts[index], x + 40, y);
-    });
-
+    // Add Payment History heading
     doc.setFontSize(20);
     let text = "Payment History";
     let textSize = doc.getTextWidth(text);
@@ -108,7 +109,7 @@ const GeneralPaymentRecordsView = () => {
     // Define the table columns
     const columns = ["Month", "Payment_Status"];
     // Map the data to match the columns
-    const data = paymentHistory.map(({ Month, Payment_Status }) => [
+    const data = updatedPaymentHistory.map(({ Month, Payment_Status }) => [
       Month,
       Payment_Status,
     ]);
@@ -158,49 +159,45 @@ const GeneralPaymentRecordsView = () => {
     doc.save("payment-history.pdf");
   };
 
+  // GET ONE USER DETAILS
+  const getUserAllDetails = async () => {
+    try {
+      const id = location.state.id;
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/registration/get-only-one-user-details",
+        { id: id }
+      );
 
-    // GET ONE USER DETAILS
-const getUserAllDetails = async () => {
-  try {
-    const id = location.state.id;
-    const response = await axios.post(
-      "http://localhost:8080/api/v1/registration/get-only-one-user-details",
-      { id: id }
-    );
+      if (response.data.success) {
+        // message.success(response.data.message);
+        setUserDetails(response.data.details);
+      }
 
-    if (response.data.success) {
-      // message.success(response.data.message);
-      setUserDetails(response.data.details);
+      // console.log(userDetails);
+    } catch (error) {
+      message.error(error.message);
     }
+  };
 
-    // console.log(userDetails);
+  useEffect(() => {
+    getUserAllDetails();
+    if (userDetails && userDetails.markPaymentGeneral) {
+      // Convert the markPaymentCambrige array to an array of month names
+      const checkedMonths = userDetails.markPaymentGeneral.reduce(
+        (months, isPaid, index) => {
+          // If the month is paid, add its name to the months array
+          if (isPaid) {
+            months.push(monthNames[index]); // monthNames is an array of month names
+          }
 
+          return months;
+        },
+        []
+      );
 
-  } catch (error) {
-    message.error(error.message);
-  }
-};
-
-
-useEffect(() => {
-  getUserAllDetails();
-  if (userDetails && userDetails.markPaymentGeneral) {
-    // Convert the markPaymentCambrige array to an array of month names
-    const checkedMonths = userDetails.markPaymentGeneral.reduce(
-      (months, isPaid, index) => {
-        // If the month is paid, add its name to the months array
-        if (isPaid) {
-          months.push(monthNames[index]); // monthNames is an array of month names
-        }
-
-        return months;
-      },
-      []
-    );
-
-    setCheckedList(checkedMonths);
-  }
-}, [userDetails]);
+      setCheckedList(checkedMonths);
+    }
+  }, [userDetails]);
 
   return (
     <SystemSideBar>
@@ -212,7 +209,13 @@ useEffect(() => {
             backgroundColor: "white",
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
           }}
-          onFinish={downloadPaymentHistory}
+          onFinish={(values) =>
+            downloadPaymentHistory(
+              values.fullName,
+              values.indexNumber,
+              values.year
+            )
+          }
         >
           <div className={viewPaymentRecordStyles.formHeader}>
             <p
@@ -240,7 +243,7 @@ useEffect(() => {
             </a>
           </div>
           <div className={viewPaymentRecordStyles.formDetails}>
-          <div
+            <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -253,25 +256,11 @@ useEffect(() => {
               <Form.Item style={{ flex: "2" }}>
                 <Input
                   readOnly
-                  value={userDetails ? userDetails.PaidyearGeneral: ""}
+                  value={userDetails ? userDetails.PaidyearGeneral : ""}
                 />
               </Form.Item>
             </div>
-            {/* <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <label className={viewPaymentRecordStyles.RegFormLabel}>
-                Index Number:
-              </label>
 
-              <Form.Item style={{ flex: "2" }}>
-                <Input readOnly value={userDetails ? userDetails._id : ""} />
-              </Form.Item>
-            </div> */}
             <div
               style={{
                 display: "flex",
@@ -289,36 +278,7 @@ useEffect(() => {
                 />
               </Form.Item>
             </div>
-            {/* <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <label className={viewPaymentRecordStyles.RegFormLabel}>
-                Course Title:
-              </label>
-              <Form.Item name="courseTitle" style={{ flex: "2" }}>
-                <Input readOnly />
-              </Form.Item>
-            </div>
-
             <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <label className={viewPaymentRecordStyles.RegFormLabel}>
-                Course Level:
-              </label>
-              <Form.Item name="courseLevel" style={{ flex: "2" }}>
-                <Input readOnly />
-              </Form.Item>
-            </div> */}
-                    <div
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -388,7 +348,6 @@ useEffect(() => {
                   border: "1px solid #13c2c2",
                   width: "200px",
                 }}
-                onClick={downloadPaymentHistory}
               >
                 <DownloadOutlined />
                 Download Transcript
