@@ -60,7 +60,7 @@ const SystemSideBar = ({ children }) => {
             key="/logout"
             icon={<LogoutOutlined />}
           >
-            <Link to="/logout">Log out</Link>
+            <Link to="/">Log out</Link>
           </Menu.Item>
         </Menu>
       </Sider>
