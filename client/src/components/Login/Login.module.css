@@ -1,0 +1,82 @@
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.loginMainBox {
+    height: 95%;
+    width: 95%;
+    margin:  auto;
+    background: linear-gradient(to right, #d6e4ff, #efdbff);
+    border-radius: 10px;
+    display: flex;
+}
+
+.loginFieldContainer {
+    height: 80%;
+    width: 90%;
+    margin: auto;
+    border-radius: 0px;
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+}
+
+.loginLeftContainer {
+    width: 50%;
+    background: linear-gradient(to right, #f0f5ff, #f9f0ff);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.1);
+    
+}
+
+.loginFormContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 70%;
+}
+
+.loginRightContainer {
+    width: 50%;
+    background-image: url('/public/loginimage.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
+#components-form-demo-normal-login .login_form {
+  max-width: 300px;
+}
+
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
+}
+
+.loginFormContainer button {
+    width: 100%;
+}
+
+.loginFormContainer h2 {
+    color: #1677ff;
+}
+
+.loginFormContainer p {
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+}
+
+.login_form_input {
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+}
