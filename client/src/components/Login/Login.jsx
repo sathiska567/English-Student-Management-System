@@ -1,12 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import loginStyles from "./Login.module.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-  const onFinish = (values) => {
+ const navigate = useNavigate();
+ const [email,setEmail] = useState("");
+ const [password,setPassword] = useState("");
+ const [responseEmail,setResponseEmail] = useState("");
+ const [responsePassword,setResponsePassword] = useState("");
+
+
+const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
+
+const GetUserData = async()=>{
+  try {
+    const response = await axios.get("http://localhost:8080/api/v1/data/get-router")
+    console.log(response.data.data[0]);
+    setResponseEmail(response.data.data[0].email);
+    setResponsePassword(response.data.data[0].password);
+
+  } catch (error) {
+     message.error("Error in fetching data");
+  }
+}
+
+const handleLogin = async()=>{
+  try {
+    console.log(email,password);
+
+    if(email === responseEmail && password === responsePassword){
+         message.success("Login Successful !");
+         navigate("/StudentRecords")
+    }
+
+    else{
+       message.error("Invalid Credentials , please Check your Email and Password !");
+    }
+    
+  } catch (error) {
+    message.error("Error in fetching data !");
+  }
+}
+
+useEffect(()=>{
+  GetUserData();
+},[])
 
   return (
     <div className={loginStyles.loginContainer}>
@@ -42,6 +85,7 @@ const Login = () => {
                     className={loginStyles.login_form_input}
                     prefix={<UserOutlined className="site-form-item-icon" />}
                     placeholder="Enter your email address"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Form.Item>
                 <Form.Item
@@ -60,6 +104,7 @@ const Login = () => {
                     className={loginStyles.login_form_input}
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     placeholder="Enter password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Item>
 
@@ -68,6 +113,7 @@ const Login = () => {
                     type="primary"
                     htmlType="submit"
                     className="login-form-button"
+                    onClick={handleLogin}
                   >
                     Log in
                   </Button>
