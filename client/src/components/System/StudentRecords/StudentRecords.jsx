@@ -468,7 +468,7 @@ const StudentRecords = () => {
         <Table
           columns={columns}
           dataSource={registeredStudentDtails}
-          pagination={{ pageSize: 3 }}
+          pagination={{ pageSize: 6 }}
         />
       </SystemSideBar>
     </div>

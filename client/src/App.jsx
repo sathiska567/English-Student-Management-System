@@ -14,9 +14,9 @@ import ElocutionPaymentRecordsMark from './components/System/PaymentRecords/Eloc
 import ElocutionPaymentRecordsView from './components/System/PaymentRecords/ElocutionPayments/ElocutionPaymentRecordsView';
 import GeneralPaymentRecordsMark from './components/System/PaymentRecords/GeneralPayments/GeneralPaymentRecordsMark';
 import GeneralPaymentRecordsView from './components/System/PaymentRecords/GeneralPayments/GeneralPaymentRecordsView';
+import Login from './components/Login/Login';
+
 function App() {
-
-
   return (
     <>
       <BrowserRouter>
@@ -24,7 +24,7 @@ function App() {
           <Route path="/register" element={<StudentRegistration />} />
         </Routes>
         <Routes>
-          <Route path="/" element={<StudentRecords />} />
+          <Route path="/StudentRecords" element={<StudentRecords />} />
         </Routes>
         <Routes>
           <Route path="/record" element={<Record />} />
@@ -56,7 +56,9 @@ function App() {
         <Routes>
           <Route path="/GeneralPaymentRecordsView" element={<GeneralPaymentRecordsView />} />
         </Routes>
-        
+        <Routes>
+          <Route path="/" element={<Login />} />
+        </Routes>
       </BrowserRouter>
     </>
   );
