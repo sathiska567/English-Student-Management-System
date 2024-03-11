@@ -137,7 +137,7 @@ const Record = () => {
     try {
       const confirmed = await new Promise((resolve, reject) => {
         Modal.confirm({
-          title: 'Are you sure you want to delete this member record?',
+          title: 'Are you sure you want to Update this member record?',
           okText: 'Yes',
           okType: 'danger',
           onOk: () => resolve(true),
@@ -155,7 +155,7 @@ const Record = () => {
           { id: id, index: newIndexNumberValue }
         );
         // message.success(response.data.message);
-        navigate("/");
+        navigate("/StudentRecords");
       } else {
         message.info("Student Record Update Canceled");
       }
