@@ -7,6 +7,7 @@ import { Button, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../../BaseUrl/BaseUrl";
 
 // const data = [
 //   {
@@ -34,7 +35,7 @@ const ElocutionPayments = () => {
   const getElocutionUsersDetails = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/getUser/course-vise"
+        `${baseUrl}/api/v1/getUser/course-vise`
       );
       console.log(response.data.elocution[0]);
       setUserDetails(response.data.elocution[0]);
@@ -49,7 +50,7 @@ const ElocutionPayments = () => {
       if (window.confirm("Are you sure you want to delete the data?")) {
 
         console.log(id);
-        const response = await axios.post("http://localhost:8080/api/v1/delete/delete-route", { id })
+        const response = await axios.post(`${baseUrl}/api/v1/delete/delete-route`, { id })
         console.log(response.data);
 
         if (response.data.success) {

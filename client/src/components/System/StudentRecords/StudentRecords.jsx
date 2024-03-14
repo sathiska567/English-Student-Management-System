@@ -7,6 +7,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, message,Popconfirm, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from "../../BaseUrl/BaseUrl";
 
 const StudentRecords = () => {
   const [loading, setLoading] = useState(true);
@@ -107,7 +108,7 @@ const StudentRecords = () => {
             });
       
             if (confirmed) {
-              const response = await axios.post("http://localhost:8080/api/v1/registration/delete-student-record", { id: id })       
+              const response = await axios.post(`${baseUrl}/api/v1/registration/delete-student-record`, { id: id })       
               if (response.data.success) {
                 message.success(response.data.message);
                 window.location.reload();

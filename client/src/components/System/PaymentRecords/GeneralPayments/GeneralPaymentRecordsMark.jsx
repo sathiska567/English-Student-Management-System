@@ -15,6 +15,7 @@ import {
 import { CloseSquareOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from "../../../BaseUrl/BaseUrl";
 
 
 const GeneralPaymentRecordsMark = () => {
@@ -52,7 +53,7 @@ const GeneralPaymentRecordsMark = () => {
 const getUserDetails = async () => {
   try {
     const id = location.state.id;
-    const response = await axios.post("http://localhost:8080/api/v1/registration/get-only-one-user-details", { id: id });
+    const response = await axios.post(`${baseUrl}/api/v1/registration/get-only-one-user-details`, { id: id });
     console.log(response.data.details);
     setUserDetails(response.data.details);
 
@@ -70,7 +71,7 @@ const handleUpdate = async()=>{
 
 try {
 
-   const response = await axios.post("http://localhost:8080/api/v1/update/update-payment-general",{updatedId,Paidyear,paidMonth})
+   const response = await axios.post(`${baseUrl}/api/v1/update/update-payment-general`,{updatedId,Paidyear,paidMonth})
    console.log(response);
 
    if(response.data.success){

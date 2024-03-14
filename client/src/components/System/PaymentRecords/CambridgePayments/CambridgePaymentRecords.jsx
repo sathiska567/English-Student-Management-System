@@ -7,6 +7,7 @@ import { Button, Input, Space, Table, message } from "antd";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../../BaseUrl/BaseUrl";
 
 // const data = [
 //   {
@@ -34,7 +35,7 @@ const CambridgePaymentRecords = () => {
   const getCambrigeUsersDetails = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/getUser/course-vise"
+        `${baseUrl}/api/v1/getUser/course-vise`
       );
       console.log(response.data.cambrige[0]);
       setUserDetails(response.data.cambrige[0]);

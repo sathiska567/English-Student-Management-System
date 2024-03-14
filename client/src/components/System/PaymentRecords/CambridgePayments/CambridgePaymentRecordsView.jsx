@@ -9,6 +9,7 @@ import autoTable from "jspdf-autotable";
 import logo from "../logo.png";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from "../../../BaseUrl/BaseUrl";
 
 const CambridgePaymentRecordsView = () => {
   const location = useLocation();
@@ -168,7 +169,7 @@ const getUserAllDetails = async () => {
   try {
     const id = location.state.id;
     const response = await axios.post(
-      "http://localhost:8080/api/v1/registration/get-only-one-user-details",
+      `${baseUrl}/api/v1/registration/get-only-one-user-details`,
       { id: id }
     );
 

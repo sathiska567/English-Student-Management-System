@@ -6,6 +6,7 @@ import { Form, Input, Button, Checkbox, message, Space, Modal } from "antd";
 import { CloseSquareOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from './../../BaseUrl/BaseUrl';
 const { TextArea } = Input;
 
 const Record = () => {
@@ -67,7 +68,7 @@ const Record = () => {
       const id = location.state.id;
       // console.log(id);
       const response = await axios.post(
-        "http://localhost:8080/api/v1/registration/get-only-one-user-details",
+        `${baseUrl}/api/v1/registration/get-only-one-user-details`,
         { id: id }
       );
       // console.log(response);
@@ -101,7 +102,7 @@ const Record = () => {
       });
 
       if (confirmed) {
-        const response = await axios.post("http://localhost:8080/api/v1/delete/delete-route", { id: id }) 
+        const response = await axios.post(`${baseUrl}/api/v1/delete/delete-route`, { id: id }) 
         console.log(response);      
         if (response.data.success) {
           message.success(response.data.message);
@@ -151,7 +152,7 @@ const Record = () => {
         // console.log(id, newIndexNumberValue);
 
         const response = await axios.post(
-          "http://localhost:8080/api/v1/registration/update-student-record",
+          `${baseUrl}/api/v1/registration/update-student-record`,
           { id: id, index: newIndexNumberValue }
         );
         // message.success(response.data.message);

@@ -4,6 +4,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from "../BaseUrl/BaseUrl";
 
 const Login = () => {
  const navigate = useNavigate();
@@ -19,7 +20,7 @@ const onFinish = (values) => {
 
 const GetUserData = async()=>{
   try {
-    const response = await axios.get("http://localhost:8080/api/v1/data/get-router")
+    const response = await axios.get(`${baseUrl}/api/v1/data/get-router`)
     console.log(response.data.data[0]);
     setResponseEmail(response.data.data[0].email);
     setResponsePassword(response.data.data[0].password);
