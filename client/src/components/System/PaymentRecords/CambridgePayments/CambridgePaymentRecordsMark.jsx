@@ -152,7 +152,10 @@ const CambridgePaymentRecordsMark = () => {
                   },
                 ]}
               >
-                <DatePicker picker="year" onChange={(date, dateString) => setPaidYear(dateString)} />
+                <DatePicker
+                  picker="year"
+                  onChange={(date, dateString) => setPaidYear(dateString)}
+                />
               </Form.Item>
             </div>
 
@@ -186,7 +189,6 @@ const CambridgePaymentRecordsMark = () => {
               <Form.Item style={{ flex: "2" }}>
                 <Input value={userDetails?.fullName} readOnly />
               </Form.Item>
-
             </div>
 
             {/* <div
@@ -240,7 +242,6 @@ const CambridgePaymentRecordsMark = () => {
               </Form.Item>
             </div> */}
 
-
             <div
               style={{
                 display: "flex",
@@ -266,7 +267,10 @@ const CambridgePaymentRecordsMark = () => {
                   <Row>
                     {checkboxValues.map((value, index) => (
                       <Col span={8} key={value}>
-                        <Checkbox value={value} disabled={index > currentMonth}>
+                        <Checkbox
+                          value={value}
+                          disabled={index > currentMonth + 1}
+                        >
                           {value}
                         </Checkbox>
                       </Col>
@@ -285,7 +289,6 @@ const CambridgePaymentRecordsMark = () => {
                   width: "200px",
                 }}
                 onClick={handleUpdate}
-
               >
                 Update Payment Record
               </Button>

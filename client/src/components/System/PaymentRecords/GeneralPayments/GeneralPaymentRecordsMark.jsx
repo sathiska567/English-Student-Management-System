@@ -261,7 +261,7 @@ useEffect(()=>{
                   <Row>
                     {checkboxValues.map((value, index) => (
                       <Col span={8} key={value}>
-                        <Checkbox value={value} disabled={index > currentMonth}>
+                        <Checkbox value={value} disabled={index > currentMonth + 1}>
                           {value}
                         </Checkbox>
                       </Col>

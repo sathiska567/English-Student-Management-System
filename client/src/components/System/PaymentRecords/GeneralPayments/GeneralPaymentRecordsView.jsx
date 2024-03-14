@@ -323,7 +323,7 @@ const GeneralPaymentRecordsView = () => {
                                 className="ant-checkbox-input"
                                 value={record.Month}
                                 checked={isChecked} // Set the checked prop
-                                disabled={index > currentMonth}
+                                disabled={index > currentMonth + 1}
                                 onChange={(e) =>
                                   handleCheckboxChange(e, record.Month)
                                 } // Add this line
